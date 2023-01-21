@@ -4,26 +4,24 @@ import {
   Button,
   colors,
   Divider,
-  Paper,
-  Stack,
-  styled,
   Typography,
 } from "@mui/material";
-import {
-  PersonAddAlt,
-  ModeEdit,
-  Visibility,
-  Grading,
-  Person,
-} from "@mui/icons-material";
-import React from "react";
+import { PersonAddAlt, ModeEdit, Person } from "@mui/icons-material";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { NavLink } from "react-router-dom";
+import Summayprofile from "./Summayprofile";
+import PersonInfoPrfile from "./PersonInfoPrfile";
+import SummaryProfileForm from "./SummaryProfileForm";
+import PersonalInfoForm from "./PersonalInfoForm";
 
 const Profile = () => {
+  const [profileStatus, setProfileStatus] = useState({
+    summaryEditStatus: false,
+    personInfoEditStatus: false,
+  });
   return (
     <Box>
-      {/* section 1 include image && summery info */}
+      {/* section 1 include image && Summary  info */}
 
       <Grid container sx={{ border: 1, borderColor: "divider" }}>
         <Grid
@@ -46,122 +44,11 @@ const Profile = () => {
             آپلود عکس
           </Button>
         </Grid>
-        <Grid
-          xs={12}
-          md={9}
-          sx={{
-            padding: 2,
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            cursor: "pointer",
-            position: "relative",
-            "&:hover": {
-              "#edit1": {
-                display: "block",
-              },
-            },
-          }}
-        >
-          <Box
-            id="edit1"
-            position="absolute"
-            top={10}
-            right={10}
-            display="none"
-          >
-            <Button variant="outlined" endIcon={<ModeEdit />}>
-              ویرایش
-            </Button>
-          </Box>
-          <Typography
-            variant="h5"
-            component="div"
-            color="primary.main"
-            fontWeight={700}
-            marginBottom={1}
-          >
-            رضا رمضانی
-          </Typography>
-          <Stack direction="row" gap={2}>
-            <Typography
-              variant="subtitle1"
-              component="span"
-              fontWeight={500}
-              color={colors.grey[600]}
-            >
-              {" "}
-              عنوان شغلی:
-            </Typography>
-            <Typography variant="p" fontWeight={600} component="span">
-              {" "}
-              IT{" "}
-            </Typography>
-          </Stack>
-          <Stack direction="row" gap={2}>
-            <Typography
-              variant="subtitle1"
-              component="span"
-              fontWeight={500}
-              color={colors.grey[600]}
-            >
-              {" "}
-              وضعیت اشتغال:
-            </Typography>
-            <Typography variant="p" fontWeight={600} component="span">
-              {" "}
-              جویای‌کار{" "}
-            </Typography>
-          </Stack>
-          <Stack direction="row" gap={2}>
-            <Typography
-              variant="subtitle1"
-              component="span"
-              fontWeight={500}
-              color={colors.grey[600]}
-            >
-              {" "}
-              آخرین شرکت:
-            </Typography>
-            <Typography variant="p" fontWeight={600} component="span">
-              {" "}
-              سناتور{" "}
-            </Typography>
-          </Stack>
-          <Stack direction="row" gap={2}>
-            <Typography
-              variant="subtitle1"
-              component="span"
-              fontWeight={500}
-              color={colors.grey[600]}
-            >
-              {" "}
-              آخرین مدرک تحصیلی:
-            </Typography>
-            <Typography variant="p" fontWeight={600} component="span">
-              {" "}
-              لیسانس علوم کامپیوتر{" "}
-            </Typography>
-          </Stack>
-          <Stack direction="row" gap={2}>
-            <NavLink
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/login"
-            >
-              <Button variant="outlined" startIcon={<Visibility />}>
-                مشاهده رزومه
-              </Button>
-            </NavLink>
-            <NavLink
-              style={{ color: "inherit", textDecoration: "inherit" }}
-              to="/login"
-            >
-              <Button variant="outlined" startIcon={<Grading />}>
-                دریافت فایل رزومه
-              </Button>
-            </NavLink>
-          </Stack>
-        </Grid>
+        {profileStatus.summaryEditStatus ? (
+          <SummaryProfileForm setProfileStatus={setProfileStatus} />
+        ) : (
+          <Summayprofile setProfileStatus={setProfileStatus} />
+        )}
       </Grid>
 
       {/* section 2 includes personal information */}
@@ -169,20 +56,9 @@ const Profile = () => {
         border={1}
         borderColor="divider"
         marginTop={2}
-        position="relative"
-        sx={{
-          "&:hover": {
-            "#edit2": {
-              display: "block",
-            },
-          },
-        }}
+       
       >
-        <Box id="edit2" position="absolute" top={70} right={10} display="none">
-          <Button variant="outlined" endIcon={<ModeEdit />}>
-            ویرایش
-          </Button>
-        </Box>
+       
         <Box
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
@@ -193,114 +69,11 @@ const Profile = () => {
           <Typography variant="h6">اطلاعات فردی</Typography>
         </Box>
         <Divider />
-        <Box padding={1.5}>
-          <Grid container spacing={2}>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                آخرین مدرک تحصیلی:
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                لیسانس علوم کامپیوتر
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                شماره موبایل:
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                09396160089
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                استان محل سکونت:
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                تهران
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                آدرس محل سکونت (اختیاری):
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                ورامین
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                وضعیت تاهل
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                مجرد
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                سال تولد
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                1367
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                جنسیت
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                مرد
-              </Typography>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <Typography
-                variant="subtitle1"
-                component="div"
-                color={colors.grey[800]}
-                fontWeight={600}
-              >
-                وضعیت خدمت سربازی
-              </Typography>
-              <Typography variant="p" component="span" color={colors.grey[600]}>
-                انجام شده
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
+        {profileStatus.personInfoEditStatus ? (
+          <PersonalInfoForm setProfileStatus={setProfileStatus}/>
+        ) : (
+          <PersonInfoPrfile setProfileStatus={setProfileStatus}/>
+        )}
       </Box>
     </Box>
   );

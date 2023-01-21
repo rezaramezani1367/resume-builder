@@ -165,17 +165,141 @@ const Profile = () => {
       </Grid>
 
       {/* section 2 includes personal information */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box bgcolor={colors.grey[200]} color={colors.grey[700]} sx={{display:'flex',gap:1}} padding={1.5}>
-          <Person  />
-          <Typography variant="h6" >اطلاعات فردی</Typography>
+      <Box
+        border={1}
+        borderColor="divider"
+        marginTop={2}
+        position="relative"
+        sx={{
+          "&:hover": {
+            "#edit2": {
+              display: "block",
+            },
+          },
+        }}
+      >
+        <Box id="edit2" position="absolute" top={70} right={10} display="none">
+          <Button variant="outlined" endIcon={<ModeEdit />}>
+            ویرایش
+          </Button>
+        </Box>
+        <Box
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          sx={{ display: "flex", gap: 1 }}
+          padding={1.5}
+        >
+          <Person />
+          <Typography variant="h6">اطلاعات فردی</Typography>
         </Box>
         <Divider />
         <Box padding={1.5}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero maiores
-          veniam molestias recusandae. Consequatur quo veritatis eveniet
-          similique tempora natus delectus sequi illo eaque quia magni illum
-          deleniti, fugiat exercitationem.
+          <Grid container spacing={2}>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                آخرین مدرک تحصیلی:
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                لیسانس علوم کامپیوتر
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                شماره موبایل:
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                09396160089
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                استان محل سکونت:
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                تهران
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                آدرس محل سکونت (اختیاری):
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                ورامین
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                وضعیت تاهل
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                مجرد
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                سال تولد
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                1367
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                جنسیت
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                مرد
+              </Typography>
+            </Grid>
+            <Grid xs={12} sm={6} lg={4}>
+              <Typography
+                variant="subtitle1"
+                component="div"
+                color={colors.grey[800]}
+                fontWeight={600}
+              >
+                وضعیت خدمت سربازی
+              </Typography>
+              <Typography variant="p" component="span" color={colors.grey[600]}>
+                انجام شده
+              </Typography>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </Box>

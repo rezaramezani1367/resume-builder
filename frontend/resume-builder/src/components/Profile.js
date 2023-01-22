@@ -6,18 +6,21 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { PersonAddAlt, ModeEdit, Person } from "@mui/icons-material";
+import { PersonAddAlt, ModeEdit, Person, Person2 } from "@mui/icons-material";
 import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./Summayprofile";
 import PersonInfoPrfile from "./PersonInfoPrfile";
 import SummaryProfileForm from "./SummaryProfileForm";
 import PersonalInfoForm from "./PersonalInfoForm";
+import AboutMe from "./AboutMe";
+import AboutMeForm from "./AboutMeForm";
 
 const Profile = () => {
   const [profileStatus, setProfileStatus] = useState({
     summaryEditStatus: false,
     personInfoEditStatus: false,
+    aboutMeEditStatus: false,
   });
   return (
     <Box>
@@ -52,13 +55,7 @@ const Profile = () => {
       </Grid>
 
       {/* section 2 includes personal information */}
-      <Box
-        border={1}
-        borderColor="divider"
-        marginTop={2}
-       
-      >
-       
+      <Box border={1} borderColor="divider" marginTop={2}>
         <Box
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
@@ -70,9 +67,26 @@ const Profile = () => {
         </Box>
         <Divider />
         {profileStatus.personInfoEditStatus ? (
-          <PersonalInfoForm setProfileStatus={setProfileStatus}/>
+          <PersonalInfoForm setProfileStatus={setProfileStatus} />
         ) : (
-          <PersonInfoPrfile setProfileStatus={setProfileStatus}/>
+          <PersonInfoPrfile setProfileStatus={setProfileStatus} />
+        )}
+      </Box>
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          sx={{ display: "flex", gap: 1 }}
+          padding={1.5}
+        >
+          <Person2 />
+          <Typography variant="h6"> درباره‌ی من</Typography>
+        </Box>
+        <Divider />
+        {profileStatus.aboutMeEditStatus ? (
+          <AboutMeForm setProfileStatus={setProfileStatus} />
+        ) : (
+          <AboutMe setProfileStatus={setProfileStatus} />
         )}
       </Box>
     </Box>

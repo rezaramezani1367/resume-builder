@@ -28,7 +28,7 @@ const Summayprofile = ({ setProfileStatus }) => {
         position="absolute"
         top={10}
         right={10}
-        display="none"
+        sx={{display:{xs:"block",md:"none"}}}
         onClick={() =>
           setProfileStatus((last) => {
             return { ...last, summaryEditStatus: true };

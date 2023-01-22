@@ -17,12 +17,13 @@ const PersonInfoPrfile = ({ setProfileStatus }) => {
         },
       }}
     >
+      
       <Box
         id="edit2"
         position="absolute"
         top={10}
         right={10}
-        display="none"
+        sx={{display:{xs:"block",md:"none"}}}
         onClick={() =>
           setProfileStatus((last) => {
             return { ...last, personInfoEditStatus: true };
@@ -41,10 +42,10 @@ const PersonInfoPrfile = ({ setProfileStatus }) => {
             color={colors.grey[800]}
             fontWeight={600}
           >
-            آخرین مدرک تحصیلی:
+            آدرس ایمیل:
           </Typography>
           <Typography variant="p" component="span" color={colors.grey[600]}>
-            لیسانس علوم کامپیوتر
+            reza30361@gmail.com
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>

@@ -9,12 +9,12 @@ import {
 import { PersonAddAlt, ModeEdit, Person, Person2 } from "@mui/icons-material";
 import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import Summayprofile from "./Summayprofile";
-import PersonInfoPrfile from "./PersonInfoPrfile";
-import SummaryProfileForm from "./SummaryProfileForm";
-import PersonalInfoForm from "./PersonalInfoForm";
-import AboutMe from "./AboutMe";
-import AboutMeForm from "./AboutMeForm";
+import Summayprofile from "./dataProfile/Summayprofile";
+import PersonInfoPrfile from "./dataProfile/PersonInfoPrfile";
+import SummaryProfileForm from "./formsProfile/SummaryProfileForm";
+import PersonalInfoForm from "./formsProfile/PersonalInfoForm";
+import AboutMe from "./dataProfile/AboutMe";
+import AboutMeForm from "./formsProfile/AboutMeForm";
 
 const Profile = () => {
   const [profileStatus, setProfileStatus] = useState({

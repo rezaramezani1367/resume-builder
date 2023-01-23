@@ -1,5 +1,6 @@
 import { Close, Save, ModeEdit } from "@mui/icons-material";
 import {
+  Autocomplete,
   Box,
   Button,
   colors,
@@ -13,7 +14,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-
+import { ostans, shahrs } from "../../utils/iran-cities-json";
+const khedmat = [
+  { id: 1, name: "پایان خدمت" },
+  { id: 2, name: "معافیت دائم" },
+  { id: 3, name: "معافیت تحصیلی" },
+  { id: 4, name: "در حال انجام" },
+  { id: 5, name: "مشمول" },
+];
 const PersonalInfoForm = ({ setProfileStatus }) => {
   return (
     <Box padding={2} component="form" noValidate autoComplete="off">
@@ -47,23 +55,57 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           />
         </Grid>
         <Grid xs={12} sm={6}>
-          <TextField
-            label="استان محل سکونت"
-            placeholder="مثلا: تهران، قزوین یا ..."
-            InputLabelProps={{ shrink: true }}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={ostans}
+            getOptionLabel={(option) => option.name}
             fullWidth
-            required
-            sx={{
-              "& input": {
-                paddingY: "13px",
-              },
-            }}
-            size="small"
+            renderInput={(params) => (
+              <TextField
+                required
+                {...params}
+                label="استان محل سکونت"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  "& input": {
+                    paddingY: "7px!important",
+                  },
+                }}
+                size="small"
+              />
+            )}
           />
         </Grid>
         <Grid xs={12} sm={6}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={shahrs.filter((option) => option.ostan == 7)}
+            getOptionLabel={(option) => {
+              return option.name;
+            }}
+            fullWidth
+            renderInput={(params) => (
+              <TextField
+                required
+                {...params}
+                label=" شهر محل سکونت "
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  "& input": {
+                    paddingY: "7px!important",
+                  },
+                }}
+                size="small"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid xs={12} sm={6}>
           <TextField
-            label="  آدرس محل سکونت (اختیاری):"
+            label="  آدرس محل سکونت "
             placeholder="مثلا: کرج، خیابان فلاح نژاد..."
             InputLabelProps={{ shrink: true }}
             fullWidth
@@ -74,35 +116,6 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
             }}
             size="small"
           />
-        </Grid>
-        <Grid xs={12} sm={6}>
-          <FormControl>
-            <FormLabel
-              id="demo-row-radio-buttons-group-label"
-              sx={{ color: colors.grey[800], fontWeight: 600 }}
-            >
-              وضعیت تاهل
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
-            >
-              <FormControlLabel
-                value="مجرد"
-                control={<Radio />}
-                label="مجرد"
-                sx={{ color: colors.grey[600] }}
-              />
-
-              <FormControlLabel
-                value="متاهل"
-                control={<Radio />}
-                label="متاهل"
-                sx={{ color: colors.grey[600] }}
-              />
-            </RadioGroup>
-          </FormControl>
         </Grid>
         <Grid xs={12} sm={6}>
           <TextField
@@ -149,22 +162,64 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           </FormControl>
         </Grid>
         <Grid xs={12} sm={6}>
-          <TextField
-            label="وضعیت خدمت سربازی"
-            placeholder="مثلا: انجام شده"
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-            required
-            sx={{
-              "& input": {
-                paddingY: "13px",
-              },
+          <FormControl>
+            <FormLabel
+              id="demo-row-radio-buttons-group-label"
+              sx={{ color: colors.grey[800], fontWeight: 600 }}
+            >
+              وضعیت تاهل
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+            >
+              <FormControlLabel
+                value="مجرد"
+                control={<Radio />}
+                label="مجرد"
+                sx={{ color: colors.grey[600] }}
+              />
+
+              <FormControlLabel
+                value="متاهل"
+                control={<Radio />}
+                label="متاهل"
+                sx={{ color: colors.grey[600] }}
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+
+        <Grid xs={12} sm={6}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={khedmat}
+            getOptionLabel={(option) => {
+              return option.name;
             }}
-            size="small"
+            fullWidth
+            renderInput={(params) => (
+              <TextField
+                required
+                {...params}
+                label="وضعیت خدمت سربازی"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  "& input": {
+                    paddingY: "7px!important",
+                  },
+                }}
+                size="small"
+              />
+            )}
           />
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "end", gap: 2,marginTop:2 }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "end", gap: 2, marginTop: 2 }}
+      >
         <Button
           variant="contained"
           color="error"

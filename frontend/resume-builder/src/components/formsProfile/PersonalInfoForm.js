@@ -1,4 +1,9 @@
-import { Close, Save, ModeEdit } from "@mui/icons-material";
+import {
+  Close,
+  Save,
+  KeyboardArrowRight,
+  KeyboardArrowLeft,
+} from "@mui/icons-material";
 import {
   Autocomplete,
   Box,
@@ -12,7 +17,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import AdapterJalali from "@date-io/date-fns-jalali";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { ostans, shahrs } from "../../utils/iran-cities-json";
 const khedmat = [
@@ -23,6 +30,12 @@ const khedmat = [
   { id: 5, name: "مشمول" },
 ];
 const PersonalInfoForm = ({ setProfileStatus }) => {
+  const [province, setprovince] = useState({
+    value: null,
+    inputValue: "",
+  });
+  const [birthDay, setBirthDay] = React.useState(Date.now());
+  console.log(province);
   return (
     <Box padding={2} component="form" noValidate autoComplete="off">
       <Grid container spacing={3}>
@@ -56,11 +69,22 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
         </Grid>
         <Grid xs={12} sm={6}>
           <Autocomplete
-            disablePortal
+            value={province.value}
+            inputValue={province.inputValue}
             id="combo-box-demo"
             options={ostans}
             getOptionLabel={(option) => option.name}
             fullWidth
+            onChange={(event, value) => {
+              setprovince((last) => {
+                return { ...last, value };
+              });
+            }}
+            onInputChange={(event, inputValue) => {
+              setprovince((last) => {
+                return { ...last, inputValue };
+              });
+            }}
             renderInput={(params) => (
               <TextField
                 required
@@ -81,7 +105,10 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={shahrs.filter((option) => option.ostan == 7)}
+            noOptionsText={"چیزی یافت نشد"}
+            options={shahrs.filter(
+              (option) => option.ostan == province.value?.id ?? 0
+            )}
             getOptionLabel={(option) => {
               return option.name;
             }}
@@ -118,19 +145,43 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           />
         </Grid>
         <Grid xs={12} sm={6}>
-          <TextField
-            label="سال تولد"
-            placeholder="مثلا: ۱۳۷۲"
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-            required
-            sx={{
-              "& input": {
-                paddingY: "13px",
-              },
-            }}
-            size="small"
-          />
+          <LocalizationProvider
+            dateAdapter={AdapterJalali}
+            dateFormats={{ monthShort: "MMMM" }}
+          >
+            <DatePicker
+              orientation="portrait"
+              disableFuture
+              components={{
+                LeftArrowIcon: KeyboardArrowRight,
+                RightArrowIcon: KeyboardArrowLeft,
+              }}
+              componentsProps={{
+                actionBar: {
+                  // actions: ["today"],
+                },
+              }}
+              showDaysOutsideCurrentMonth
+              openTo="year"
+              views={["year", "month", "day"]}
+              value={birthDay}
+              onChange={(newValue) => setBirthDay(newValue)}
+              label="تاریخ تولد"
+              mask="____/__/__"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  sx={{
+                    "& input": {
+                      paddingY: "13px!important",
+                    },
+                  }}
+                  size="small"
+                />
+              )}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid xs={12} sm={6}>
           <FormControl>

@@ -18,10 +18,11 @@ import {
   Typography,
 } from "@mui/material";
 import AdapterJalali from "@date-io/date-fns-jalali";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DatePicker, deDE } from "@mui/x-date-pickers";
 import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { ostans, shahrs } from "../../utils/iran-cities-json";
+
 const khedmat = [
   { id: 1, name: "پایان خدمت" },
   { id: 2, name: "معافیت دائم" },
@@ -34,8 +35,9 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
     value: null,
     inputValue: "",
   });
-  const [birthDay, setBirthDay] = React.useState(Date.now());
+  const [birthDay, setBirthDay] = React.useState(null);
   console.log(province);
+  console.log(birthDay);
   return (
     <Box padding={2} component="form" noValidate autoComplete="off">
       <Grid container spacing={3}>
@@ -148,6 +150,7 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           <LocalizationProvider
             dateAdapter={AdapterJalali}
             dateFormats={{ monthShort: "MMMM" }}
+            localeText={{ cancelButtonLabel: "انصراف", okButtonLabel: "تایید" }}
           >
             <DatePicker
               orientation="portrait"
@@ -168,10 +171,18 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
               onChange={(newValue) => setBirthDay(newValue)}
               label="تاریخ تولد"
               mask="____/__/__"
+              PopperProps={{
+                placement: "bottom-end" || "top-end",
+              }}
               renderInput={(params) => (
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   {...params}
                   fullWidth
+                  inputProps={{
+                    ...params.inputProps,
+                    placeholder: "روز/ماه/سال",
+                  }}
                   sx={{
                     "& input": {
                       paddingY: "13px!important",

@@ -15,8 +15,10 @@ import SummaryProfileForm from "./formsProfile/SummaryProfileForm";
 import PersonalInfoForm from "./formsProfile/PersonalInfoForm";
 import AboutMe from "./dataProfile/AboutMe";
 import AboutMeForm from "./formsProfile/AboutMeForm";
+import ImageUploadForm from "./formsProfile/ImageUploadForm";
 
 const Profile = () => {
+
   const [profileStatus, setProfileStatus] = useState({
     summaryEditStatus: false,
     personInfoEditStatus: false,
@@ -42,10 +44,7 @@ const Profile = () => {
             gap: 2,
           }}
         >
-          <Avatar src="/broken-image.jpg" sx={{ width: 75, height: 75 }} />
-          <Button variant="outlined" startIcon={<PersonAddAlt />} size="small">
-            آپلود عکس
-          </Button>
+          <ImageUploadForm />
         </Grid>
         {profileStatus.summaryEditStatus ? (
           <SummaryProfileForm setProfileStatus={setProfileStatus} />

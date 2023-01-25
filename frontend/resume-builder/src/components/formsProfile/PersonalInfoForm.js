@@ -160,21 +160,10 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           >
             <DatePicker
               dayOfWeekFormatter={(day) => {
-                const dayOfWeek = {
-                  name: ["ش", "1ش", "2ش", "3ش", "4ش", "5ش", "ج"],
-                  fullname: [
-                    "شنبه",
-                    "1شنبه",
-                    "2شنبه",
-                    "3شنبه",
-                    "4شنبه",
-                    "5شنبه",
-                    "جمعه",
-                  ],
-                };
-                if (dayOfWeek.name.includes(day)) {
-                  const index = dayOfWeek.name.indexOf(day);
-                  return dayOfWeek.fullname[index];
+                if (day.includes("ش")) {
+                  return `${day}نبه`;
+                } else if (day.includes("ج")) {
+                  return `${day}معه`;
                 }
               }}
               orientation="portrait"

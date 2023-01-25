@@ -149,10 +149,34 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
         <Grid xs={12} sm={6}>
           <LocalizationProvider
             dateAdapter={AdapterJalali}
-            dateFormats={{ monthShort: "MMMM" }}
-            localeText={{ cancelButtonLabel: "انصراف", okButtonLabel: "تایید" }}
+            dateFormats={{
+              monthShort: "MMMM",
+            }}
+            localeText={{
+              cancelButtonLabel: "انصراف",
+              okButtonLabel: "تایید",
+              todayButtonLabel: "امروز",
+            }}
           >
             <DatePicker
+              dayOfWeekFormatter={(day) => {
+                const dayOfWeek = {
+                  name: ["ش", "1ش", "2ش", "3ش", "4ش", "5ش", "ج"],
+                  fullname: [
+                    "شنبه",
+                    "1شنبه",
+                    "2شنبه",
+                    "3شنبه",
+                    "4شنبه",
+                    "5شنبه",
+                    "جمعه",
+                  ],
+                };
+                if (dayOfWeek.name.includes(day)) {
+                  const index = dayOfWeek.name.indexOf(day);
+                  return dayOfWeek.fullname[index];
+                }
+              }}
               orientation="portrait"
               disableFuture
               components={{
@@ -161,7 +185,7 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
               }}
               componentsProps={{
                 actionBar: {
-                  // actions: ["today"],
+                  // actions: ["today", "cancel", "accept"],
                 },
               }}
               showDaysOutsideCurrentMonth
@@ -174,6 +198,9 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
               PopperProps={{
                 placement: "bottom-end" || "top-end",
               }}
+              maxDate={Date.now()}
+              // toolbarFormat="dd MMMM yyyy"
+              showToolbar
               renderInput={(params) => (
                 <TextField
                   InputLabelProps={{ shrink: true }}

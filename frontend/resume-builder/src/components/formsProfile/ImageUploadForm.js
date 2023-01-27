@@ -20,14 +20,16 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import AvatarEditor from "react-avatar-editor";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 const ImageUploadForm = () => {
+  const editor = useRef(null);
   const [imgSrc, setImgSrc] = useState("");
+  const [imgCropper, setImgCropper] = useState(null);
   const [open, setOpen] = useState(false);
   const [scaleImage, setScaleImage] = React.useState(1.4);
   const [rotateImage, setRotateImage] = React.useState(0);
@@ -38,7 +40,7 @@ const ImageUploadForm = () => {
 
   return (
     <>
-      <Avatar src="/broken-image.jpg" sx={{ width: 75, height: 75 }} />
+      <Avatar src={imgCropper} sx={{ width: 75, height: 75 }} />
       <Button
         component="label"
         // onClick={handleClickOpen}
@@ -53,6 +55,7 @@ const ImageUploadForm = () => {
           accept="image/*"
           onClick={(e) => (e.target.value = "")}
           onChange={(e) => {
+            setImgSrc(null);
             if (e.target.files && e.target.files.length > 0) {
               const reader = new FileReader();
               reader.addEventListener("load", () => {
@@ -93,11 +96,13 @@ const ImageUploadForm = () => {
             paddingTop={0.75}
           >
             <AvatarEditor
+            
+              ref={editor}
               image={imgSrc}
               width={250}
               height={200}
               border={50}
-              color={[210, 210, 210, 0.6]} // RGBA
+              color={[210, 210, 250, 0.7]} // RGBA
               scale={scaleImage}
               rotate={rotateImage}
             />
@@ -167,6 +172,14 @@ const ImageUploadForm = () => {
               size="small"
               color="success"
               startIcon={<Save />}
+              onClick={() => {
+                const img = editor.current
+                  ?.getImageScaledToCanvas()
+                  .toDataURL();
+                // const rect = editor.current?.getCroppingRect();
+                console.log({ img });
+                setImgCropper(img);
+              }}
             >
               ذخیره
             </Button>

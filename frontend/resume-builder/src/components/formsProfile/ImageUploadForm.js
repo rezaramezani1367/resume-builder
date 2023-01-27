@@ -10,11 +10,13 @@ import {
   Avatar,
   IconButton,
   Tooltip,
+  colors,
+  Slider,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { forwardRef, useState } from "react";
-import ReactCrop from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import AvatarEditor from "react-avatar-editor";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -22,6 +24,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const ImageUploadForm = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [open, setOpen] = useState(false);
+  const [scaleImage, setScaleImage] = React.useState(1.4);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -29,18 +32,12 @@ const ImageUploadForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const [crop, setCrop] = useState({
-    unit: "%", // Can be 'px' or '%'
-    x: 25,
-    y: 25,
-    width: 50,
-    height: 50,
-  });
+
   return (
     <>
       <Avatar src="/broken-image.jpg" sx={{ width: 75, height: 75 }} />
       <Button
-      component="label"
+        component="label"
         // onClick={handleClickOpen}
         variant="outlined"
         startIcon={<PersonAddAlt />}
@@ -51,9 +48,9 @@ const ImageUploadForm = () => {
           hidden
           type="file"
           accept="image/*"
+          onClick={(e) => (e.target.value = "")}
           onChange={(e) => {
             if (e.target.files && e.target.files.length > 0) {
-              setCrop(undefined); // Makes crop preview update between images.
               const reader = new FileReader();
               reader.addEventListener("load", () => {
                 setImgSrc(reader.result?.toString() || "");
@@ -66,7 +63,6 @@ const ImageUploadForm = () => {
         />
       </Button>
 
-
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -78,13 +74,49 @@ const ImageUploadForm = () => {
           textAlign="center"
           borderBottom={1}
           borderColor="divider"
+          fontWeight={700}
+          color={"primary.main"}
         >
           آپلود عکس
         </DialogTitle>
         <DialogContent>
-          <ReactCrop crop={crop} onChange={(c) => setCrop(c)}>
-            <img src={imgSrc} />
-          </ReactCrop>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            bgColor={colors.grey[500]}
+            paddingTop={1}
+          >
+            <AvatarEditor
+              image={imgSrc}
+              width={250}
+              height={200}
+              border={50}
+              color={[210, 210, 210, 0.6]} // RGBA
+              scale={scaleImage}
+              rotate={0}
+            />
+          </Box>
+          <Box border={1} padding={1} marginTop={1} borderColor="divider">
+            <Typography variant="p" fontSize={14} fontWeight={700}>
+              تغییر مقیاس
+            </Typography>
+            <Slider
+              min={1}
+              max={4}
+              step={0.1}
+              size="small"
+              defaultValue={1}
+              aria-label="Small"
+              valueLabelDisplay="auto"
+              value={typeof scaleImage === "number" ? scaleImage : 0}
+              onChange={(event, newValue) => {
+                setScaleImage(newValue);
+              }}
+            />
+          </Box>
         </DialogContent>
         <Box borderTop={1} borderColor="divider" padding={1}>
           <DialogActions>

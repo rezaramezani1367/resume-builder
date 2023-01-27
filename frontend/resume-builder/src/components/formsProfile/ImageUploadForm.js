@@ -1,18 +1,23 @@
-import { Close, PersonAddAlt, Save } from "@mui/icons-material";
+import {
+  Close,
+  PersonAddAlt,
+  RotateLeft,
+  Save,
+  ThreeSixty,
+} from "@mui/icons-material";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Slide,
   Avatar,
   IconButton,
-  Tooltip,
   colors,
   Slider,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { forwardRef, useState } from "react";
@@ -25,9 +30,7 @@ const ImageUploadForm = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [open, setOpen] = useState(false);
   const [scaleImage, setScaleImage] = React.useState(1.4);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [rotateImage, setRotateImage] = React.useState(0);
 
   const handleClose = () => {
     setOpen(false);
@@ -70,7 +73,7 @@ const ImageUploadForm = () => {
         onClose={handleClose}
       >
         <DialogTitle
-          fontSize={22}
+          sx={{ paddingY: 1 }}
           textAlign="center"
           borderBottom={1}
           borderColor="divider"
@@ -87,7 +90,7 @@ const ImageUploadForm = () => {
               alignItems: "center",
             }}
             bgColor={colors.grey[500]}
-            paddingTop={1}
+            paddingTop={0.75}
           >
             <AvatarEditor
               image={imgSrc}
@@ -96,19 +99,34 @@ const ImageUploadForm = () => {
               border={50}
               color={[210, 210, 210, 0.6]} // RGBA
               scale={scaleImage}
-              rotate={0}
+              rotate={rotateImage}
             />
           </Box>
-          <Box border={1} padding={1} marginTop={1} borderColor="divider">
-            <Typography variant="p" fontSize={14} fontWeight={700}>
-              تغییر مقیاس
+          <Box paddingY={0.125} paddingX={1} position="relative">
+            <Box position="absolute" top={3} right={0}>
+              <Tooltip title="تنظیمات اولیه" arrow>
+                <IconButton
+                  color="secondary"
+                  aria-label="default setting"
+                  size="small"
+                  onClick={() => {
+                    setRotateImage(0);
+                    setScaleImage(1.4);
+                  }}
+                >
+                  <ThreeSixty />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Typography variant="p" fontSize={10} fontWeight={700}>
+              مقیاس
             </Typography>
             <Slider
+              sx={{ paddingY: 0.125 }}
               min={1}
               max={4}
               step={0.1}
               size="small"
-              defaultValue={1}
               aria-label="Small"
               valueLabelDisplay="auto"
               value={typeof scaleImage === "number" ? scaleImage : 0}
@@ -116,19 +134,40 @@ const ImageUploadForm = () => {
                 setScaleImage(newValue);
               }}
             />
+            <Typography variant="p" fontSize={10} fontWeight={700}>
+              چرخش
+            </Typography>
+            <Slider
+              sx={{ paddingY: 0.125 }}
+              min={0}
+              max={360}
+              size="small"
+              aria-label="Small"
+              valueLabelDisplay="auto"
+              value={typeof rotateImage === "number" ? rotateImage : 0}
+              onChange={(event, newValue) => {
+                setRotateImage(newValue);
+              }}
+            />
           </Box>
         </DialogContent>
-        <Box borderTop={1} borderColor="divider" padding={1}>
+        <Box borderTop={0} padding={0.125} borderColor="divider">
           <DialogActions>
             <Button
               variant="contained"
+              size="small"
               color="error"
               startIcon={<Close />}
               onClick={handleClose}
             >
               انصراف
             </Button>
-            <Button variant="contained" color="success" startIcon={<Save />}>
+            <Button
+              variant="contained"
+              size="small"
+              color="success"
+              startIcon={<Save />}
+            >
               ذخیره
             </Button>
           </DialogActions>

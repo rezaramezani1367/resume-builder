@@ -13,3 +13,5 @@ body,
 .MuiSvgIcon-root {
   transform: scaleX(-1);
 }
+
+@import 'react-toastify/dist/ReactToastify.css';

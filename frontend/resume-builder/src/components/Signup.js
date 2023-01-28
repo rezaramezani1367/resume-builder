@@ -11,10 +11,70 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useFormik } from "formik";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Signup = () => {
+  const [status, setStatus] = useState(false);
+  const {
+    user: { userLoading, userData, userError },
+  } = useSelector((last) => last);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const validate = (values) => {
+    let errors = {};
+    if (values.username.length < 5) {
+      errors.username = "نام کاربری حداقل باید شامل 5 کاراکتر باشد";
+    }
+    if (
+      !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(
+        values.password
+      )
+    ) {
+      errors.password = `رمزعبور حداقل شامل 8 کاراکتر(انگلیسی) شامل حداقل یک حرف بزرگ وکوچک و  یک عدد و یک عبارت خاص باشد `;
+    }
+    if (
+      !(values.password === values.confrimPassword && values.confrimPassword)
+    ) {
+      errors.confrimPassword = "تکرار رمز عبور با رمز عبور مطابقت ندارد";
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+      errors.email = "فرمت ایمیل معتبر نیست";
+    }
+    if (!/^[0][9][0-9]{9}$/.test(values.mobile)) {
+      errors.mobile = `شماره تلفن باید شامل 11 کاراکتر که با 09 شروع شود باشد مثل 09123456789`;
+    }
+    return errors;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      confrimPassword: "",
+      email: "",
+      mobile: "",
+    },
+    onSubmit: (values) => {
+      console.log({ values });
+      toast.success("نام کاربری با موفقیت ثبت گردید", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // dispatch(createUser(values));
+      setStatus(true);
+    },
+    validate,
+  });
   return (
     <Box
       display="flex"
@@ -31,7 +91,7 @@ const Signup = () => {
           overflow: "hidden",
           borderRadius: 2,
           width: 500,
-          minWidth:270
+          minWidth: 270,
         }}
       >
         <Box
@@ -42,7 +102,7 @@ const Signup = () => {
           gap={1}
           flexDirection="column"
         >
-          <AccountCircle  sx={{ color: "error.main" }} fontSize="large" />
+          <AccountCircle sx={{ color: "error.main" }} fontSize="large" />
           <Typography variant="h5" component="div" color="info.main">
             صفحه ثبت نام
           </Typography>
@@ -56,45 +116,101 @@ const Signup = () => {
           display="flex"
           flexDirection="column"
           gap={2}
-          // onSubmit={formik.handleSubmit}
+          onSubmit={formik.handleSubmit}
         >
           <TextField
-            id="outlined-basic"
+            error={formik.errors.username && formik.touched.username}
+            helperText={
+              formik.errors.username && formik.touched.username
+                ? formik.errors.username
+                : ""
+            }
+            name="username"
+            id="username"
+            autoComplete="username"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             label="نام کاربری"
             variant="outlined"
             sx={{ width: "100%" }}
           />
           <TextField
-            id="outlined-basic"
+            error={formik.errors.email && formik.touched.email}
+            helperText={
+              formik.errors.email && formik.touched.email
+                ? formik.errors.email
+                : ""
+            }
+            name="email"
+            id="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             label="ایمیل"
             variant="outlined"
             sx={{ width: "100%" }}
           />
           <TextField
-            id="outlined-basic"
+            error={formik.errors.password && formik.touched.password}
+            helperText={
+              formik.errors.password && formik.touched.password
+                ? formik.errors.password
+                : ""
+            }
+            autoComplete="current-password"
+            type="password"
+            name="password"
+            id="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             label="رمز عبور"
             variant="outlined"
             sx={{ width: "100%" }}
           />
           <TextField
-            id="outlined-basic"
+            error={
+              formik.errors.confrimPassword && formik.touched.confrimPassword
+            }
+            helperText={
+              formik.errors.confrimPassword && formik.touched.confrimPassword
+                ? formik.errors.confrimPassword
+                : ""
+            }
+            type="password"
+            name="confrimPassword"
+            id="confrimPassword"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             label="تکرار رمز عبور"
             variant="outlined"
             sx={{ width: "100%" }}
           />
           <TextField
-            id="outlined-basic"
+            error={formik.errors.mobile && formik.touched.mobile}
+            helperText={
+              formik.errors.mobile && formik.touched.mobile
+                ? formik.errors.mobile
+                : ""
+            }
+            name="mobile"
+            id="mobile"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             label="موبایل"
             variant="outlined"
             sx={{ width: "100%" }}
           />
+          <Box sx={{ textAlign: "center", paddingTop: 1 }}>
+            <Button
+              variant="contained"
+              startIcon={<PersonAddAlt1 />}
+              type="submit"
+            >
+              ثبت نام
+            </Button>
+            <ToastContainer rtl />
+          </Box>
         </Box>
-        <Box sx={{ textAlign: "center", padding: 2 }}>
-          <Button variant="contained" startIcon={<PersonAddAlt1 />}>
-            ثبت نام
-          </Button>
-        </Box>
-        <Box padding={2}>
+        <Box padding={1}>
           <NavLink
             style={{ color: "inherit", textDecoration: "inherit" }}
             to="/login"

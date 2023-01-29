@@ -4,6 +4,7 @@ const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
 const { PORT } = process.env;
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -29,5 +30,7 @@ app.get("/", function (req, res) {
 
 // Routes
 app.use("/user", require("./routes/userRoutes"));
+// Error Handler
+app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

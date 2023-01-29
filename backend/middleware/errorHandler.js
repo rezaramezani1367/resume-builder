@@ -1,7 +1,6 @@
 const ErrorResponse = require("../utils/errorResponse");
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
-console.log("first")
   error.message = err.message;
 
   if (err.name === "CastError") {
@@ -18,7 +17,7 @@ console.log("first")
   if (err.name === "ValidationError") {
     const message = Object.values(err.errors)
       .map((error) => error.message)
-      .join(", ");
+      .join("<br/>");
     error = new ErrorResponse(message, 400);
   }
 

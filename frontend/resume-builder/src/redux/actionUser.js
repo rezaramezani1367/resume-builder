@@ -38,7 +38,9 @@ export const createUser = (values) => async (dispatch, getState) => {
     });
   } catch (error) {
     console.log(error);
-    const errorMessage = error.response ? error.response.data : error.message;
+    const errorMessage = error.response
+      ? error.response.data.error
+      : error.message;
     dispatch({
       type: userError,
       payload: {
@@ -47,15 +49,18 @@ export const createUser = (values) => async (dispatch, getState) => {
         userError: errorMessage,
       },
     });
-    toast.error(errorMessage, {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.error(
+      <div style={{textAlign:'right' ,paddingRight:"10px"}} dangerouslySetInnerHTML={{ __html: errorMessage }}></div>,
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   }
 };

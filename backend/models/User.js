@@ -112,6 +112,18 @@ UserSchema.pre("save", async function (next) {
 const User = mongoose.model("User", UserSchema);
 // Apply the uniqueValidator plugin to UserSchema.
 UserSchema.plugin(uniqueValidator, {
-  message: "{TYPE} تکراری می باشد(باید منحصربفرد باشد)",
+  message: (e) => {
+    switch (e.path) {
+      case "username":
+        return "نام کاربری تکراری می باشد.";
+      case "mobile":
+        return "موبایل تکراری می باشد.";
+      case "email":
+        return "ایمیل تکراری می باشد.";
+      default:
+        break;
+    }
+
+  },
 });
 module.exports = User;

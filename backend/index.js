@@ -1,15 +1,22 @@
 const express = require("express");
 require("dotenv").config();
+const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
 const { PORT } = process.env;
-// connect to mongodb db
-connectDB();
 
 const app = express();
 
+// connect to mongodb db
+connectDB();
 // __basedir
 global.__basedir = __dirname;
+// cors
+app.use(cors());
+
+// access yo form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // input values
 app.use(express.urlencoded({ extended: true }));

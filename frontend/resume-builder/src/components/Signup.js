@@ -15,7 +15,9 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { 
+   ToastContainer } from "react-toastify";
+import { createUser } from "../redux/actionUser";
 
 const Signup = () => {
   const [status, setStatus] = useState(false);
@@ -24,6 +26,7 @@ const Signup = () => {
   } = useSelector((last) => last);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const validate = (values) => {
     let errors = {};
     if (values.username.length < 5) {
@@ -41,7 +44,7 @@ const Signup = () => {
     ) {
       errors.confrimPassword = "تکرار رمز عبور با رمز عبور مطابقت ندارد";
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
       errors.email = "فرمت ایمیل معتبر نیست";
     }
     if (!/^[0][9][0-9]{9}$/.test(values.mobile)) {
@@ -59,18 +62,8 @@ const Signup = () => {
       mobile: "",
     },
     onSubmit: (values) => {
-      console.log({ values });
-      toast.success("نام کاربری با موفقیت ثبت گردید", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      // dispatch(createUser(values));
+
+      dispatch(createUser(values));
       setStatus(true);
     },
     validate,
@@ -148,6 +141,7 @@ const Signup = () => {
             label="ایمیل"
             variant="outlined"
             sx={{ width: "100%" }}
+
           />
           <TextField
             error={formik.errors.password && formik.touched.password}

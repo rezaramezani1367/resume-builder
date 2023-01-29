@@ -61,11 +61,6 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    token: {
-      type: String,
-      required: true,
-    },
-
     createdAt: {
       type: Date,
       default: Date.now,
@@ -96,27 +91,13 @@ UserSchema.statics.checkValidCredentials = async (email, password) => {
   return user;
 };
 
-/*UserSchema.methods.newAuthToken = async function () {
-  const user = this;
-  const token = jwt.sign(
-    { _id: user.id.toString() },
-    process.env.ACCESS_TOKEN_SECRET
-  );
-  // user.tokens = user.tokens.concat({ token })
-  user.token = token;
-  await user.save();
-  return token;
-};*/
-
 UserSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
-  const myProfile = userObj.profile ?? {};
-  delete myProfile?._id;
-  delete userObj.profile;
+
   delete userObj.password;
 
-  return { ...userObj, ...myProfile };
+  return { ...userObj };
 };
 
 //hash the plain text password before saving
@@ -131,6 +112,6 @@ UserSchema.pre("save", async function (next) {
 const User = mongoose.model("User", UserSchema);
 // Apply the uniqueValidator plugin to UserSchema.
 UserSchema.plugin(uniqueValidator, {
-  message: "{PATH} already exists(must be unique)",
+  message: "{TYPE} تکراری می باشد(باید منحصربفرد باشد)",
 });
 module.exports = User;

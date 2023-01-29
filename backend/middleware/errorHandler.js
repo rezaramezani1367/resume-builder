@@ -1,7 +1,7 @@
 const ErrorResponse = require("../utils/errorResponse");
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
-
+console.log("first")
   error.message = err.message;
 
   if (err.name === "CastError") {

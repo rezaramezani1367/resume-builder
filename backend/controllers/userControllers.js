@@ -1,6 +1,5 @@
-const User = require("../models/user");
+const User = require("../models/User");
 const asyncHandler = require("../middleware/asyncHandler");
-const bcrypt = require("bcryptjs");
 
 exports.loginUser = asyncHandler(async (req, res, next) => {
   const user = await User.find();
@@ -8,11 +7,9 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     success: true,
     data: user,
   });
-  /*const user = await User.checkValidCredentials(
-      req.body.email,
-      req.body.password
-    );
-    const token = await user.newAuthToken();
-    user["token1"] = token;
-    res.send({ user });*/
+});
+exports.signupUser = asyncHandler(async (req, res, next) => {
+  const user = new User(req.body);
+  await user.save();
+  res.status(201).send({ user });
 });

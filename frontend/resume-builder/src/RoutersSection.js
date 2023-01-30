@@ -5,6 +5,7 @@ import Profile from "./components/Profile";
 import { Container } from "@mui/material";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const RoutersSection = () => {
   return (
@@ -18,6 +19,7 @@ const RoutersSection = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <ToastContainer rtl />
     </Container>
   );
 };

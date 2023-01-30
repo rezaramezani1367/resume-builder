@@ -30,7 +30,7 @@ const khedmat = [
   { id: 4, name: "در حال انجام" },
   { id: 5, name: "مشمول" },
 ];
-const PersonalInfoForm = ({ setProfileStatus }) => {
+const PersonalInfoForm = ({ setProfileStatus,userData }) => {
   const [province, setprovince] = useState({
     value: null,
     inputValue: "",
@@ -51,7 +51,7 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
             آدرس ایمیل:
           </Typography>
           <Typography variant="p" component="span" color={colors.grey[600]}>
-            reza30361@gmail.com
+          {userData.email}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6}>
@@ -67,6 +67,7 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
               },
             }}
             size="small"
+            value={userData.mobile}
           />
         </Grid>
         <Grid xs={12} sm={6}>

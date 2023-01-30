@@ -92,7 +92,7 @@ const ImageUploadForm = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            bgColor={colors.grey[500]}
+            bgcolor={colors.grey[500]}
             paddingTop={0.75}
           >
             <AvatarEditor

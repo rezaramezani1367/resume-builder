@@ -11,18 +11,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { 
-   ToastContainer } from "react-toastify";
 import { createUser } from "../redux/actionUser";
 
 const Signup = () => {
   const [status, setStatus] = useState(false);
   const {
-    user: { userLoading, userData, userError },
+    user: {
+      userLoading,
+      userData: { isSuccess, userData },
+      userError,
+    },
   } = useSelector((last) => last);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -62,12 +65,17 @@ const Signup = () => {
       mobile: "",
     },
     onSubmit: (values) => {
-
-      dispatch(createUser(values));
       setStatus(true);
+      dispatch(createUser(values));
     },
     validate,
   });
+  useEffect(() => {
+    if (isSuccess && status) {
+      navigate("/");
+    }
+  }, [isSuccess, status]);
+
   return (
     <Box
       display="flex"
@@ -141,7 +149,6 @@ const Signup = () => {
             label="ایمیل"
             variant="outlined"
             sx={{ width: "100%" }}
-
           />
           <TextField
             error={formik.errors.password && formik.touched.password}
@@ -194,14 +201,14 @@ const Signup = () => {
             sx={{ width: "100%" }}
           />
           <Box sx={{ textAlign: "center", paddingTop: 1 }}>
-            <Button
+            <LoadingButton
+              loading={userLoading}
               variant="contained"
               startIcon={<PersonAddAlt1 />}
               type="submit"
             >
               ثبت نام
-            </Button>
-            <ToastContainer rtl />
+            </LoadingButton>
           </Box>
         </Box>
         <Box padding={1}>

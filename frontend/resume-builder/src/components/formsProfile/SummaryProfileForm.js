@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const SummaryProfileForm = ({ setProfileStatus }) => {
+const SummaryProfileForm = ({ setProfileStatus ,userData}) => {
   return (
     <>
       <Box
@@ -33,6 +33,7 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
           label="نام و نام خانوادگی"
           variant="outlined"
           sx={{ width: { sm: "100%", md: "50%" } }}
+          value={userData.username}
         />
         <TextField
           size="small"

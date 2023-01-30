@@ -4,7 +4,9 @@ import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { NavLink } from "react-router-dom";
 
-const Summayprofile = ({ setProfileStatus }) => {
+
+const Summayprofile = ({ setProfileStatus ,userData}) => {
+
   return (
     <Grid
       xs={12}
@@ -28,7 +30,7 @@ const Summayprofile = ({ setProfileStatus }) => {
         position="absolute"
         top={10}
         right={10}
-        sx={{display:{xs:"block",md:"none"}}}
+        sx={{ display: { xs: "block", md: "none" } }}
         onClick={() =>
           setProfileStatus((last) => {
             return { ...last, summaryEditStatus: true };
@@ -46,7 +48,7 @@ const Summayprofile = ({ setProfileStatus }) => {
         fontWeight={700}
         marginBottom={1}
       >
-        رضا رمضانی
+        {userData?.username}
       </Typography>
       <Stack direction="row" gap={2}>
         <Typography

@@ -2,8 +2,10 @@ import { Box, Button, colors, Typography } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { ModeEdit } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
-const PersonInfoPrfile = ({ setProfileStatus }) => {
+const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
+
   return (
     <Box
       padding={1.5}
@@ -45,7 +47,7 @@ const PersonInfoPrfile = ({ setProfileStatus }) => {
             آدرس ایمیل:
           </Typography>
           <Typography variant="p" component="span" color={colors.grey[600]}>
-            reza30361@gmail.com
+           {userData?.email}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -58,7 +60,7 @@ const PersonInfoPrfile = ({ setProfileStatus }) => {
             شماره موبایل:
           </Typography>
           <Typography variant="p" component="span" color={colors.grey[600]}>
-            09396160089
+          {userData?.mobile}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>

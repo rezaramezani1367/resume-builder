@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PersonAddAlt, ModeEdit, Person, Person2 } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
 import PersonInfoPrfile from "./dataProfile/PersonInfoPrfile";
@@ -16,14 +16,31 @@ import PersonalInfoForm from "./formsProfile/PersonalInfoForm";
 import AboutMe from "./dataProfile/AboutMe";
 import AboutMeForm from "./formsProfile/AboutMeForm";
 import ImageUploadForm from "./formsProfile/ImageUploadForm";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getUserTest } from "../redux/actionUser";
 
 const Profile = () => {
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    user: {
+      userLoading,
+      userData: { isSuccess, userData },
+      userError,
+    },
+  } = useSelector((last) => last);
+  console.log({ userData });
   const [profileStatus, setProfileStatus] = useState({
     summaryEditStatus: false,
     personInfoEditStatus: false,
     aboutMeEditStatus: false,
   });
+
+  useEffect(() => {
+    dispatch(getUserTest());
+  }, []);
+
   return (
     <Box>
       {/* section 1 include image && Summary  info */}
@@ -47,9 +64,9 @@ const Profile = () => {
           <ImageUploadForm />
         </Grid>
         {profileStatus.summaryEditStatus ? (
-          <SummaryProfileForm setProfileStatus={setProfileStatus} />
+          <SummaryProfileForm setProfileStatus={setProfileStatus} userData={userData}/>
         ) : (
-          <Summayprofile setProfileStatus={setProfileStatus} />
+          <Summayprofile setProfileStatus={setProfileStatus} userData={userData}/>
         )}
       </Grid>
 
@@ -66,9 +83,9 @@ const Profile = () => {
         </Box>
         <Divider />
         {profileStatus.personInfoEditStatus ? (
-          <PersonalInfoForm setProfileStatus={setProfileStatus} />
+          <PersonalInfoForm setProfileStatus={setProfileStatus} userData={userData} />
         ) : (
-          <PersonInfoPrfile setProfileStatus={setProfileStatus} />
+          <PersonInfoPrfile setProfileStatus={setProfileStatus} userData={userData} />
         )}
       </Box>
       <Box border={1} borderColor="divider" marginTop={2}>

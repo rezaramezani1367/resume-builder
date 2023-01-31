@@ -40,18 +40,6 @@ const UserSchema = new mongoose.Schema(
         }
       },
     },
-    mobile: {
-      type: "String",
-      required: true,
-      unique: true,
-      validate(value) {
-        if (!/^[0][9][0-9]{9}$/.test(value)) {
-          throw new Error(
-            `The mobile field must be number(11character) and started by 09 example 09123456789`
-          );
-        }
-      },
-    },
     image: {
       type: String,
       require: true,

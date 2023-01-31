@@ -5,6 +5,7 @@ import {
   colors,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Radio,
   RadioGroup,
@@ -12,8 +13,37 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useFormik } from "formik";
 
-const SummaryProfileForm = ({ setProfileStatus ,userData}) => {
+const SummaryProfileForm = ({ setProfileStatus, userData }) => {
+  const validate = (values) => {
+    let errors = {};
+    if (values.fullname.length < 5) {
+      errors.fullname = "نام و نام خانوادگی حداقل باید شامل 5 کاراکتر باشد";
+    }
+    if (values.jobTitle.length < 2) {
+      errors.jobTitle = "عنوان شغلی حداقل باید شامل 2 کاراکتر باشد";
+    }
+    if (values.employmentStatus.length < 1) {
+      errors.employmentStatus = " وضعیت اشتغال نباید خالی باشد";
+    }
+
+    return errors;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      fullname: "",
+      jobTitle: "",
+      employmentStatus: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      // setStatus(true);
+      // dispatch(createUser(values));
+    },
+    validate,
+  });
   return (
     <>
       <Box
@@ -25,31 +55,53 @@ const SummaryProfileForm = ({ setProfileStatus ,userData}) => {
         flexDirection="column"
         flexGrow={1}
         gap={3}
-        // onSubmit={formik.handleSubmit}
+        onSubmit={formik.handleSubmit}
       >
         <TextField
           size="small"
-          id="outlined-basic"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.errors.fullname && formik.touched.fullname}
+          helperText={
+            formik.errors.fullname && formik.touched.fullname
+              ? formik.errors.fullname
+              : ""
+          }
+          name="fullname"
+          id="fullname"
           label="نام و نام خانوادگی"
           variant="outlined"
           sx={{ width: { sm: "100%", md: "50%" } }}
-          value={userData.username}
         />
         <TextField
           size="small"
-          id="outlined-basic"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.errors.jobTitle && formik.touched.jobTitle}
+          helperText={
+            formik.errors.jobTitle && formik.touched.jobTitle
+              ? formik.errors.jobTitle
+              : ""
+          }
+          name="jobTitle"
+          id="jobTitle"
           label="عنوان شغلی"
           variant="outlined"
           sx={{ width: { sm: "100%", md: "50%" }, fontSize: 12 }}
         />
         <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">
+          <FormLabel
+            id="demo-row-radio-buttons-group-label"
+            error={formik.errors.employmentStatus  && formik.touched.employmentStatus}
+          >
             وضعیت اشتغال
           </FormLabel>
           <RadioGroup
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
+            name="employmentStatus"
+            onChange={formik.handleChange}
+
           >
             <FormControlLabel
               value="جویای‌کار"
@@ -63,6 +115,11 @@ const SummaryProfileForm = ({ setProfileStatus ,userData}) => {
             />
             <FormControlLabel value="شاغل" control={<Radio />} label="شاغل" />
           </RadioGroup>
+          <FormHelperText error>
+            {formik.errors.employmentStatus
+              ? formik.errors.employmentStatus
+              : ""}
+          </FormHelperText>
         </FormControl>
         <Box>
           <Typography
@@ -104,7 +161,12 @@ const SummaryProfileForm = ({ setProfileStatus ,userData}) => {
           >
             انصراف
           </Button>
-          <Button variant="contained" color="success" startIcon={<Save />}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            startIcon={<Save />}
+          >
             ذخیره
           </Button>
         </Box>

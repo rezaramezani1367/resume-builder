@@ -1,4 +1,4 @@
-import { Grading, Add, Save, Close } from "@mui/icons-material";
+import { Add, Save, Close } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -14,8 +14,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useFormik } from "formik";
+import { storeSummaryProfile } from "../../redux/actionUser";
+import { useDispatch } from "react-redux";
 
 const SummaryProfileForm = ({ setProfileStatus, userData }) => {
+  const dispatch = useDispatch();
   const validate = (values) => {
     let errors = {};
     if (values.fullname.length < 5) {
@@ -24,7 +27,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
     if (values.jobTitle.length < 2) {
       errors.jobTitle = "عنوان شغلی حداقل باید شامل 2 کاراکتر باشد";
     }
-    if (values.employmentStatus.length < 1) {
+    if (!values.employmentStatus) {
       errors.employmentStatus = " وضعیت اشتغال نباید خالی باشد";
     }
 
@@ -39,8 +42,8 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
     },
     onSubmit: (values) => {
       console.log(values);
-      // setStatus(true);
-      // dispatch(createUser(values));
+
+      dispatch(storeSummaryProfile(values));
     },
     validate,
   });
@@ -92,7 +95,9 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
         <FormControl>
           <FormLabel
             id="demo-row-radio-buttons-group-label"
-            error={formik.errors.employmentStatus  && formik.touched.employmentStatus}
+            error={
+              formik.errors.employmentStatus && formik.touched.employmentStatus
+            }
           >
             وضعیت اشتغال
           </FormLabel>
@@ -101,7 +106,6 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="employmentStatus"
             onChange={formik.handleChange}
-
           >
             <FormControlLabel
               value="جویای‌کار"
@@ -116,7 +120,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
             <FormControlLabel value="شاغل" control={<Radio />} label="شاغل" />
           </RadioGroup>
           <FormHelperText error>
-            {formik.errors.employmentStatus
+            {formik.errors.employmentStatus && formik.touched.employmentStatus
               ? formik.errors.employmentStatus
               : ""}
           </FormHelperText>

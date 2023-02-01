@@ -61,6 +61,14 @@ const Profile = mongoose.model("Profile", profileSchema);
 
 // Apply the uniqueValidator plugin to profileSchema.
 profileSchema.plugin(uniqueValidator, {
-  message: "{PATH} already exists(must be unique)",
+  message: (e) => {
+    switch (e.path) {
+      case "mobile":
+        return "موبایل تکراری می باشد.";
+
+      default:
+        break;
+    }
+  },
 });
 module.exports = Profile;

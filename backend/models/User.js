@@ -104,14 +104,11 @@ UserSchema.plugin(uniqueValidator, {
     switch (e.path) {
       case "username":
         return "نام کاربری تکراری می باشد.";
-      case "mobile":
-        return "موبایل تکراری می باشد.";
       case "email":
         return "ایمیل تکراری می باشد.";
       default:
         break;
     }
-
   },
 });
 module.exports = User;

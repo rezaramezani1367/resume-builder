@@ -27,13 +27,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // test user
-// app.use(async (req, res, next) => {
-//   const currentUser = await User.findById("63d798348a797c8245125c71");
-//   if (Object.keys(currentUser)) {
-//     req.user = currentUser;
-//     next();
-//   }
-// });
+app.use(async (req, res, next) => {
+  const currentUser = await User.findById("63da587175c95de5dd8574e3");
+  if (Object.keys(currentUser)) {
+    req.user = currentUser;
+    next();
+  }
+});
 
 app.get("/", function (req, res) {
   res.send("server is running...");

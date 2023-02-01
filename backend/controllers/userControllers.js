@@ -13,34 +13,46 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   });
 });
 exports.signupUser = asyncHandler(async (req, res, next) => {
-  const session = await mongoose.startSession();
+  const session = await mongoose.startSession({
+    defaultTransactionOptions: {},
+  });
   try {
-    let user={}
+    let user = {};
     session.startTransaction();
     const profile = await Profile.create([req.body], { session }).then(
       async (prof) => {
-         user = await User.create([{ ...req.body, profile: prof._id }], {
+        user = await User.create([{ ...req.body, profile: prof[0]._id }], {
           session,
         });
       }
     );
-
-    
     res.status(201).send({
-      userData: user,
+      userData: await user[0].populate("profile"),
       isSuccess: true,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
     await session.abortTransaction();
-    return next(new ErrorResponse(error.message, 404));
+    if (err.name === "ValidationError") {
+      const message = Object.values(err.errors)
+        .map((error) => error.message)
+        .join("<br/>");
+      return next(new ErrorResponse(message, 404));
+    }
+    return next(new ErrorResponse("مشکل در ثبت اطلاعات", 404));
   }
   await session.commitTransaction();
   session.endSession;
 });
 exports.summaryProfile = asyncHandler(async (req, res, next) => {
   console.log(req.body);
-  const profile = new Profile(req.body);
-  await profile.save();
-  res.status(201).send({ profileData: profile, isSuccess: true });
+   await Profile.findByIdAndUpdate(req.user.profile, req.body);
+
+  res
+    .status(201)
+    .send({
+      userData: await User.findOne({ _id: req.user._id }).populate(
+        "profile"
+      ),
+      isSuccess: true,
+    });
 });

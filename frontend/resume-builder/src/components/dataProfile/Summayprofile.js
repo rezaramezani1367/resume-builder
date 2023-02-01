@@ -3,10 +3,9 @@ import { ModeEdit, Visibility, Grading } from "@mui/icons-material";
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { NavLink } from "react-router-dom";
+import EmptyValue from "../EmptyValue";
 
-
-const Summayprofile = ({ setProfileStatus ,userData}) => {
-
+const Summayprofile = ({ setProfileStatus, userData }) => {
   return (
     <Grid
       xs={12}
@@ -57,12 +56,23 @@ const Summayprofile = ({ setProfileStatus ,userData}) => {
           fontWeight={500}
           color={colors.grey[600]}
         >
-          {" "}
+         نام و نام خانوادگی:
+        </Typography>
+        <Typography variant="p" fontWeight={600} component="span">
+          {userData?.profile?.fullname??<EmptyValue />}
+        </Typography>
+      </Stack>
+      <Stack direction="row" gap={2}>
+        <Typography
+          variant="subtitle1"
+          component="span"
+          fontWeight={500}
+          color={colors.grey[600]}
+        >
           عنوان شغلی:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {" "}
-          IT{" "}
+          {userData?.profile?.jobTitle??<EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -76,8 +86,7 @@ const Summayprofile = ({ setProfileStatus ,userData}) => {
           وضعیت اشتغال:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {" "}
-          جویای‌کار{" "}
+        {userData?.profile?.employmentStatus??<EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>

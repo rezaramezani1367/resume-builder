@@ -36,12 +36,12 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
 
   const formik = useFormik({
     initialValues: {
-      fullname: "",
-      jobTitle: "",
-      employmentStatus: "",
+      fullname: userData?.profile?.fullname ?? "",
+      jobTitle: userData?.profile?.jobTitle ?? "",
+      employmentStatus: userData?.profile?.employmentStatus ?? "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      setProfileStatus(false);
 
       dispatch(storeSummaryProfile(values));
     },
@@ -72,6 +72,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
           }
           name="fullname"
           id="fullname"
+          value={formik.values.fullname}
           label="نام و نام خانوادگی"
           variant="outlined"
           sx={{ width: { sm: "100%", md: "50%" } }}
@@ -88,6 +89,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
           }
           name="jobTitle"
           id="jobTitle"
+          value={formik.values.jobTitle}
           label="عنوان شغلی"
           variant="outlined"
           sx={{ width: { sm: "100%", md: "50%" }, fontSize: 12 }}
@@ -105,6 +107,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="employmentStatus"
+            value={formik.values.employmentStatus}
             onChange={formik.handleChange}
           >
             <FormControlLabel

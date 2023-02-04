@@ -12,12 +12,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { storeSummaryProfile } from "../../redux/actionUser";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const SummaryProfileForm = ({ setProfileStatus, userData }) => {
+const SummaryProfileForm = ({ setProfileStatus }) => {
+  const [flag, setFlag] = useState(false);
+  const {
+    user: {
+      userLoading,
+      userData: { isSuccess, userData },
+    },
+  } = useSelector((last) => last);
+
   const dispatch = useDispatch();
   const validate = (values) => {
     let errors = {};
@@ -33,6 +41,12 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
 
     return errors;
   };
+  useEffect(() => {
+    if (flag && !userLoading && isSuccess) {
+      setProfileStatus(false);
+      setFlag(false);
+    }
+  }, [userLoading, isSuccess, flag]);
 
   const formik = useFormik({
     initialValues: {
@@ -41,8 +55,7 @@ const SummaryProfileForm = ({ setProfileStatus, userData }) => {
       employmentStatus: userData?.profile?.employmentStatus ?? "",
     },
     onSubmit: (values) => {
-      setProfileStatus(false);
-
+      setFlag(true);
       dispatch(storeSummaryProfile(values));
     },
     validate,

@@ -6,7 +6,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { PersonAddAlt, ModeEdit, Person, Person2 } from "@mui/icons-material";
+import { Person, Person2 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -19,6 +19,7 @@ import ImageUploadForm from "./formsProfile/ImageUploadForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUserTest } from "../redux/actionUser";
+import LoadingDialog from "./LoadingDialog";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Profile = () => {
   return (
     <Box>
       {/* section 1 include image && Summary  info */}
-
+      <LoadingDialog userLoading={userLoading} />
       <Grid container sx={{ border: 1, borderColor: "divider" }}>
         <Grid
           xs={12}
@@ -64,9 +65,15 @@ const Profile = () => {
           <ImageUploadForm />
         </Grid>
         {profileStatus.summaryEditStatus ? (
-          <SummaryProfileForm setProfileStatus={setProfileStatus} userData={userData}/>
+          <SummaryProfileForm
+            setProfileStatus={setProfileStatus}
+            userData={userData}
+          />
         ) : (
-          <Summayprofile setProfileStatus={setProfileStatus} userData={userData}/>
+          <Summayprofile
+            setProfileStatus={setProfileStatus}
+            userData={userData}
+          />
         )}
       </Grid>
 
@@ -83,9 +90,15 @@ const Profile = () => {
         </Box>
         <Divider />
         {profileStatus.personInfoEditStatus ? (
-          <PersonalInfoForm setProfileStatus={setProfileStatus} userData={userData} />
+          <PersonalInfoForm
+            setProfileStatus={setProfileStatus}
+            userData={userData}
+          />
         ) : (
-          <PersonInfoPrfile setProfileStatus={setProfileStatus} userData={userData} />
+          <PersonInfoPrfile
+            setProfileStatus={setProfileStatus}
+            userData={userData}
+          />
         )}
       </Box>
       <Box border={1} borderColor="divider" marginTop={2}>

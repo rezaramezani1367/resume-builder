@@ -122,7 +122,7 @@ export const storeSummaryProfile = (values) => async (dispatch, getState) => {
     type: userLoading,
     payload: {
       ...getState().user,
-      userData: { userData: {}, IsSuccess: false },
+      userData: { ...getState().user.userData, IsSuccess: false },
       userLoading: true,
     },
   });
@@ -133,7 +133,7 @@ export const storeSummaryProfile = (values) => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: { ...data, IsSuccessSignup: true },
+        userData: { ...data, IsSuccess: true },
         userError: "",
       },
     });

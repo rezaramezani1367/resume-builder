@@ -44,15 +44,10 @@ exports.signupUser = asyncHandler(async (req, res, next) => {
   session.endSession;
 });
 exports.summaryProfile = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
-   await Profile.findByIdAndUpdate(req.user.profile, req.body);
+  await Profile.findByIdAndUpdate(req.user.profile, req.body);
 
-  res
-    .status(201)
-    .send({
-      userData: await User.findOne({ _id: req.user._id }).populate(
-        "profile"
-      ),
-      isSuccess: true,
-    });
+  res.status(201).send({
+    userData: await User.findOne({ _id: req.user._id }).populate("profile"),
+    isSuccess: true,
+  });
 });

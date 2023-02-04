@@ -30,7 +30,7 @@ const khedmat = [
   { id: 4, name: "در حال انجام" },
   { id: 5, name: "مشمول" },
 ];
-const PersonalInfoForm = ({ setProfileStatus,userData }) => {
+const PersonalInfoForm = ({ setProfileStatus,userData}) => {
   const [province, setprovince] = useState({
     value: null,
     inputValue: "",

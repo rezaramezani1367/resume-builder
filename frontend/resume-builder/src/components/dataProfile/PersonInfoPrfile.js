@@ -3,9 +3,10 @@ import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { ModeEdit } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import EmptyValue from "../EmptyValue";
+import { format } from "date-fns-jalali";
 
-const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
-
+const PersonInfoPrfile = ({ setProfileStatus, userData }) => {
   return (
     <Box
       padding={1.5}
@@ -19,13 +20,12 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
         },
       }}
     >
-      
       <Box
         id="edit2"
         position="absolute"
         top={10}
         right={10}
-        sx={{display:{xs:"block",md:"none"}}}
+        sx={{ display: { xs: "block", md: "none" } }}
         onClick={() =>
           setProfileStatus((last) => {
             return { ...last, personInfoEditStatus: true };
@@ -46,8 +46,8 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
           >
             آدرس ایمیل:
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-           {userData?.email}
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.email}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -59,8 +59,8 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
           >
             شماره موبایل:
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-          {userData?.mobile}
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.mobile ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -72,8 +72,8 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
           >
             استان محل سکونت:
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            تهران
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.province.name ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -83,23 +83,10 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
             color={colors.grey[800]}
             fontWeight={600}
           >
-            آدرس محل سکونت (اختیاری):
+            شهر محل سکونت:
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            ورامین
-          </Typography>
-        </Grid>
-        <Grid xs={12} sm={6} lg={4}>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            color={colors.grey[800]}
-            fontWeight={600}
-          >
-            وضعیت تاهل
-          </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            مجرد
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.city.name ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -109,23 +96,10 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
             color={colors.grey[800]}
             fontWeight={600}
           >
-            سال تولد
+            آدرس محل سکونت :
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            1367
-          </Typography>
-        </Grid>
-        <Grid xs={12} sm={6} lg={4}>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            color={colors.grey[800]}
-            fontWeight={600}
-          >
-            جنسیت
-          </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            مرد
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.address ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -135,10 +109,53 @@ const PersonInfoPrfile = ({ setProfileStatus,userData }) => {
             color={colors.grey[800]}
             fontWeight={600}
           >
-            وضعیت خدمت سربازی
+            وضعیت تاهل:
           </Typography>
-          <Typography variant="p" component="span" color={colors.grey[600]}>
-            انجام شده
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.maritalStatus ?? <EmptyValue />}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6} lg={4}>
+          <Typography
+            variant="subtitle1"
+            component="div"
+            color={colors.grey[800]}
+            fontWeight={600}
+          >
+            سال تولد:
+          </Typography>
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.birthday ? (
+              format(new Date(userData?.profile?.birthday), "yyyy/MM/dd")
+            ) : (
+              <EmptyValue />
+            )}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6} lg={4}>
+          <Typography
+            variant="subtitle1"
+            component="div"
+            color={colors.grey[800]}
+            fontWeight={600}
+          >
+            جنسیت:
+          </Typography>
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.gender ?? <EmptyValue />}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6} lg={4}>
+          <Typography
+            variant="subtitle1"
+            component="div"
+            color={colors.grey[800]}
+            fontWeight={600}
+          >
+            وضعیت خدمت سربازی:
+          </Typography>
+          <Typography variant="p" component="div" color={colors.grey[600]}>
+            {userData?.profile?.militarySituation.name ?? <EmptyValue />}
           </Typography>
         </Grid>
       </Grid>

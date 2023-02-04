@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { storeSummaryProfile } from "../../redux/actionUser";
+import { updateProfile } from "../../redux/actionUser";
 import { useDispatch, useSelector } from "react-redux";
 
 const SummaryProfileForm = ({ setProfileStatus }) => {
@@ -43,7 +43,9 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
   };
   useEffect(() => {
     if (flag && !userLoading && isSuccess) {
-      setProfileStatus(false);
+      setProfileStatus((last) => {
+        return { ...last, summaryEditStatus: false };
+      });
       setFlag(false);
     }
   }, [userLoading, isSuccess, flag]);
@@ -56,7 +58,7 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
     },
     onSubmit: (values) => {
       setFlag(true);
-      dispatch(storeSummaryProfile(values));
+      dispatch(updateProfile(values));
     },
     validate,
   });

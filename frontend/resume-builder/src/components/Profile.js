@@ -65,10 +65,7 @@ const Profile = () => {
           <ImageUploadForm />
         </Grid>
         {profileStatus.summaryEditStatus ? (
-          <SummaryProfileForm
-            setProfileStatus={setProfileStatus}
-            userData={userData}
-          />
+          <SummaryProfileForm setProfileStatus={setProfileStatus} />
         ) : (
           <Summayprofile
             setProfileStatus={setProfileStatus}
@@ -115,7 +112,7 @@ const Profile = () => {
         {profileStatus.aboutMeEditStatus ? (
           <AboutMeForm setProfileStatus={setProfileStatus} />
         ) : (
-          <AboutMe setProfileStatus={setProfileStatus} />
+          <AboutMe setProfileStatus={setProfileStatus} userData={userData} />
         )}
       </Box>
     </Box>

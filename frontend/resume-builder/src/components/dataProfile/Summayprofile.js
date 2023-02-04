@@ -56,10 +56,10 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           fontWeight={500}
           color={colors.grey[600]}
         >
-         نام و نام خانوادگی:
+          نام و نام خانوادگی:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {userData?.profile?.fullname??<EmptyValue />}
+          {userData?.profile?.fullname ?? <EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -72,7 +72,7 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           عنوان شغلی:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {userData?.profile?.jobTitle??<EmptyValue />}
+          {userData?.profile?.jobTitle ?? <EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -86,7 +86,7 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           وضعیت اشتغال:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-        {userData?.profile?.employmentStatus??<EmptyValue />}
+          {userData?.profile?.employmentStatus ?? <EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -100,8 +100,7 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           آخرین شرکت:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {" "}
-          سناتور{" "}
+          {userData?.profile?.company ?? <EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -115,8 +114,7 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           آخرین مدرک تحصیلی:
         </Typography>
         <Typography variant="p" fontWeight={600} component="span">
-          {" "}
-          لیسانس علوم کامپیوتر{" "}
+          {userData?.profile?.madrak ?? <EmptyValue />}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>

@@ -6,11 +6,11 @@ import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { faIR} from '@mui/material/locale';
+
 
 const theme = createTheme({
   direction: "rtl", // Both here and <body dir="rtl">
-  faIR
+
 });
 // Create rtl cache
 const cacheRtl = createCache({

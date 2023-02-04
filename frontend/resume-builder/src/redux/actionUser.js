@@ -65,7 +65,6 @@ export const createUser = (values) => async (dispatch, getState) => {
   }
 };
 export const getUserTest = () => async (dispatch, getState) => {
-  console.log("first");
   dispatch({
     type: userLoading,
     payload: {
@@ -116,8 +115,8 @@ export const getUserTest = () => async (dispatch, getState) => {
     );
   }
 };
-export const storeSummaryProfile = (values) => async (dispatch, getState) => {
-  console.log("first");
+export const updateProfile = (values) => async (dispatch, getState) => {
+
   dispatch({
     type: userLoading,
     payload: {
@@ -127,7 +126,7 @@ export const storeSummaryProfile = (values) => async (dispatch, getState) => {
     },
   });
   try {
-    const { data } = await client.post("/user/summaryprofile", values);
+    const { data } = await client.post("/user/updateProfile", values);
 
     dispatch({
       type: userSuccess,
@@ -137,7 +136,7 @@ export const storeSummaryProfile = (values) => async (dispatch, getState) => {
         userError: "",
       },
     });
-    toast.success(`اطلاعات کلی پروفایل با موفقیت ثبت گردید`, {
+    toast.success(`اطلاعات  پروفایل با موفقیت ثبت گردید`, {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -178,3 +177,4 @@ export const storeSummaryProfile = (values) => async (dispatch, getState) => {
     );
   }
 };
+

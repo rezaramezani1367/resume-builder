@@ -43,8 +43,10 @@ exports.signupUser = asyncHandler(async (req, res, next) => {
   await session.commitTransaction();
   session.endSession;
 });
-exports.summaryProfile = asyncHandler(async (req, res, next) => {
-  await Profile.findByIdAndUpdate(req.user.profile, req.body);
+exports.updateProfile = asyncHandler(async (req, res, next) => {
+  await Profile.findByIdAndUpdate(req.user.profile, req.body, {
+    runValidators: true,
+  });
 
   res.status(201).send({
     userData: await User.findOne({ _id: req.user._id }).populate("profile"),

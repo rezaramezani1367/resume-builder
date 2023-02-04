@@ -28,10 +28,10 @@ const profileSchema = new mongoose.Schema(
       },
     },
     province: {
-      type: String,
+      type: Object,
     },
     city: {
-      type: String,
+      type: Object,
     },
     address: {
       type: String,
@@ -41,14 +41,15 @@ const profileSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["متاهل", "مجرد"],
+      enum: ["مرد", "زن"],
     },
 
     maritalStatus: {
       type: String,
+      enum: ["متاهل", "مجرد"],
     },
     militarySituation: {
-      type: String,
+      type: Object,
     },
     aboutMe: {
       type: String,

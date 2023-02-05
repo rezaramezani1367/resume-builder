@@ -8,7 +8,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   // const user = await User.find();
 
   return res.json({
-    IsSuccess: true,
+    isSuccess: true,
     userData: req.user,
   });
 });

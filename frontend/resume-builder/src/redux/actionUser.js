@@ -6,7 +6,7 @@ export const createUser = (values) => async (dispatch, getState) => {
     type: userLoading,
     payload: {
       ...getState().user,
-      userData: { userData: {}, IsSuccess: false },
+      userData: { userData: {}, isSuccess: false },
       userLoading: true,
     },
   });
@@ -19,7 +19,7 @@ export const createUser = (values) => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: { ...data, IsSuccessSignup: true },
+        userData: { ...data, isSuccessSignup: true },
         userError: "",
       },
     });
@@ -69,7 +69,7 @@ export const getUserTest = () => async (dispatch, getState) => {
     type: userLoading,
     payload: {
       ...getState().user,
-      userData: { userData: {}, IsSuccess: false },
+      userData: { userData: {}, isSuccess: false },
       userLoading: true,
     },
   });
@@ -80,7 +80,7 @@ export const getUserTest = () => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: { ...data, IsSuccessSignup: true },
+        userData: { ...data, isSuccessSignup: true },
         userError: "",
       },
     });
@@ -116,13 +116,12 @@ export const getUserTest = () => async (dispatch, getState) => {
   }
 };
 export const updateProfile = (values) => async (dispatch, getState) => {
-
   dispatch({
     type: userLoading,
     payload: {
-      ...getState().user,
-      userData: { ...getState().user.userData, IsSuccess: false },
+      userData: { ...getState().user.userData, isSuccess: false },
       userLoading: true,
+      userError: "",
     },
   });
   try {
@@ -132,7 +131,7 @@ export const updateProfile = (values) => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: { ...data, IsSuccess: true },
+        userData: { ...data, isSuccess: true },
         userError: "",
       },
     });
@@ -154,7 +153,7 @@ export const updateProfile = (values) => async (dispatch, getState) => {
     dispatch({
       type: userError,
       payload: {
-        ...getState().user,
+        userData: { ...getState().user.userData, isSuccess: false },
         userLoading: false,
         userError: errorMessage,
       },
@@ -177,4 +176,3 @@ export const updateProfile = (values) => async (dispatch, getState) => {
     );
   }
 };
-

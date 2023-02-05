@@ -73,7 +73,7 @@ const PersonInfoPrfile = ({ setProfileStatus, userData }) => {
             استان محل سکونت:
           </Typography>
           <Typography variant="p" component="div" color={colors.grey[600]}>
-            {userData?.profile?.province.name ?? <EmptyValue />}
+            {userData?.profile?.province?.name ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -86,7 +86,7 @@ const PersonInfoPrfile = ({ setProfileStatus, userData }) => {
             شهر محل سکونت:
           </Typography>
           <Typography variant="p" component="div" color={colors.grey[600]}>
-            {userData?.profile?.city.name ?? <EmptyValue />}
+            {userData?.profile?.city?.name ?? <EmptyValue />}
           </Typography>
         </Grid>
         <Grid xs={12} sm={6} lg={4}>
@@ -145,19 +145,21 @@ const PersonInfoPrfile = ({ setProfileStatus, userData }) => {
             {userData?.profile?.gender ?? <EmptyValue />}
           </Typography>
         </Grid>
-        <Grid xs={12} sm={6} lg={4}>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            color={colors.grey[800]}
-            fontWeight={600}
-          >
-            وضعیت خدمت سربازی:
-          </Typography>
-          <Typography variant="p" component="div" color={colors.grey[600]}>
-            {userData?.profile?.militarySituation.name ?? <EmptyValue />}
-          </Typography>
-        </Grid>
+        {userData?.profile?.gender === "مرد" && (
+          <Grid xs={12} sm={6} lg={4}>
+            <Typography
+              variant="subtitle1"
+              component="div"
+              color={colors.grey[800]}
+              fontWeight={600}
+            >
+              وضعیت خدمت سربازی:
+            </Typography>
+            <Typography variant="p" component="div" color={colors.grey[600]}>
+              {userData?.profile?.militarySituation?.name ?? <EmptyValue />}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

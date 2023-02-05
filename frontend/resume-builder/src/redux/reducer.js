@@ -1,8 +1,11 @@
-import {userLoading, userSuccess, userError} from "./constants";
-
+import { userLoading, userSuccess, userError } from "./constants";
 
 export const user = (
-  state = { userLoading: false, userData: {}, userError: "" },
+  state = {
+    userLoading: false,
+    userData: { userData: {}, isSuccess: false },
+    userError: "",
+  },
   { type, payload }
 ) => {
   switch (type) {

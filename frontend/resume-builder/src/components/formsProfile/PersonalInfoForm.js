@@ -68,9 +68,9 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
     if (!values.maritalStatus) {
       errors.maritalStatus = "وضعیت تاهل نباید خالی باشد.";
     }
-    // if (!values.militarySituation) {
-    //   errors.militarySituation = "وضعیت خدمت نباید خالی باشد.";
-    // }
+    if (!values.militarySituation && values.gender == "مرد") {
+      errors.militarySituation = "وضعیت خدمت نباید خالی باشد.";
+    }
 
     return errors;
   };
@@ -95,14 +95,19 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
       maritalStatus: userData?.profile?.maritalStatus ?? "",
       militarySituation: userData?.profile?.militarySituation ?? null,
       inputAutocomplete: {
-        ostanInput: userData?.profile?.province.name ?? "",
-        cityInput: userData?.profile?.city.name ?? "",
-        militarySituationInput: userData?.profile?.militarySituation?.name ?? "",
+        ostanInput: userData?.profile?.province?.name ?? "",
+        cityInput: userData?.profile?.city?.name ?? "",
+        militarySituationInput:
+          userData?.profile?.militarySituation?.name ?? "",
       },
     },
     onSubmit: (values) => {
+      const variables = { ...values };
+      if (variables.gender == "زن") {
+        variables.militarySituation = null;
+      }
       setFlag(true);
-      dispatch(updateProfile(values));
+      dispatch(updateProfile(variables));
     },
     validate,
   });
@@ -113,7 +118,9 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
     }
   }, [flagOstan, formik.values.province]);
 
-  console.log(formik.values);
+  // console.log(formik.values);
+  console.log({isSuccess,userLoading,flag});
+
   return (
     <Box
       padding={2}
@@ -426,53 +433,57 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
           </FormControl>
         </Grid>
 
-        <Grid xs={12} sm={6}>
-          <Autocomplete
-            disablePortal
-            value={formik.values.militarySituation}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            inputValue={formik.values.inputAutocomplete.militarySituationInput}
-            id="combo-box-demo"
-            options={khedmat}
-            getOptionLabel={(option) => {
-              return option.name;
-            }}
-            onChange={(event, value) => {
-              formik.setFieldValue("militarySituation", value);
-            }}
-            onInputChange={(event, newInputValue) => {
-              formik.setFieldValue(
-                "inputAutocomplete.militarySituationInput",
-                newInputValue
-              );
-            }}
-            fullWidth
-            renderInput={(params) => (
-              <TextField
-                error={
-                  formik.errors.militarySituation &&
-                  formik.touched.militarySituation
-                }
-                helperText={
-                  formik.errors.militarySituation &&
-                  formik.touched.militarySituation
-                    ? formik.errors.militarySituation
-                    : ""
-                }
-                required
-                {...params}
-                label="وضعیت خدمت سربازی"
-                InputLabelProps={{ shrink: true }}
-                sx={{
-                  "& input": {
-                    paddingY: "7px!important",
-                  },
-                }}
-                size="small"
-              />
-            )}
-          />
-        </Grid>
+        {formik.values.gender === "مرد" && (
+          <Grid xs={12} sm={6}>
+            <Autocomplete
+              disablePortal
+              value={formik.values.militarySituation}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              inputValue={
+                formik.values.inputAutocomplete.militarySituationInput
+              }
+              id="combo-box-demo"
+              options={khedmat}
+              getOptionLabel={(option) => {
+                return option.name;
+              }}
+              onChange={(event, value) => {
+                formik.setFieldValue("militarySituation", value);
+              }}
+              onInputChange={(event, newInputValue) => {
+                formik.setFieldValue(
+                  "inputAutocomplete.militarySituationInput",
+                  newInputValue
+                );
+              }}
+              fullWidth
+              renderInput={(params) => (
+                <TextField
+                  error={
+                    formik.errors.militarySituation &&
+                    formik.touched.militarySituation
+                  }
+                  helperText={
+                    formik.errors.militarySituation &&
+                    formik.touched.militarySituation
+                      ? formik.errors.militarySituation
+                      : ""
+                  }
+                  required
+                  {...params}
+                  label="وضعیت خدمت سربازی"
+                  InputLabelProps={{ shrink: true }}
+                  sx={{
+                    "& input": {
+                      paddingY: "7px!important",
+                    },
+                  }}
+                  size="small"
+                />
+              )}
+            />
+          </Grid>
+        )}
       </Grid>
       <Box
         sx={{ display: "flex", justifyContent: "end", gap: 2, marginTop: 2 }}

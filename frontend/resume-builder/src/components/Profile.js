@@ -62,7 +62,7 @@ const Profile = () => {
             gap: 2,
           }}
         >
-          <ImageUploadForm />
+          <ImageUploadForm userData={userData}/>
         </Grid>
         {profileStatus.summaryEditStatus ? (
           <SummaryProfileForm setProfileStatus={setProfileStatus} />

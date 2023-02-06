@@ -119,7 +119,7 @@ const PersonalInfoForm = ({ setProfileStatus }) => {
   }, [flagOstan, formik.values.province]);
 
   // console.log(formik.values);
-  console.log({isSuccess,userLoading,flag});
+  // console.log({isSuccess,userLoading,flag});
 
   return (
     <Box

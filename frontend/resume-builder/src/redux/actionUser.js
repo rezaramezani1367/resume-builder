@@ -176,3 +176,70 @@ export const updateProfile = (values) => async (dispatch, getState) => {
     );
   }
 };
+export const UploadProfileImage = (values) => async (dispatch, getState) => {
+  dispatch({
+    type: userLoading,
+    payload: {
+      userData: { ...getState().user.userData, isSuccess: false },
+      userLoading: true,
+      userError: "",
+    },
+  });
+  try {
+    const base64Response = await fetch(`${values.newImage}`);
+    const blob = await base64Response.blob();
+    const formData = new FormData();
+  
+    formData.append("image", blob, `${values.username}.jpg`);
+
+    const { data } = await client.put("/user/updateUserImage", formData);
+
+    dispatch({
+      type: userSuccess,
+      payload: {
+        userLoading: false,
+        userData: { ...data },
+        userError: "",
+      },
+    });
+    toast.success(`اطلاعات  پروفایل با موفقیت ثبت گردید`, {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  } catch (error) {
+    console.log(error);
+    const errorMessage = error.response
+      ? error.response.data.error
+      : error.message;
+    dispatch({
+      type: userError,
+      payload: {
+        userData: { ...getState().user.userData, isSuccess: false },
+        userLoading: false,
+        userError: errorMessage,
+      },
+    });
+    toast.error(
+      <div
+        style={{ textAlign: "right", paddingRight: "10px" }}
+        dangerouslySetInnerHTML={{ __html: errorMessage }}
+      ></div>,
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
+  }
+};

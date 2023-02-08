@@ -3,7 +3,7 @@ const {
   loginUser,
   signupUser,
   updateProfile,
-  updateUserImage,
+  updateUserImage
 } = require("../controllers/userControllers");
 const uploadImage = require("../utils/upload");
 const router = express.Router();
@@ -25,5 +25,6 @@ router.route("/updateUserImage").put(
   },
   updateUserImage
 );
+
 
 module.exports = router;

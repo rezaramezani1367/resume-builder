@@ -6,7 +6,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { Person, Person2 } from "@mui/icons-material";
+import { HowToReg, Person, Person2 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUserTest } from "../redux/actionUser";
 import LoadingDialog from "./LoadingDialog";
+import SkillsProForm from "./formsProfile/SkillsProForm";
+import SkillsPro from "./dataProfile/SkillsPro";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ const Profile = () => {
     summaryEditStatus: false,
     personInfoEditStatus: false,
     aboutMeEditStatus: false,
+    skillProEditStatus: false,
   });
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const Profile = () => {
             gap: 2,
           }}
         >
-          <ImageUploadForm userData={userData}/>
+          <ImageUploadForm userData={userData} />
         </Grid>
         {profileStatus.summaryEditStatus ? (
           <SummaryProfileForm setProfileStatus={setProfileStatus} />
@@ -113,6 +116,23 @@ const Profile = () => {
           <AboutMeForm setProfileStatus={setProfileStatus} />
         ) : (
           <AboutMe setProfileStatus={setProfileStatus} userData={userData} />
+        )}
+      </Box>
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          sx={{ display: "flex", gap: 1 }}
+          padding={1.5}
+        >
+          <HowToReg />
+          <Typography variant="h6"> مهارت های حرفه ای </Typography>
+        </Box>
+        <Divider />
+        {profileStatus.skillProEditStatus ? (
+          <SkillsProForm setProfileStatus={setProfileStatus} />
+        ) : (
+          <SkillsPro setProfileStatus={setProfileStatus} userData={userData} />
         )}
       </Box>
     </Box>

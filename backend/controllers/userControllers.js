@@ -51,7 +51,7 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
   });
 
   res.status(201).send({
-    userData: await User.findOne({ _id: req.user._id }).populate("profile"),
+    userData: await User.findOne({ _id: req.user._id }),
     isSuccess: true,
   });
 });
@@ -72,7 +72,21 @@ exports.updateUserImage = asyncHandler(async (req, res, next) => {
   });
 
   res.status(201).send({
-    userData: await User.findOne({ _id: req.user._id }).populate("profile"),
+    userData: await User.findOne({ _id: req.user._id }),
+    isSuccess: true,
+  });
+});
+exports.skillUser = asyncHandler(async (req, res, next) => {
+  await User.findoneAndUpdate(
+    req.user._id,
+    { profile: req.body },
+    {
+      runValidators: true,
+    }
+  );
+
+  res.status(201).send({
+    userData: await User.findOne({ _id: req.user._id }),
     isSuccess: true,
   });
 });

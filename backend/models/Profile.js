@@ -54,8 +54,13 @@ const profileSchema = new mongoose.Schema(
     aboutMe: {
       type: String,
     },
+    skills: [
+      {
+        type: String,
+      },
+    ],
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 const Profile = mongoose.model("Profile", profileSchema);

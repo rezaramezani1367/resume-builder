@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-
 var uniqueValidator = require("mongoose-unique-validator");
 
 const UserSchema = new mongoose.Schema(
@@ -49,24 +48,20 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+
     profile: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Profile",
     },
   },
 
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 UserSchema.statics.checkValidCredentials = async (email, password) => {
   const user = await User.findOne()
     .or([{ email }, { username: email }])
-    .populate("profile");
-
+ 
   if (!user) {
     throw new Error("email or password worng");
   }
@@ -96,7 +91,11 @@ UserSchema.pre("save", async function (next) {
   }
   next();
 });
-
+// relationship populate pre hook
+UserSchema.pre(/^find/, function (next) {
+  this.populate("profile");
+  next();
+});
 const User = mongoose.model("User", UserSchema);
 // Apply the uniqueValidator plugin to UserSchema.
 UserSchema.plugin(uniqueValidator, {

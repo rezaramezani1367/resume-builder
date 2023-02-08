@@ -27,9 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // test user
 app.use(async (req, res, next) => {
-  const currentUser = await User.findById("63da587175c95de5dd8574e3").populate(
-    "profile"
-  );
+  const currentUser = await User.findById("63e25a6ec455643183f09392");
   if (Object.keys(currentUser)) {
     req.user = currentUser;
     next();

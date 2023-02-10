@@ -48,8 +48,8 @@ const SkillsProForm = ({ setProfileStatus }) => {
     },
     onSubmit: (values) => {
       setFlag(true);
-      console.log(values);
-      dispatch(updateProfile(values));
+      const variables = { ...values, skills: [...new Set(values.skills)] };
+      dispatch(updateProfile(variables));
     },
     validate,
   });
@@ -86,7 +86,7 @@ const SkillsProForm = ({ setProfileStatus }) => {
         >
           {formik.values?.skills?.map((data, index) => {
             return (
-              <ListItem key={data}>
+              <ListItem key={`${data}-${index}`}>
                 <Chip
                   label={data}
                   variant="outlined"

@@ -57,6 +57,7 @@ const profileSchema = new mongoose.Schema(
     skills: [
       {
         type: String,
+        minLength:[2,"مهارت های مورد نظر شامل حداقل 2 کاراکتر باشد"]
       },
     ],
   },

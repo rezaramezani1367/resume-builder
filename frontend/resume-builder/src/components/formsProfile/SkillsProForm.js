@@ -3,11 +3,13 @@ import {
   Box,
   Button,
   Chip,
+  colors,
   Divider,
   IconButton,
   InputBase,
   styled,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
@@ -90,55 +92,62 @@ const SkillsProForm = ({ setProfileStatus }) => {
       onSubmit={formik.handleSubmit}
     >
       {formik.values?.skills ? (
-        <Reorder
-          reorderId="my-list"
-          reorderGroup="reorder-group"
-          // getRef={this.storeRef.bind(this)} // Function that is passed a reference to the root node when mounted (optional)
-          component="ul"
-          placeholderClassName="placeholder"
-          draggedClassName="dragged"
-          // lock="horizontal"
-          holdTime={50}
-          touchHoldTime={50}
-          mouseHoldTime={50}
-          onReorder={(event, previousIndex, nextIndex, fromId, toId) => {
-            formik.setFieldValue(
-              "skills",
-              reorder(formik.values.skills, previousIndex, nextIndex)
-            );
-          }}
-          autoScroll={true}
-          disabled={false}
-          disableContextMenus={true}
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 7,
-            padding: 0,
-          }}
-        >
-          {formik.values.skills.map((data, index) => {
-            console.log(data);
-            return (
-              <Chip
-                sx={{ cursor: "move" }}
-                key={`${data}-${index}`}
-                label={data}
-                variant={data?.chosen ? "outlined" : "filled"}
-                color="primary"
-                onDelete={() => {
-                  formik.setFieldValue(
-                    "skills",
-                    formik.values.skills.filter((item, ind) => ind != index)
-                  );
-                }}
-              />
-            );
-          })}
-        </Reorder>
+        <Box>
+          <Reorder
+            reorderId="my-list"
+            reorderGroup="reorder-group"
+            component="ul"
+            placeholderClassName="placeholder"
+            draggedClassName="dragged"
+            // lock="horizontal"
+            // holdTime={50}
+            // touchHoldTime={50}
+            // mouseHoldTime={50}
+            onReorder={(event, previousIndex, nextIndex, fromId, toId) => {
+              formik.setFieldValue(
+                "skills",
+                reorder(formik.values.skills, previousIndex, nextIndex)
+              );
+            }}
+            autoScroll={true}
+            disabled={false}
+            disableContextMenus={true}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 7,
+              padding: 0,
+            }}
+          >
+            {formik.values.skills.map((data, index) => {
+              console.log(data);
+              return (
+                <Chip
+                  sx={{ cursor: "move" }}
+                  key={`${data}-${index}`}
+                  label={data}
+                  variant={data?.chosen ? "outlined" : "filled"}
+                  color="primary"
+                  onDelete={() => {
+                    formik.setFieldValue(
+                      "skills",
+                      formik.values.skills.filter((item, ind) => ind != index)
+                    );
+                  }}
+                />
+              );
+            })}
+          </Reorder>
+          <Box>
+            <Typography variant="body2" color={colors.grey[500]}>
+              برای تغییر ترتیب آیتم‌ها را کشیده و جابجا کنید.
+            </Typography>
+          </Box>
+        </Box>
       ) : (
         <EmptyValue />
       )}
+
       <Box
         sx={{
           p: "2px 4px",

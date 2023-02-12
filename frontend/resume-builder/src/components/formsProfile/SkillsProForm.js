@@ -9,16 +9,23 @@ import {
   styled,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { updateProfile } from "../../redux/actionUser";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyValue from "../EmptyValue";
+import Reorder, {
+  reorder,
+  reorderImmutable,
+  reorderFromTo,
+  reorderFromToImmutable,
+} from "react-reorder";
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 const SkillsProForm = ({ setProfileStatus }) => {
+  const inputSkill = useRef(null);
   const [flag, setFlag] = useState(false);
   const [skillValue, setSkillValue] = useState("");
   const {
@@ -59,7 +66,17 @@ const SkillsProForm = ({ setProfileStatus }) => {
       formik.setFieldValue("skills", [...formik.values.skills, skillValue]);
     setSkillValue("");
   };
+  useEffect(() => {
+    inputSkill.current.focus();
+  }, [formik.values.skills]);
+
   console.log(formik.values.skills);
+  // Drag and Drop Handler
+  const onDragDropEnds = (oldIndex, newIndex) => {
+    console.log("Drag and drop other tasks");
+    console.log(oldIndex, newIndex);
+  };
+
   return (
     <Box
       component="form"
@@ -73,35 +90,52 @@ const SkillsProForm = ({ setProfileStatus }) => {
       onSubmit={formik.handleSubmit}
     >
       {formik.values?.skills ? (
-        <Box
+        <Reorder
+          reorderId="my-list"
+          reorderGroup="reorder-group"
+          // getRef={this.storeRef.bind(this)} // Function that is passed a reference to the root node when mounted (optional)
           component="ul"
-          sx={{
+          placeholderClassName="placeholder"
+          draggedClassName="dragged"
+          // lock="horizontal"
+          holdTime={50}
+          touchHoldTime={50}
+          mouseHoldTime={50}
+          onReorder={(event, previousIndex, nextIndex, fromId, toId) => {
+            formik.setFieldValue(
+              "skills",
+              reorder(formik.values.skills, previousIndex, nextIndex)
+            );
+          }}
+          autoScroll={true}
+          disabled={false}
+          disableContextMenus={true}
+          style={{
             display: "flex",
-            // justifyContent: "center",
             flexWrap: "wrap",
-            listStyle: "none",
-            p: 0.5,
-            m: 0,
+            gap: 7,
+            padding: 0,
           }}
         >
-          {formik.values?.skills?.map((data, index) => {
+          {formik.values.skills.map((data, index) => {
+            console.log(data);
             return (
-              <ListItem key={`${data}-${index}`}>
-                <Chip
-                  label={data}
-                  variant="outlined"
-                  color="primary"
-                  onDelete={() => {
-                    formik.setFieldValue(
-                      "skills",
-                      formik.values.skills.filter((item, ind) => ind != index)
-                    );
-                  }}
-                />
-              </ListItem>
+              <Chip
+                sx={{ cursor: "move" }}
+                key={`${data}-${index}`}
+                label={data}
+                variant={data?.chosen ? "outlined" : "filled"}
+                color="primary"
+                onDelete={() => {
+                  formik.setFieldValue(
+                    "skills",
+                    formik.values.skills.filter((item, ind) => ind != index)
+                  );
+                }}
+              />
             );
           })}
-        </Box>
+        </Reorder>
       ) : (
         <EmptyValue />
       )}
@@ -116,6 +150,8 @@ const SkillsProForm = ({ setProfileStatus }) => {
         }}
       >
         <InputBase
+          inputRef={inputSkill}
+          autoFocus
           sx={{ ml: 1, flex: 1 }}
           placeholder="ثبت مهارت جدید"
           onChange={(e) => setSkillValue(e.target.value)}

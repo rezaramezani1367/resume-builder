@@ -2,7 +2,6 @@ import { Box, Button, colors, Typography } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { ModeEdit } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 import EmptyValue from "../EmptyValue";
 import { format } from "date-fns-jalali";
 

@@ -120,7 +120,6 @@ const SkillsProForm = ({ setProfileStatus }) => {
             }}
           >
             {formik.values.skills.map((data, index) => {
-              console.log(data);
               return (
                 <Chip
                   sx={{ cursor: "move" }}

@@ -57,7 +57,34 @@ const profileSchema = new mongoose.Schema(
     skills: [
       {
         type: String,
-        minLength:[2,"مهارت های مورد نظر شامل حداقل 2 کاراکتر باشد"]
+        minLength: [2, "مهارت های مورد نظر شامل حداقل 2 کاراکتر باشد"],
+      },
+    ],
+    resumeSection: [
+      {
+        resumeTitle: {
+          type: String,
+          minLength: [2, "عنوان کار شامل حداقل 2 کاراکتر باشد"],
+          required: [true, "عنوان کار الزامیست"],
+        },
+        companyName: {
+          type: String,
+          minLength: [2, "شرکت مورد نظر شامل حداقل 2 کاراکتر باشد"],
+          required: [true, "فیلد شرکت الزامیست"],
+        },
+        dateFrom: {
+          type: Date,
+          required: [true, " تاریخ شروع الزامیست"],
+        },
+        dateTo: {
+          type: Date,
+        },
+        isWorking: {
+          type: Boolean,
+        },
+        description: {
+          type: String,
+        },
       },
     ],
   },

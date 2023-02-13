@@ -18,9 +18,7 @@ const SkillsPro = ({ userData, setProfileStatus }) => {
           "#edit3": {
             display: "block",
           },
-          "#about-me-content": {
-            paddingTop: { xs: 0, md: 2 },
-          },
+         
         },
       }}
     >
@@ -48,7 +46,7 @@ const SkillsPro = ({ userData, setProfileStatus }) => {
             // justifyContent: "center",
             flexWrap: "wrap",
             listStyle: "none",
-            p: 0.5,
+            p:1.4,
             m: 0,
           }}
         >

@@ -22,6 +22,7 @@ import { getUserTest } from "../redux/actionUser";
 import LoadingDialog from "./LoadingDialog";
 import SkillsProForm from "./formsProfile/SkillsProForm";
 import SkillsPro from "./dataProfile/SkillsPro";
+import ResumeSection from "./dataProfile/ResumeSection";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ const Profile = () => {
           />
         )}
       </Box>
+      {/* about section */}
       <Box border={1} borderColor="divider" marginTop={2}>
         <Box
           bgcolor={colors.grey[200]}
@@ -118,6 +120,7 @@ const Profile = () => {
           <AboutMe setProfileStatus={setProfileStatus} userData={userData} />
         )}
       </Box>
+      {/* skill section */}
       <Box border={1} borderColor="divider" marginTop={2}>
         <Box
           bgcolor={colors.grey[200]}
@@ -134,6 +137,22 @@ const Profile = () => {
         ) : (
           <SkillsPro setProfileStatus={setProfileStatus} userData={userData} />
         )}
+      </Box>
+      {/* resume section */}
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          sx={{ display: "flex", gap: 1 }}
+          padding={1.5}
+        >
+          <HowToReg />
+          <Typography variant="h6"> سوابق شغلی</Typography>
+        </Box>
+        <Divider />
+        {userData?.profile?.resumeSection.map((item, index) => (
+          <ResumeSection  setProfileStatus={setProfileStatus} index={index} item={item} key={`${item.resumeTitle}-${index}`} />
+        ))}
       </Box>
     </Box>
   );

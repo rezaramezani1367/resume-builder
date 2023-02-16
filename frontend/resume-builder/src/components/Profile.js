@@ -6,7 +6,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { HowToReg, Person, Person2 } from "@mui/icons-material";
+import { Add, HowToReg, Person, Person2, Work } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserTest } from "../redux/actionUser";
 import LoadingDialog from "./LoadingDialog";
 import SkillsProForm from "./formsProfile/SkillsProForm";
+import ResumeForm from "./formsProfile/ResumeForm";
 import SkillsPro from "./dataProfile/SkillsPro";
 import ResumeSection from "./dataProfile/ResumeSection";
 
@@ -34,17 +35,22 @@ const Profile = () => {
       userError,
     },
   } = useSelector((last) => last);
-  console.log({ userData });
   const [profileStatus, setProfileStatus] = useState({
     summaryEditStatus: false,
     personInfoEditStatus: false,
     aboutMeEditStatus: false,
     skillProEditStatus: false,
+    newResume: false,
+    editResume:[]
   });
 
   useEffect(() => {
     dispatch(getUserTest());
   }, []);
+  // useEffect(() => {
+
+    
+  // }, [userData.profile?.resumeSection,profileStatus.newResume]);
 
   return (
     <Box>
@@ -146,14 +152,39 @@ const Profile = () => {
           sx={{ display: "flex", gap: 1 }}
           padding={1.5}
         >
-          <HowToReg />
+          <Work />
           <Typography variant="h6"> سوابق شغلی</Typography>
         </Box>
         <Divider />
         {userData?.profile?.resumeSection.map((item, index) => (
-          <ResumeSection  setProfileStatus={setProfileStatus} index={index} item={item} key={`${item.resumeTitle}-${index}`} />
+          <ResumeSection
+            setProfileStatus={setProfileStatus}
+            index={index}
+            item={item}
+            key={`${item.resumeTitle}-${index}`}
+          />
         ))}
+        {profileStatus.newResume ? (
+          <ResumeForm setProfileStatus={setProfileStatus}/>
+        ) : (
+          <Button
+            startIcon={<Add />}
+            variant="text"
+            color="inherit"
+            size="large"
+            fullWidth
+            sx={{ borderRadius: 0 }}
+            onClick={() =>
+              setProfileStatus((last) => {
+                return { ...last, newResume: true };
+              })
+            }
+          >
+            ایجاد سابقه‌کاری
+          </Button>
+        )}
       </Box>
+      <Box padding={10}></Box>
     </Box>
   );
 };

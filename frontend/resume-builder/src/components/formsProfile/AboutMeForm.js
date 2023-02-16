@@ -59,6 +59,10 @@ const AboutMeForm = ({ setProfileStatus }) => {
       onSubmit={formik.handleSubmit}
     >
       <TextField
+        autoFocus
+        label="درباره من"
+        placeholder=""
+        InputLabelProps={{ shrink: true }}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.errors.aboutMe && formik.touched.aboutMe}

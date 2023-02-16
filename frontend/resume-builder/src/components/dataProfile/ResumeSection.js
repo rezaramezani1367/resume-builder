@@ -1,8 +1,10 @@
 import { Box, colors, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
-import { format } from "date-fns-jalali";
 import Clamp from "react-multiline-clamp";
 import { ModeEdit } from "@mui/icons-material";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import { DateObject } from "react-multi-date-picker";
 
 const ResumeSection = ({ item, setProfileStatus, index }) => {
   const [showEditIcon, setShowEditIcon] = useState(-1);
@@ -23,7 +25,6 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
       }}
     >
       <Box
-        id={`${item.resumeTitle}-${index}`}
         position="absolute"
         top={10}
         right={10}
@@ -58,9 +59,20 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
         fontWeight={600}
       >
         {item.companyName}{" "}
-        <Typography variant="span" fontSize={10}>
-          (از {format(new Date(item.dateFrom), "yyyy/MM/dd")} الی{" "}
-          {format(new Date(item.dateTo), "yyyy/MM/dd")})
+        <Typography variant="span" fontSize={9}>
+          (از{" "}
+          {new DateObject({
+            date: `${item.dateJob[0]}`,
+            locale: persian_fa,
+            calendar: persian,
+          }).format("DD MMMM YYYY")}{" "}
+          الی {"  "}
+          {new DateObject({
+            date: `${item.dateJob[1]}`,
+            locale: persian_fa,
+            calendar: persian,
+          }).format("DD MMMM YYYY")}
+          )
         </Typography>
       </Typography>
       <Clamp withTooltip lines={2}>

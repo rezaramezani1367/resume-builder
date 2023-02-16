@@ -46,6 +46,7 @@ exports.signupUser = asyncHandler(async (req, res, next) => {
   session.endSession;
 });
 exports.updateProfile = asyncHandler(async (req, res, next) => {
+  console.log(req.body)
   await Profile.findByIdAndUpdate(req.user.profile, req.body, {
     runValidators: true,
   });
@@ -76,17 +77,4 @@ exports.updateUserImage = asyncHandler(async (req, res, next) => {
     isSuccess: true,
   });
 });
-exports.skillUser = asyncHandler(async (req, res, next) => {
-  await User.findoneAndUpdate(
-    req.user._id,
-    { profile: req.body },
-    {
-      runValidators: true,
-    }
-  );
 
-  res.status(201).send({
-    userData: await User.findOne({ _id: req.user._id }),
-    isSuccess: true,
-  });
-});

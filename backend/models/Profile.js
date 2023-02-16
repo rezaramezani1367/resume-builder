@@ -72,16 +72,11 @@ const profileSchema = new mongoose.Schema(
           minLength: [2, "شرکت مورد نظر شامل حداقل 2 کاراکتر باشد"],
           required: [true, "فیلد شرکت الزامیست"],
         },
-        dateFrom: {
-          type: Date,
-          required: [true, " تاریخ شروع الزامیست"],
-        },
-        dateTo: {
-          type: Date,
-        },
-        isWorking: {
-          type: Boolean,
-        },
+        dateJob: [
+          {
+            type: Date,
+          },
+        ],
         description: {
           type: String,
         },

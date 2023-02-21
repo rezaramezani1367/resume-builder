@@ -11,7 +11,6 @@ import DatePicker from "react-multi-date-picker";
 import RangePickerFooter from "react-multi-date-picker/plugins/range_picker_footer";
 
 const ResumeForm = ({ setProfileStatus, index }) => {
-  console.log(index);
   const [flag, setFlag] = useState(false);
   const {
     user: {

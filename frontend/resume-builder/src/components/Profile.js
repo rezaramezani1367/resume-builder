@@ -1,12 +1,17 @@
 import {
-  Avatar,
   Box,
   Button,
   colors,
   Divider,
   Typography,
 } from "@mui/material";
-import { Add, HowToReg, Person, Person2, Work } from "@mui/icons-material";
+import {
+  Add,
+  HowToReg,
+  Person,
+  Person2,
+  Work,
+} from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -24,6 +29,7 @@ import SkillsProForm from "./formsProfile/SkillsProForm";
 import ResumeForm from "./formsProfile/ResumeForm";
 import SkillsPro from "./dataProfile/SkillsPro";
 import ResumeSection from "./dataProfile/ResumeSection";
+import ResumeSort from "./dataProfile/ResumeSort";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -153,13 +159,20 @@ const Profile = () => {
       {/* resume section */}
       <Box border={1} borderColor="divider" marginTop={2}>
         <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1 }}
           padding={1.5}
         >
-          <Work />
-          <Typography variant="h6"> سوابق شغلی</Typography>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Work />
+            <Typography variant="h6"> سوابق شغلی</Typography>
+          </Box>
+          <ResumeSort />
         </Box>
         <Divider />
         {userData?.profile?.resumeSection.map((item, index) =>

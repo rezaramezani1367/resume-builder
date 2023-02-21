@@ -73,11 +73,6 @@ const SkillsProForm = ({ setProfileStatus }) => {
   }, [formik.values.skills]);
 
   console.log(formik.values.skills);
-  // Drag and Drop Handler
-  const onDragDropEnds = (oldIndex, newIndex) => {
-    console.log("Drag and drop other tasks");
-    console.log(oldIndex, newIndex);
-  };
 
   return (
     <Box

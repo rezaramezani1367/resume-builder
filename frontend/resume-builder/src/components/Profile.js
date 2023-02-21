@@ -41,16 +41,22 @@ const Profile = () => {
     aboutMeEditStatus: false,
     skillProEditStatus: false,
     newResume: false,
-    editResume:[]
+    editResume: [],
   });
 
   useEffect(() => {
     dispatch(getUserTest());
   }, []);
-  // useEffect(() => {
+  useEffect(() => {
+    if (!profileStatus.editResume.length)
+      userData.profile?.resumeSection.forEach((item) =>
+        setProfileStatus((last) => {
+          return { ...last, editResume: [...last.editResume, false] };
+        })
+      );
+  }, [userData.profile?.resumeSection]);
 
-    
-  // }, [userData.profile?.resumeSection,profileStatus.newResume]);
+  console.log(profileStatus.editResume);
 
   return (
     <Box>
@@ -156,16 +162,24 @@ const Profile = () => {
           <Typography variant="h6"> سوابق شغلی</Typography>
         </Box>
         <Divider />
-        {userData?.profile?.resumeSection.map((item, index) => (
-          <ResumeSection
-            setProfileStatus={setProfileStatus}
-            index={index}
-            item={item}
-            key={`${item.resumeTitle}-${index}`}
-          />
-        ))}
+        {userData?.profile?.resumeSection.map((item, index) =>
+          profileStatus.editResume[index] ? (
+            <ResumeForm
+              key={index}
+              index={index}
+              setProfileStatus={setProfileStatus}
+            />
+          ) : (
+            <ResumeSection
+              setProfileStatus={setProfileStatus}
+              index={index}
+              item={item}
+              key={`${item.resumeTitle}-${index}`}
+            />
+          )
+        )}
         {profileStatus.newResume ? (
-          <ResumeForm setProfileStatus={setProfileStatus}/>
+          <ResumeForm setProfileStatus={setProfileStatus} />
         ) : (
           <Button
             startIcon={<Add />}

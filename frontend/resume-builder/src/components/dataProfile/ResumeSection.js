@@ -36,7 +36,9 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
         }}
         onClick={() =>
           setProfileStatus((last) => {
-            return { ...last, personInfoEditStatus: true };
+            const help = [...last.editResume];
+            help[index] = true;
+            return { ...last, editResume: [...help] };
           })
         }
       >
@@ -67,11 +69,13 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
             calendar: persian,
           }).format("DD MMMM YYYY")}{" "}
           الی {"  "}
-          {new DateObject({
-            date: `${item.dateJob[1]}`,
-            locale: persian_fa,
-            calendar: persian,
-          }).format("DD MMMM YYYY")}
+          {item.dateJob[1]
+            ? new DateObject({
+                date: `${item.dateJob[1]}`,
+                locale: persian_fa,
+                calendar: persian,
+              }).format("DD MMMM YYYY")
+            : "..."}
           )
         </Typography>
       </Typography>

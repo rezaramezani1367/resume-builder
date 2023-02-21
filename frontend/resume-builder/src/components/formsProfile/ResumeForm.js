@@ -5,16 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useFormik } from "formik";
 import { updateProfile } from "../../redux/actionUser";
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
-import Settings from "react-multi-date-picker/plugins/settings";
-import Toolbar from "react-multi-date-picker/plugins/toolbar";
 import RangePickerFooter from "react-multi-date-picker/plugins/range_picker_footer";
-import { display } from "@mui/system";
 
-const ResumeForm = ({ setProfileStatus }) => {
+const ResumeForm = ({ setProfileStatus, index }) => {
+  console.log(index);
   const [flag, setFlag] = useState(false);
   const {
     user: {
@@ -43,32 +40,58 @@ const ResumeForm = ({ setProfileStatus }) => {
 
   const formik = useFormik({
     initialValues: {
-      resumeTitle: "",
-      companyName: "",
-      description: "",
-      dateJob: [],
+      resumeTitle:
+        index >= 0 ? userData.profile?.resumeSection[index].resumeTitle : "",
+      companyName:
+        index >= 0 ? userData.profile?.resumeSection[index].companyName : "",
+      description:
+        index >= 0 ? userData.profile?.resumeSection[index].description : "",
+      dateJob: index >= 0 ? userData.profile?.resumeSection[index].dateJob : [],
     },
     onSubmit: (values) => {
       setFlag(true);
-      dispatch(
-        updateProfile({
-          resumeSection: [...userData.profile?.resumeSection, values],
-        })
-      );
+      if (index >= 0) {
+        const help = [...userData.profile?.resumeSection];
+        help[index] = values;
+        dispatch(
+          updateProfile({
+            resumeSection: [...help],
+          })
+        );
+      } else {
+        dispatch(
+          updateProfile({
+            resumeSection: [...userData.profile?.resumeSection, values],
+          })
+        );
+      }
     },
     validate,
+    validateOnBlur: false,
   });
 
   useEffect(() => {
     if (flag && !userLoading && isSuccess) {
-      setProfileStatus((last) => {
-        return { ...last, newResume: false };
-      });
+      if (index >= 0) {
+        setProfileStatus((last) => {
+          const help = [...last.editResume];
+          help[index] = false;
+          return { ...last, editResume: [...help] };
+        });
+      } else {
+        setProfileStatus((last) => {
+          return {
+            ...last,
+            newResume: false,
+            editResume: [...last.editResume, false],
+          };
+        });
+      }
       setFlag(false);
     }
   }, [userLoading, isSuccess, flag]);
-  console.log({ userLoading, isSuccess, flag });
-  console.log(formik.errors);
+  // console.log({ userLoading, isSuccess, flag });
+  // console.log(formik.errors);
   return (
     <Box
       padding={2}
@@ -76,13 +99,14 @@ const ResumeForm = ({ setProfileStatus }) => {
       noValidate
       autoComplete="off"
       onSubmit={formik.handleSubmit}
+      borderBottom={1}
+      borderColor="divider"
     >
       <Grid container spacing={3}>
         <Grid xs={12} sm={6}>
           <TextField
             autoFocus
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.errors.resumeTitle && formik.touched.resumeTitle}
             helperText={
               formik.errors.resumeTitle && formik.touched.resumeTitle
@@ -108,8 +132,7 @@ const ResumeForm = ({ setProfileStatus }) => {
         <Grid xs={12} sm={6}>
           <TextField
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!formik.errors.companyName}
+            error={formik.errors.companyName && formik.touched.companyName}
             helperText={
               formik.errors.companyName && formik.touched.companyName
                 ? formik.errors.companyName
@@ -182,9 +205,11 @@ const ResumeForm = ({ setProfileStatus }) => {
                 <TextField
                   fullWidth
                   size="small"
-                  error={!!formik.errors.dateJob}
+                  error={!!formik.errors.dateJob && !!formik.touched.dateJob}
                   helperText={
-                    formik.errors.dateJob ? formik.errors.dateJob : ""
+                    formik.errors.dateJob && formik.touched.dateJob
+                      ? formik.errors.dateJob
+                      : ""
                   }
                   name="dateJob"
                   InputLabelProps={{ shrink: true }}
@@ -222,7 +247,6 @@ const ResumeForm = ({ setProfileStatus }) => {
         <Grid xs={12} sm={6}>
           <TextField
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             InputLabelProps={{ shrink: true }}
             size="small"
             sx={{
@@ -247,11 +271,23 @@ const ResumeForm = ({ setProfileStatus }) => {
           variant="contained"
           color="error"
           startIcon={<Close />}
-          onClick={() =>
-            setProfileStatus((last) => {
-              return { ...last, newResume: false };
-            })
-          }
+          onClick={() => {
+            if (index >= 0) {
+              setProfileStatus((last) => {
+                const help = [...last.editResume];
+                help[index] = false;
+                return { ...last, editResume: [...help] };
+              });
+            } else {
+              setProfileStatus((last) => {
+                return {
+                  ...last,
+                  newResume: false,
+                  editResume: [...last.editResume, false],
+                };
+              });
+            }
+          }}
         >
           انصراف
         </Button>
@@ -268,4 +304,4 @@ const ResumeForm = ({ setProfileStatus }) => {
   );
 };
 
-export default ResumeForm;
+export default React.memo(ResumeForm);

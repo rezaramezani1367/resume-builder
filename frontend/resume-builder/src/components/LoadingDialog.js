@@ -1,33 +1,15 @@
-import { CircularProgress, Dialog, DialogTitle, Slide } from "@mui/material";
-import React, { forwardRef } from "react";
+import { Backdrop, CircularProgress } from "@mui/material";
+import React from "react";
 
 const LoadingDialog = ({ userLoading }) => {
   return (
     <>
-      <Dialog
+      <Backdrop
+        sx={{ color: "#fff", zIndex: 10000 }}
         open={userLoading}
-        aria-describedby="alert-dialog-slide-description"
-        sx={{
-          overflow: "hidden",
-          ".MuiPaper-root": {
-            borderRadius: "50%",
-            opacity: 0.55,
-          },
-        }}
       >
-        <DialogTitle
-          sx={{
-            padding: "0",
-            width: 45,
-            height: 45,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress size={25} />
-        </DialogTitle>
-      </Dialog>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

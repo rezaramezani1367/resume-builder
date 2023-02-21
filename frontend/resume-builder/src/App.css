@@ -16,10 +16,10 @@ body,
 .dragged {
   z-index: 10000;
   background-color: rgb(236, 92, 92) !important;
+  opacity: 0.6!important;
 }
 .placeholder {
   background-color: rgb(168, 45, 45) !important;
-
 }
 
 @import "react-toastify/dist/ReactToastify.css";

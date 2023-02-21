@@ -1,17 +1,5 @@
-import {
-  Box,
-  Button,
-  colors,
-  Divider,
-  Typography,
-} from "@mui/material";
-import {
-  Add,
-  HowToReg,
-  Person,
-  Person2,
-  Work,
-} from "@mui/icons-material";
+import { Box, Button, colors, Divider, Typography } from "@mui/material";
+import { Add, HowToReg, Person, Person2, Work } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -61,8 +49,6 @@ const Profile = () => {
         })
       );
   }, [userData.profile?.resumeSection]);
-
-  console.log(profileStatus.editResume);
 
   return (
     <Box>
@@ -172,7 +158,10 @@ const Profile = () => {
             <Work />
             <Typography variant="h6"> سوابق شغلی</Typography>
           </Box>
-          <ResumeSort />
+          <ResumeSort
+            setProfileStatus={setProfileStatus}
+            profileStatus={profileStatus}
+          />
         </Box>
         <Divider />
         {userData?.profile?.resumeSection.map((item, index) =>

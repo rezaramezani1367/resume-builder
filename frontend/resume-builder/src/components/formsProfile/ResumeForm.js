@@ -1,5 +1,5 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import { Close, Save } from "@mui/icons-material";
+import { Close, Delete, Remove, Save } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -47,6 +47,7 @@ const ResumeForm = ({ setProfileStatus, index }) => {
         index >= 0 ? userData.profile?.resumeSection[index].description : "",
       dateJob: index >= 0 ? userData.profile?.resumeSection[index].dateJob : [],
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
       setFlag(true);
       if (index >= 0) {
@@ -266,9 +267,27 @@ const ResumeForm = ({ setProfileStatus, index }) => {
       <Box
         sx={{ display: "flex", justifyContent: "end", gap: 2, marginTop: 2 }}
       >
+        {index >= 0 && (
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            startIcon={<Delete />}
+            onClick={() => {
+              setProfileStatus((last) => {
+                const help = [...last.editResume];
+                help[index] = false;
+                return { ...last, editResume: [...help] };
+              });
+            }}
+          >
+            حذف
+          </Button>
+        )}
         <Button
           variant="contained"
           color="error"
+          size="small"
           startIcon={<Close />}
           onClick={() => {
             if (index >= 0) {
@@ -294,6 +313,7 @@ const ResumeForm = ({ setProfileStatus, index }) => {
           type="submit"
           variant="contained"
           color="success"
+          size="small"
           startIcon={<Save />}
         >
           ذخیره
@@ -303,4 +323,4 @@ const ResumeForm = ({ setProfileStatus, index }) => {
   );
 };
 
-export default React.memo(ResumeForm);
+export default ResumeForm;

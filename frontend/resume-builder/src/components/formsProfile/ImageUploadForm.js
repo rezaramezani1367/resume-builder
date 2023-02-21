@@ -102,14 +102,12 @@ const ImageUploadForm = () => {
         <DialogTitle
           sx={{ paddingY: 1 }}
           textAlign="center"
-          borderBottom={1}
-          borderColor="divider"
           fontWeight={700}
           color={"primary.main"}
         >
           آپلود عکس
         </DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <Box
             sx={{
               display: "flex",
@@ -180,7 +178,7 @@ const ImageUploadForm = () => {
             />
           </Box>
         </DialogContent>
-        <Box borderTop={0} padding={0.125} borderColor="divider">
+        <Box paddingX={0.5}>
           <DialogActions>
             <Button
               variant="contained"

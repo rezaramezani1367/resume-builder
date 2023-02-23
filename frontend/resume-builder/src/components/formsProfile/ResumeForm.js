@@ -1,6 +1,6 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { Close, Delete, Remove, Save } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useFormik } from "formik";
@@ -9,9 +9,11 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import RangePickerFooter from "react-multi-date-picker/plugins/range_picker_footer";
+import AlertDialog from "../AlertDialog";
 
 const ResumeForm = ({ setProfileStatus, index }) => {
   const [flag, setFlag] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const {
     user: {
       userLoading,
@@ -71,14 +73,17 @@ const ResumeForm = ({ setProfileStatus, index }) => {
   });
 
   useEffect(() => {
-    if (flag && !userLoading && isSuccess) {
+    if (flag && !userLoading && isSuccess && !isDeleted) {
+      // save edit item
       if (index >= 0) {
         setProfileStatus((last) => {
           const help = [...last.editResume];
           help[index] = false;
+
           return { ...last, editResume: [...help] };
         });
       } else {
+        // save new item
         setProfileStatus((last) => {
           return {
             ...last,
@@ -88,10 +93,12 @@ const ResumeForm = ({ setProfileStatus, index }) => {
         });
       }
       setFlag(false);
+      setIsDeleted(false);
     }
   }, [userLoading, isSuccess, flag]);
-  // console.log({ userLoading, isSuccess, flag });
-  // console.log(formik.errors);
+
+  // console.log({ userLoading, isSuccess, flag, isDeleted, index });
+
   return (
     <Box
       padding={2}
@@ -268,21 +275,33 @@ const ResumeForm = ({ setProfileStatus, index }) => {
         sx={{ display: "flex", justifyContent: "end", gap: 2, marginTop: 2 }}
       >
         {index >= 0 && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<Delete />}
-            onClick={() => {
+          <AlertDialog
+            buttonPrpos={{
+              name: "حذف",
+              variant: "outlined",
+              color: "error",
+              size: "small",
+              startIcon: <Delete />,
+            }}
+            title="آیا از حذف سابقه مورد نظر مطمئن هستید"
+            description={`${userData.profile?.resumeSection[index]?.resumeTitle} - 
+            ${userData.profile?.resumeSection[index]?.companyName}
+            `}
+            handleSave={() => {
+              const resumeList = [...userData.profile?.resumeSection];
+              resumeList.splice(index, 1);
+              setIsDeleted(true);
+              setFlag(true);
+              dispatch(updateProfile({ resumeSection: [...resumeList] }));
               setProfileStatus((last) => {
                 const help = [...last.editResume];
-                help[index] = false;
+                // delete item
+                help.splice(index, 1);
+
                 return { ...last, editResume: [...help] };
               });
             }}
-          >
-            حذف
-          </Button>
+          />
         )}
         <Button
           variant="contained"
@@ -323,4 +342,4 @@ const ResumeForm = ({ setProfileStatus, index }) => {
   );
 };
 
-export default ResumeForm;
+export default memo(ResumeForm);

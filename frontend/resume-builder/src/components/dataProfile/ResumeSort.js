@@ -58,7 +58,7 @@ const ResumeSort = ({ setProfileStatus, profileStatus }) => {
       });
     }
   }, [userLoading, isSuccess, flag]);
-  console.log(editResumeSync);
+  // console.log(editResumeSync);
   return (
     <>
       <IconButton aria-label="sort" onClick={handleClickOpen}>

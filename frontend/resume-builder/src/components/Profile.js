@@ -1,5 +1,5 @@
 import { Box, Button, colors, Divider, Typography } from "@mui/material";
-import { Add, HowToReg, Person, Person2, Work } from "@mui/icons-material";
+import { Add, HowToReg, Person, Person2, School, Work } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -18,6 +18,9 @@ import ResumeForm from "./formsProfile/ResumeForm";
 import SkillsPro from "./dataProfile/SkillsPro";
 import ResumeSection from "./dataProfile/ResumeSection";
 import ResumeSort from "./dataProfile/ResumeSort";
+import EducationalSort from "./dataProfile/EducationalSort";
+import EducationalSection from "./dataProfile/EducationalSection";
+import EducationalForm from "./formsProfile/EducationalForm";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -36,19 +39,31 @@ const Profile = () => {
     skillProEditStatus: false,
     newResume: false,
     editResume: [],
+    newEducational: false,
+    editEducational: [],
   });
 
   useEffect(() => {
     dispatch(getUserTest());
   }, []);
+  // for edit or read resume items
   useEffect(() => {
     if (!profileStatus.editResume.length)
-      userData.profile?.resumeSection.forEach((item) =>
+      userData.profile?.educationalSection.forEach((item) =>
         setProfileStatus((last) => {
           return { ...last, editResume: [...last.editResume, false] };
         })
       );
-  }, [userData.profile?.resumeSection]);
+  }, [userData.profile?.educationalSection]);
+  // for edit or read Educational items
+  useEffect(() => {
+    if (!profileStatus.editResume.length)
+      userData.profile?.educationalSection.forEach((item) =>
+        setProfileStatus((last) => {
+          return { ...last, editEducational: [...last.editEducational, false] };
+        })
+      );
+  }, [userData.profile?.educationalSection]);
 
   return (
     <Box>
@@ -197,6 +212,64 @@ const Profile = () => {
             }
           >
             ایجاد سابقه‌کاری
+          </Button>
+        )}
+      </Box>
+      {/* educational section */}
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          padding={1.5}
+        >
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <School />
+            <Typography variant="h6"> سوابق تحصیلی</Typography>
+          </Box>
+          <EducationalSort
+            setProfileStatus={setProfileStatus}
+            profileStatus={profileStatus}
+          />
+        </Box>
+        <Divider />
+        {userData?.profile?.educationalSection.map((item, index) =>
+          profileStatus.editEducational[index] ? (
+            <EducationalForm
+              key={index}
+              index={index}
+              setProfileStatus={setProfileStatus}
+            />
+          ) : (
+            <EducationalSection
+              setProfileStatus={setProfileStatus}
+              index={index}
+              item={item}
+              key={`${item.field}-${index}`}
+            />
+          )
+        )}
+        {profileStatus.newEducational ? (
+          <EducationalForm setProfileStatus={setProfileStatus} />
+        ) : (
+          <Button
+            startIcon={<Add />}
+            variant="text"
+            color="inherit"
+            size="large"
+            fullWidth
+            sx={{ borderRadius: 0 }}
+            onClick={() =>
+              setProfileStatus((last) => {
+                return { ...last, newEducational: true };
+              })
+            }
+          >
+            ایجاد سابقه تحصیلی
           </Button>
         )}
       </Box>

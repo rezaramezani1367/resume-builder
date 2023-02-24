@@ -6,7 +6,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { DateObject } from "react-multi-date-picker";
 
-const ResumeSection = ({ item, setProfileStatus, index }) => {
+const EducationalSection = ({ item, setProfileStatus, index }) => {
   const [showEditIcon, setShowEditIcon] = useState(-1);
   return (
     <Box
@@ -36,9 +36,9 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
         }}
         onClick={() =>
           setProfileStatus((last) => {
-            const help = [...last.editResume];
+            const help = [...last.editEducational];
             help[index] = true;
-            return { ...last, editResume: [...help] };
+            return { ...last, editEducational: [...help] };
           })
         }
       >
@@ -52,7 +52,7 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
         fontWeight={600}
         fontSize={17}
       >
-        {item.resumeTitle}
+        {item.field}
       </Typography>
       <Typography
         variant="body2"
@@ -60,18 +60,18 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
         color={colors.grey[600]}
         fontWeight={600}
       >
-        {item.companyName}{" "}
+        {item.universityName}{" "}
         <Typography variant="span" fontSize={9}>
           (از{" "}
           {new DateObject({
-            date: `${item.dateJob[0]}`,
+            date: item.date[0],
             locale: persian_fa,
             calendar: persian,
           }).format("DD MMMM YYYY")}{" "}
           الی {"  "}
-          {item.dateJob[1]
+          {item.date[1]
             ? new DateObject({
-                date: `${item.dateJob[1]}`,
+                date:item.date[1],
                 locale: persian_fa,
                 calendar: persian,
               }).format("DD MMMM YYYY")
@@ -88,4 +88,4 @@ const ResumeSection = ({ item, setProfileStatus, index }) => {
   );
 };
 
-export default memo(ResumeSection);
+export default memo(EducationalSection);

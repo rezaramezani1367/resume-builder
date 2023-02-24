@@ -82,6 +82,32 @@ const profileSchema = new mongoose.Schema(
         },
       },
     ],
+    educationalSection: [
+      {
+        field: {
+          type: String,
+          minLength: [2, "رشته تحصیلی شامل حداقل 2 کاراکتر باشد"],
+          required: [true, "عنوان کار الزامیست"],
+        },
+
+        universityName: {
+          type: String,
+          minLength: [2, "دانشگاه مورد نظر شامل حداقل 2 کاراکتر باشد"],
+          required: [true, "فیلد دانشگاه الزامیست"],
+        },
+        grade: {
+          type: Object,
+        },
+        date: [
+          {
+            type: Date,
+          },
+        ],
+        description: {
+          type: String,
+        },
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );

@@ -108,6 +108,16 @@ const profileSchema = new mongoose.Schema(
         },
       },
     ],
+    languageSection: [
+      {
+        languageName: {
+          type: Object,
+        },
+        languageLevel: {
+          type: Object,
+        },
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );

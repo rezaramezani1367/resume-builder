@@ -125,7 +125,7 @@ const EducationalForm = ({ setProfileStatus, index }) => {
   }, [userLoading, isSuccess, flag]);
 
   // console.log({ userLoading, isSuccess, flag, isDeleted, index });
-  console.log({ education: formik.values });
+  // console.log({ education: formik.values });
 
   return (
     <Box

@@ -1,5 +1,13 @@
 import { Box, Button, colors, Divider, Typography } from "@mui/material";
-import { Add, HowToReg, Person, Person2, School, Work } from "@mui/icons-material";
+import {
+  Add,
+  HowToReg,
+  Language,
+  Person,
+  Person2,
+  School,
+  Work,
+} from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Summayprofile from "./dataProfile/Summayprofile";
@@ -21,6 +29,9 @@ import ResumeSort from "./dataProfile/ResumeSort";
 import EducationalSort from "./dataProfile/EducationalSort";
 import EducationalSection from "./dataProfile/EducationalSection";
 import EducationalForm from "./formsProfile/EducationalForm";
+import LanguageSection from "./dataProfile/LanguageSection";
+import LanguageSort from "./dataProfile/LanguageSort";
+import LanguageForm from "./formsProfile/LanguageForm";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -41,6 +52,8 @@ const Profile = () => {
     editResume: [],
     newEducational: false,
     editEducational: [],
+    newLanguage: false,
+    editLanguage: [],
   });
 
   useEffect(() => {
@@ -57,13 +70,22 @@ const Profile = () => {
   }, [userData.profile?.educationalSection]);
   // for edit or read Educational items
   useEffect(() => {
-    if (!profileStatus.editResume.length)
+    if (!profileStatus.editEducational.length)
       userData.profile?.educationalSection.forEach((item) =>
         setProfileStatus((last) => {
           return { ...last, editEducational: [...last.editEducational, false] };
         })
       );
   }, [userData.profile?.educationalSection]);
+  // for edit or read language items
+  useEffect(() => {
+    if (!profileStatus.editLanguage.length)
+      userData.profile?.languageSection.forEach((item) =>
+        setProfileStatus((last) => {
+          return { ...last, editLanguage: [...last.editLanguage, false] };
+        })
+      );
+  }, [userData.profile?.languageSection]);
 
   return (
     <Box>
@@ -102,7 +124,7 @@ const Profile = () => {
         <Box
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1 }}
+          sx={{ display: "flex", gap: 1, alignItems: "center" }}
           padding={1.5}
         >
           <Person />
@@ -126,7 +148,7 @@ const Profile = () => {
         <Box
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1 }}
+          sx={{ display: "flex", gap: 1, alignItems: "center" }}
           padding={1.5}
         >
           <Person2 />
@@ -144,7 +166,7 @@ const Profile = () => {
         <Box
           bgcolor={colors.grey[200]}
           color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1 }}
+          sx={{ display: "flex", gap: 1, alignItems: "center" }}
           padding={1.5}
         >
           <HowToReg />
@@ -169,14 +191,16 @@ const Profile = () => {
           color={colors.grey[700]}
           padding={1.5}
         >
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <Work />
             <Typography variant="h6"> سوابق شغلی</Typography>
           </Box>
-          <ResumeSort
-            setProfileStatus={setProfileStatus}
-            profileStatus={profileStatus}
-          />
+          {Boolean(userData?.profile?.resumeSection?.length > 1) && (
+            <ResumeSort
+              setProfileStatus={setProfileStatus}
+              profileStatus={profileStatus}
+            />
+          )}
         </Box>
         <Divider />
         {userData?.profile?.resumeSection.map((item, index) =>
@@ -227,14 +251,16 @@ const Profile = () => {
           color={colors.grey[700]}
           padding={1.5}
         >
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <School />
             <Typography variant="h6"> سوابق تحصیلی</Typography>
           </Box>
-          <EducationalSort
-            setProfileStatus={setProfileStatus}
-            profileStatus={profileStatus}
-          />
+          {Boolean(userData?.profile?.educationalSection?.length > 1) && (
+            <EducationalSort
+              setProfileStatus={setProfileStatus}
+              profileStatus={profileStatus}
+            />
+          )}
         </Box>
         <Divider />
         {userData?.profile?.educationalSection.map((item, index) =>
@@ -270,6 +296,66 @@ const Profile = () => {
             }
           >
             ایجاد سابقه تحصیلی
+          </Button>
+        )}
+      </Box>
+      {/* language section */}
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          padding={1.5}
+        >
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Language />
+            <Typography variant="h6"> زبان ها</Typography>
+          </Box>
+          {Boolean(userData?.profile?.languageSection?.length > 1) && (
+            <LanguageSort
+              setProfileStatus={setProfileStatus}
+              profileStatus={profileStatus}
+            />
+          )}
+        </Box>
+        <Divider />
+        {userData?.profile?.languageSection.map((item, index) =>
+          profileStatus.editLanguage[index] ? (
+            <LanguageForm
+              key={index}
+              index={index}
+              setProfileStatus={setProfileStatus}
+            />
+          ) : (
+            <LanguageSection
+              setProfileStatus={setProfileStatus}
+              index={index}
+              item={item}
+              key={`${item.field}-${index}`}
+            />
+          )
+        )}
+        {profileStatus.newLanguage ? (
+          <LanguageForm setProfileStatus={setProfileStatus} />
+        ) : (
+          <Button
+            startIcon={<Add />}
+            variant="text"
+            color="inherit"
+            size="large"
+            fullWidth
+            sx={{ borderRadius: 0 }}
+            onClick={() =>
+              setProfileStatus((last) => {
+                return { ...last, newLanguage: true };
+              })
+            }
+          >
+            افزودن زبان
           </Button>
         )}
       </Box>

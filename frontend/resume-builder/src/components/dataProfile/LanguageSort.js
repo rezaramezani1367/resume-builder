@@ -9,12 +9,10 @@ import {
   Button,
   DialogActions,
   DialogContent,
+  Rating,
 } from "@mui/material";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import { DateObject } from "react-multi-date-picker";
 import Reorder, { reorder } from "react-reorder";
 import { updateProfile } from "../../redux/actionUser";
 
@@ -22,7 +20,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const EducationalSort = ({ setProfileStatus, profileStatus }) => {
+const LanguageSort = ({ setProfileStatus, profileStatus }) => {
   const [flag, setFlag] = useState(false);
   const {
     user: {
@@ -30,8 +28,8 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
       userData: { isSuccess, userData },
     },
   } = useSelector((last) => last);
-  const [educationalData, setEducationalData] = useState([]);
-  const [editEducationalSync, setEditEducationalSync] = useState([]);
+  const [languageData, setLanguageData] = useState([]);
+  const [editLanguageSync, setEditLanguageSync] = useState([]);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
 
@@ -41,24 +39,24 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
 
   const handleClose = () => {
     setOpen(false);
-    setEducationalData(userData.profile?.educationalSection);
-    setEditEducationalSync(profileStatus.editEducational ?? []); 
+    setLanguageData(userData.profile?.languageSection);
+    setEditLanguageSync(profileStatus.editLanguage ?? []);
   };
   useEffect(() => {
-    setEducationalData(userData.profile?.educationalSection ?? []);
-    setEditEducationalSync(profileStatus.editEducational ?? []);
-  }, [userData.profile?.educationalSection, profileStatus.editEducational]);
+    setLanguageData(userData.profile?.languageSection ?? []);
+    setEditLanguageSync(profileStatus.editLanguage ?? []);
+  }, [userData.profile?.languageSection, profileStatus.editLanguage]);
 
   useEffect(() => {
     if (flag && !userLoading && isSuccess) {
       handleClose();
       setFlag(false);
       setProfileStatus((last) => {
-        return { ...last, editEducational: editEducationalSync };
+        return { ...last, editLanguage: editLanguageSync };
       });
     }
   }, [userLoading, isSuccess, flag]);
-  // console.log(editEducationalSync);
+  // console.log(editLanguageSync);
   return (
     <>
       <IconButton aria-label="sort" onClick={handleClickOpen}>
@@ -87,18 +85,18 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
             }}
           >
             <Reorder
-              reorderId="educationalSort"
+              reorderId="languageSort"
               onReorder={(event, previousIndex, nextIndex, fromId, toId) => {
-                setEditEducationalSync(
-                  reorder(editEducationalSync, previousIndex, nextIndex)
+                setEditLanguageSync(
+                  reorder(editLanguageSync, previousIndex, nextIndex)
                 );
-                setEducationalData(reorder(educationalData, previousIndex, nextIndex));
+                setLanguageData(reorder(languageData, previousIndex, nextIndex));
               }}
               style={{ display: "flex", gap: 8, flexDirection: "column" }}
             >
-              {educationalData.map((item, index) => (
+              {languageData.map((item, index) => (
                 <Box
-                  key={`${index}-${item.field}`}
+                  key={`${index}-${item.languageName.name}`}
                   sx={{
                     padding: 2,
                     border: 1,
@@ -110,40 +108,35 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
                   }}
                 >
                   <OpenWith fontSize="12px" sx={{ color: colors.red.A700 }} />
-                  <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                      gap: 2,
+                    }}
+                  >
                     <Typography
                       variant="h6"
                       color={colors.brown.A700}
                       fontWeight={600}
-                      fontSize={17}
+                      fontSize={15.5}
                     >
-                      {item.field}
+                      {"زبان "}
+                      {item.languageName.name}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      marginBottom={1}
-                      color={colors.grey[600]}
-                      fontWeight={600}
-                    >
-                      {item.universityName}{" "}
-                      <Typography variant="span" fontSize={9}>
-                        (از{" "}
-                        {new DateObject({
-                          date: item.date[0],
-                          locale: persian_fa,
-                          calendar: persian,
-                        }).format("DD MMMM YYYY")}{" "}
-                        الی {"  "}
-                        {item.date[1]
-                          ? new DateObject({
-                              date: item.date[1],
-                              locale: persian_fa,
-                              calendar: persian,
-                            }).format("DD MMMM YYYY")
-                          : "..."}
-                        )
-                      </Typography>
-                    </Typography>
+                    <Rating
+                      name="read-only"
+                      sx={{
+                        "& .MuiRating-iconFilled": {
+                          color: colors.pink[500],
+                        },
+                      }}
+                      value={item.languageLevel.id}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                    />
                   </Box>
                 </Box>
               ))}
@@ -176,7 +169,7 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
               startIcon={<Save />}
               onClick={() => {
                 setFlag(true);
-                const variables = { educationalSection: [...educationalData] };
+                const variables = { languageSection: [...languageData] };
                 dispatch(updateProfile(variables));
               }}
             >
@@ -189,4 +182,4 @@ const EducationalSort = ({ setProfileStatus, profileStatus }) => {
   );
 };
 
-export default EducationalSort;
+export default LanguageSort;

@@ -52,7 +52,7 @@ const EducationalSection = ({ item, setProfileStatus, index }) => {
         fontWeight={600}
         fontSize={17}
       >
-        {item.field}
+        {item.field}{" - "}{item.grade.name}
       </Typography>
       <Typography
         variant="body2"
@@ -71,7 +71,7 @@ const EducationalSection = ({ item, setProfileStatus, index }) => {
           الی {"  "}
           {item.date[1]
             ? new DateObject({
-                date:item.date[1],
+                date: item.date[1],
                 locale: persian_fa,
                 calendar: persian,
               }).format("DD MMMM YYYY")

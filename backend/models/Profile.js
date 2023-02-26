@@ -118,6 +118,57 @@ const profileSchema = new mongoose.Schema(
         },
       },
     ],
+    preferencesSection: {
+      provinces: [
+        {
+          type: Object,
+        },
+      ],
+      categories: [
+        {
+          type: Object,
+        },
+      ],
+      seniorityLevel: [
+        {
+          type: String,
+        },
+      ],
+      contractType: [
+        {
+          type: String,
+        },
+      ],
+      MinimumSalary: {
+        type: Object,
+      },
+      jobBenefits: {
+        Insurance: {
+          type: Boolean,
+          default: false,
+        },
+        promotion: {
+          type: Boolean,
+          default: false,
+        },
+        educationCourses: {
+          type: Boolean,
+          default: false,
+        },
+        flexibleHours: {
+          type: Boolean,
+          default: false,
+        },
+        shuttleService: {
+          type: Boolean,
+          default: false,
+        },
+        food: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    },
   },
   { versionKey: false, timestamps: true }
 );

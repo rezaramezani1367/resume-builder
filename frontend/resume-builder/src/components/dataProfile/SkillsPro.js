@@ -1,5 +1,5 @@
 import { ModeEdit } from "@mui/icons-material";
-import { Box, Button, Chip, styled, Typography } from "@mui/material";
+import { Box, Button, Chip, styled } from "@mui/material";
 import React from "react";
 import EmptyValue from "../EmptyValue";
 
@@ -18,7 +18,6 @@ const SkillsPro = ({ userData, setProfileStatus }) => {
           "#edit3": {
             display: "block",
           },
-         
         },
       }}
     >
@@ -46,7 +45,7 @@ const SkillsPro = ({ userData, setProfileStatus }) => {
             // justifyContent: "center",
             flexWrap: "wrap",
             listStyle: "none",
-            p:1.4,
+            p: 1.4,
             m: 0,
           }}
         >

@@ -6,6 +6,7 @@ import {
   Person,
   Person2,
   School,
+  Star,
   Work,
 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
@@ -32,6 +33,7 @@ import EducationalForm from "./formsProfile/EducationalForm";
 import LanguageSection from "./dataProfile/LanguageSection";
 import LanguageSort from "./dataProfile/LanguageSort";
 import LanguageForm from "./formsProfile/LanguageForm";
+import PreferencesSection from "./dataProfile/PreferencesSection";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -358,6 +360,26 @@ const Profile = () => {
             افزودن زبان
           </Button>
         )}
+      </Box>
+      {/* Preferences section */}
+      <Box border={1} borderColor="divider" marginTop={2}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          bgcolor={colors.grey[200]}
+          color={colors.grey[700]}
+          padding={1.5}
+        >
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Star />
+            <Typography variant="h6"> ترجیحات شغلی</Typography>
+          </Box>
+        </Box>
+        <Divider />
+        <PreferencesSection setProfileStatus={setProfileStatus} userData={userData}  />
       </Box>
       <Box padding={10}></Box>
     </Box>

@@ -4,7 +4,6 @@ import Grid from "@mui/material/Unstable_Grid2";
 import {
   AccessTime,
   BeachAccess,
-  Close,
   LocalLibrary,
   ModeEdit,
   Moving,
@@ -14,7 +13,7 @@ import {
 import EmptyValue from "../EmptyValue";
 import JobBenefitsItem from "./JobBenefitsItem";
 
-const benefitsItem = [
+export const benefitsItem = [
   {
     name: "امکان ترفیع سمت",
     icon: <Moving sx={{ transform: "scaleX(1)" }} />,
@@ -42,9 +41,7 @@ const benefitsItem = [
     nameEN: "food",
   },
 ];
-const ListItem = styled("li")(({ theme }) => ({
-  margin: theme.spacing(0.5),
-}));
+
 const PreferencesSection = ({ setProfileStatus, userData }) => {
   return (
     <Box
@@ -67,7 +64,7 @@ const PreferencesSection = ({ setProfileStatus, userData }) => {
         sx={{ display: { xs: "block", md: "none" } }}
         onClick={() =>
           setProfileStatus((last) => {
-            return { ...last, personInfoEditStatus: true };
+            return { ...last, preferencesEditStatus: true };
           })
         }
       >

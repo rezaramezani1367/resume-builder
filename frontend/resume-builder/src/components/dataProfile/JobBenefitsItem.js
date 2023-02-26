@@ -1,8 +1,8 @@
 import { Check, Close, Moving } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Box, colors } from "@mui/material";
 import React from "react";
 
-const JobBenefitsItem = ({ active, item }) => {
+const JobBenefitsItem = ({ active, item, editBenefitsItem }) => {
   return (
     <Box
       component="span"
@@ -14,6 +14,15 @@ const JobBenefitsItem = ({ active, item }) => {
         sx={{
           display: "flex",
           gap: 3.5,
+          transition: "hover 1s ",
+          userSelect: "none",
+          ":hover": editBenefitsItem
+            ? {
+                bgcolor: colors.grey[200],
+                cursor: "pointer",
+                transform: "scale(1.03)",
+              }
+            : {},
           color: active ? "info.main" : "error.main",
           alignItems: "center",
           border: 1,

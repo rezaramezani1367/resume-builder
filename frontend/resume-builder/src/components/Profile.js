@@ -34,6 +34,7 @@ import LanguageSection from "./dataProfile/LanguageSection";
 import LanguageSort from "./dataProfile/LanguageSort";
 import LanguageForm from "./formsProfile/LanguageForm";
 import PreferencesSection from "./dataProfile/PreferencesSection";
+import PreferencesForm from "./formsProfile/PreferencesForm";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const Profile = () => {
     editEducational: [],
     newLanguage: false,
     editLanguage: [],
+    preferencesEditStatus: false,
   });
 
   useEffect(() => {
@@ -379,7 +381,14 @@ const Profile = () => {
           </Box>
         </Box>
         <Divider />
-        <PreferencesSection setProfileStatus={setProfileStatus} userData={userData}  />
+        {profileStatus.preferencesEditStatus ? (
+          <PreferencesForm setProfileStatus={setProfileStatus}  profileStatus={profileStatus} />
+        ) : (
+          <PreferencesSection
+            setProfileStatus={setProfileStatus}
+            userData={userData}
+          />
+        )}
       </Box>
       <Box padding={10}></Box>
     </Box>

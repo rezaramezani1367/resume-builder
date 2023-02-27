@@ -2,7 +2,7 @@ import { Check, Close, Moving } from "@mui/icons-material";
 import { Box, colors } from "@mui/material";
 import React from "react";
 
-const JobBenefitsItem = ({ active, item, editBenefitsItem }) => {
+const JobBenefitsItem = ({ active, item, editBenefitsItem,handleStatus }) => {
   return (
     <Box
       component="span"
@@ -18,21 +18,22 @@ const JobBenefitsItem = ({ active, item, editBenefitsItem }) => {
           userSelect: "none",
           ":hover": editBenefitsItem
             ? {
-                bgcolor: colors.grey[200],
+                bgcolor: colors.grey.A100,
                 cursor: "pointer",
                 transform: "scale(1.03)",
               }
             : {},
-          color: active ? "info.main" : "error.main",
+          color: active ? "info.main" : colors.grey[500],
           alignItems: "center",
           border: 1,
-          borderColor: active ? "info.main" : "error.main",
+          borderColor: active ? "info.main" : colors.grey[600],
           borderRadius: 10,
           paddingY: 0.5,
           paddingX: 1.5,
           fontSize: 12,
           fontWeight: "bold",
         }}
+        onClick={handleStatus}
       >
         <Box
           sx={{

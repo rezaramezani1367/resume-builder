@@ -152,9 +152,22 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
           >
             آخرین شرکت:
           </Typography>
-          <Button variant="outlined" startIcon={<Add />}>
-            اضافه کردن سابقه کار
-          </Button>
+          {userData?.profile?.resumeSection.length ? (
+            <Typography
+              variant="p"
+              fontWeight={600}
+              sx={{ paddingTop: 0.5 }}
+              component="div"
+              color="secondary"
+            >
+              {userData?.profile?.resumeSection[0]?.resumeTitle}-
+              {userData?.profile?.resumeSection[0]?.companyName}
+            </Typography>
+          ) : (
+            <Button variant="outlined" startIcon={<Add />}>
+              اضافه کردن سابقه کار
+            </Button>
+          )}
         </Box>
         <Box>
           <Typography
@@ -165,9 +178,22 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
           >
             آخرین مدرک تحصیلی:
           </Typography>
-          <Button variant="outlined" startIcon={<Add />}>
-            اضافه‌کردن تحصیلات
-          </Button>
+          {userData?.profile?.resumeSection.length ? (
+            <Typography
+              variant="p"
+              fontWeight={600}
+              sx={{ paddingTop: 0.5 }}
+              component="div"
+              color="secondary"
+            >
+              {userData?.profile?.educationalSection[0]?.field} -
+              {userData?.profile?.educationalSection[0]?.universityName}
+            </Typography>
+          ) : (
+            <Button variant="outlined" startIcon={<Add />}>
+              اضافه‌کردن تحصیلات
+            </Button>
+          )}
         </Box>
 
         <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>

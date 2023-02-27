@@ -2,13 +2,18 @@ import {
   Autocomplete,
   Box,
   Button,
+  Checkbox,
   Chip,
   colors,
-  styled,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Close, Save } from "@mui/icons-material";
 import EmptyValue from "../EmptyValue";
@@ -17,6 +22,11 @@ import { benefitsItem } from "../dataProfile/PreferencesSection";
 import { updateProfile } from "../../redux/actionUser";
 import { useDispatch, useSelector } from "react-redux";
 import { ostans } from "../../utils/iran-cities-json";
+import { useFormik } from "formik";
+import { pink } from "@mui/material/colors";
+
+const seniorityList = ["تازه کار", "متخصص", "مدیر", "مدیر ارشد"];
+const contractList = ["تمام وقت", "پاره وقت", "دورکاری", "کارآموزی"];
 
 const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
   const [flag, setFlag] = useState(false);
@@ -28,15 +38,62 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
   } = useSelector((last) => last);
 
   const dispatch = useDispatch();
+  const validate = (values) => {
+    let errors = {};
+    if (!values.provinces.length) {
+      errors.provinces = "فیلد استان  نباید خالی باشد";
+    }
+    if (!values.categories.length) {
+      errors.categories = "فیلد دسته بندی  نباید خالی باشد";
+    }
+    if (!values.MinimumSalary) {
+      errors.MinimumSalary = "فیلد حقوق درخواستی  نباید خالی باشد";
+    }
+    if (!values.contractType.length) {
+      errors.contractType = "حداقل باید یک آیتم انتخاب شود";
+    }
+    if (!values.seniorityLevel.length) {
+      errors.seniorityLevel = "حداقل باید یک آیتم انتخاب شود";
+    }
+
+    return errors;
+  };
+  useEffect(() => {
+    if (flag && !userLoading && isSuccess) {
+      setProfileStatus((last) => {
+        return { ...last, preferencesEditStatus: false };
+      });
+      setFlag(false);
+    }
+  }, [userLoading, isSuccess, flag]);
+
+  const formik = useFormik({
+    initialValues: {
+      jobBenefits: userData?.profile?.preferencesSection?.jobBenefits,
+      provinces: userData?.profile?.preferencesSection?.provinces ?? null,
+      categories: userData?.profile?.preferencesSection?.categories ?? null,
+      MinimumSalary:
+        userData?.profile?.preferencesSection?.MinimumSalary ?? null,
+      contractType: userData?.profile?.preferencesSection?.contractType ?? [],
+      seniorityLevel:
+        userData?.profile?.preferencesSection?.seniorityLevel ?? [],
+    },
+    onSubmit: (values) => {
+      setFlag(true);
+      dispatch(updateProfile({ preferencesSection: values }));
+    },
+    validate,
+  });
+  console.log(formik.values);
   return (
     <Box
       padding={2}
       component="form"
       noValidate
       autoComplete="off"
-      //   onSubmit={formik.handleSubmit}
+      onSubmit={formik.handleSubmit}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
         <Grid xs={12} sm={6}>
           <Autocomplete
             multiple
@@ -46,6 +103,13 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
             getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField
+                error={formik.errors.provinces && formik.touched.provinces}
+                helperText={
+                  formik.errors.provinces && formik.touched.provinces
+                    ? formik.errors.provinces
+                    : ""
+                }
+                name="provinces"
                 {...params}
                 label="استان‌های مورد نظر برای کار"
                 placeholder="انتخاب کنید"
@@ -58,6 +122,11 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
                 }}
               />
             )}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            value={formik.values?.provinces}
+            onChange={(event, value) => {
+              formik.setFieldValue("provinces", value);
+            }}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
@@ -73,12 +142,23 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
         <Grid xs={12} sm={6}>
           <Autocomplete
             multiple
-            id="ostanMultiple"
             size="small"
             options={categoryList}
             getOptionLabel={(option) => option.name}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            value={formik.values?.categories}
+            onChange={(event, value) => {
+              formik.setFieldValue("categories", value);
+            }}
             renderInput={(params) => (
               <TextField
+                error={formik.errors.categories && formik.touched.categories}
+                helperText={
+                  formik.errors.categories && formik.touched.categories
+                    ? formik.errors.categories
+                    : ""
+                }
+                name="categories"
                 {...params}
                 label="دسته‌بندی شغلی و زمینه‌کاری"
                 placeholder="انتخاب کنید"
@@ -104,82 +184,152 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
           />
         </Grid>
         <Grid xs={12} sm={6}>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            color={colors.grey[800]}
-            fontWeight={600}
+          <FormControl
+            required
+            error={
+              formik.errors.seniorityLevel && formik.touched.seniorityLevel
+            }
           >
-            سطح ارشدیت در زمینه فعالیت:
-          </Typography>
-          {userData.profile?.preferencesSection?.seniorityLevel?.length ? (
-            <Box
+            <FormLabel
+              component="legend"
+              sx={{ color: colors.grey[800], fontWeight: 600 }}
+            >
+              {" "}
+              سطح ارشدیت در زمینه فعالیت:
+            </FormLabel>
+            <FormGroup
               sx={{
-                display: "flex",
-                flexWrap: "wrap",
                 paddingY: 0.5,
-                gap: 1,
+                "& span": {
+                  paddingY: 0.25,
+                  fontSize: 14,
+                  fontWeight: 500,
+                },
               }}
             >
-              {userData.profile?.preferencesSection?.seniorityLevel.map(
-                (data, index) => {
-                  return (
-                    <Chip
-                      key={`${data}-${index}`}
-                      label={data}
-                      variant="outlined"
-                      size="small"
-                    />
-                  );
-                }
-              )}
-            </Box>
-          ) : (
-            <EmptyValue />
-          )}
+              {seniorityList.map((data, index) => {
+                return (
+                  <FormControlLabel
+                    key={`${data}-${index}`}
+                    control={
+                      <Checkbox
+                        size="small"
+                        checked={formik.values?.seniorityLevel?.includes(data)}
+                        onChange={(event) => {
+                          const status = event.target.checked;
+                          status
+                            ? formik.setFieldValue("seniorityLevel", [
+                                ...formik.values?.seniorityLevel,
+                                data,
+                              ])
+                            : formik.setFieldValue(
+                                "seniorityLevel",
+                                formik.values?.seniorityLevel.filter(
+                                  (item) => item != data
+                                )
+                              );
+                        }}
+                        sx={{
+                          transform: "scaleX(-1)",
+                        }}
+                        color="success"
+                      />
+                    }
+                    label={data}
+                  />
+                );
+              })}
+            </FormGroup>
+            {formik.errors.seniorityLevel && formik.touched.seniorityLevel && (
+              <FormHelperText error>
+                {formik.errors.seniorityLevel}
+              </FormHelperText>
+            )}
+          </FormControl>
         </Grid>
         <Grid xs={12} sm={6}>
-          <Typography
-            variant="subtitle1"
-            component="div"
-            color={colors.grey[800]}
-            fontWeight={600}
+          <FormControl
+            required
+            error={formik.errors.contractType && formik.touched.contractType}
           >
-            نوع قراردادهای قابل قبول:
-          </Typography>
-          {userData.profile?.preferencesSection?.contractType?.length ? (
-            <Box
+            <FormLabel
+              component="legend"
+              sx={{ color: colors.grey[800], fontWeight: 600 }}
+            >
+              {" "}
+              نوع قراردادهای قابل قبول:
+            </FormLabel>
+            <FormGroup
               sx={{
-                display: "flex",
-                flexWrap: "wrap",
                 paddingY: 0.5,
-                gap: 1,
+                "& span": {
+                  paddingY: 0.25,
+                  fontSize: 14,
+                  fontWeight: 500,
+                },
               }}
             >
-              {userData.profile?.preferencesSection?.contractType.map(
-                (data, index) => {
-                  return (
-                    <Chip
-                      key={`${data}-${index}`}
-                      label={data}
-                      variant="outlined"
-                      size="small"
-                    />
-                  );
-                }
-              )}
-            </Box>
-          ) : (
-            <EmptyValue />
-          )}
+              {contractList.map((data, index) => {
+                return (
+                  <FormControlLabel
+                    key={`${data}-${index}`}
+                    control={
+                      <Checkbox
+                        size="small"
+                        checked={formik.values?.contractType?.includes(data)}
+                        onChange={(event) => {
+                          const status = event.target.checked;
+                          status
+                            ? formik.setFieldValue("contractType", [
+                                ...formik.values?.contractType,
+                                data,
+                              ])
+                            : formik.setFieldValue(
+                                "contractType",
+                                formik.values?.contractType.filter(
+                                  (item) => item != data
+                                )
+                              );
+                        }}
+                        sx={{
+                          transform: "scaleX(-1)",
+                        }}
+                        color="success"
+                      />
+                    }
+                    label={data}
+                  />
+                );
+              })}
+            </FormGroup>
+            {formik.errors.contractType && formik.touched.contractType && (
+              <FormHelperText error>
+                {formik.errors.contractType}
+              </FormHelperText>
+            )}
+          </FormControl>
         </Grid>
         <Grid xs={12} sm={6}>
           <Autocomplete
             size="small"
             options={salaryList}
             getOptionLabel={(option) => option.name}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            value={formik.values?.MinimumSalary}
+            onChange={(event, value) => {
+              formik.setFieldValue("MinimumSalary", value);
+            }}
             renderInput={(params) => (
               <TextField
+                error={
+                  formik.errors.MinimumSalary && formik.touched.MinimumSalary
+                }
+                helperText={
+                  formik.errors.MinimumSalary && formik.touched.MinimumSalary
+                    ? formik.errors.MinimumSalary
+                    : ""
+                }
+                name="MinimumSalary"
                 {...params}
                 label=" حداقل حقوق درخواستی"
                 placeholder="انتخاب کنید"
@@ -216,11 +366,13 @@ const PreferencesForm = ({ setProfileStatus, profileStatus }) => {
                 editBenefitsItem={profileStatus.preferencesEditStatus}
                 key={item.name}
                 item={item}
-                active={
-                  userData?.profile?.preferencesSection?.jobBenefits[
-                    item.nameEN
-                  ]
-                }
+                active={formik.values.jobBenefits[item.nameEN]}
+                handleStatus={() => {
+                  formik.setFieldValue("jobBenefits", {
+                    ...formik.values.jobBenefits,
+                    [item.nameEN]: !formik.values.jobBenefits[item.nameEN],
+                  });
+                }}
               />
             ))}
           </Box>

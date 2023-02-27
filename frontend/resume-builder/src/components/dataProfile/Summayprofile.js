@@ -99,8 +99,20 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           {" "}
           آخرین شرکت:
         </Typography>
-        <Typography variant="p" fontWeight={600} component="span">
-          {userData?.profile?.company ?? <EmptyValue />}
+        <Typography
+          variant="p"
+          fontWeight={500}
+          component="span"
+          color="secondary"
+        >
+          {userData?.profile?.resumeSection.length ? (
+            <>
+              {userData?.profile?.resumeSection[0]?.resumeTitle} -
+              {userData?.profile?.resumeSection[0]?.companyName}
+            </>
+          ) : (
+            <EmptyValue />
+          )}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>
@@ -113,8 +125,20 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           {" "}
           آخرین مدرک تحصیلی:
         </Typography>
-        <Typography variant="p" fontWeight={600} component="span">
-          {userData?.profile?.madrak ?? <EmptyValue />}
+        <Typography
+          variant="p"
+          fontWeight={500}
+          component="span"
+          color="secondary"
+        >
+          {userData?.profile?.educationalSection.length ? (
+            <>
+              {userData?.profile?.educationalSection[0]?.field} -
+              {userData?.profile?.educationalSection[0]?.universityName}
+            </>
+          ) : (
+            <EmptyValue />
+          )}
         </Typography>
       </Stack>
       <Stack direction="row" gap={2}>

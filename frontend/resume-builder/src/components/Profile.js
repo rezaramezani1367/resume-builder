@@ -184,7 +184,7 @@ const Profile = () => {
         )}
       </Box>
       {/* resume section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
+      <Box border={1} borderColor="divider" marginTop={2} id="resume-section">
         <Box
           sx={{
             display: "flex",
@@ -244,8 +244,9 @@ const Profile = () => {
         )}
       </Box>
       {/* educational section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
+      <Box border={1} borderColor="divider" marginTop={2} id="education-section">
         <Box
+
           sx={{
             display: "flex",
             justifyContent: "space-between",

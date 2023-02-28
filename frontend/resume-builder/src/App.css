@@ -9,7 +9,9 @@ body,
 * {
   font-family: vazir !important;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 .MuiSvgIcon-root {
   transform: scaleX(-1);
 }

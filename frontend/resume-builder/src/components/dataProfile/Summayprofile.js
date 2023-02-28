@@ -106,10 +106,20 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           color="secondary"
         >
           {userData?.profile?.resumeSection.length ? (
-            <>
+            <Button
+              size="small"
+              variant="text"
+              sx={{ paddingTop: 0.5, fontWeight: 700 }}
+              color="secondary"
+              onClick={() => {
+                const element = document
+                  .getElementById("resume-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               {userData?.profile?.resumeSection[0]?.resumeTitle} -
               {userData?.profile?.resumeSection[0]?.companyName}
-            </>
+            </Button>
           ) : (
             <EmptyValue />
           )}
@@ -132,10 +142,20 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
           color="secondary"
         >
           {userData?.profile?.educationalSection.length ? (
-            <>
+            <Button
+              size="small"
+              variant="text"
+              sx={{ paddingTop: 0.5, fontWeight: 700 }}
+              color="secondary"
+              onClick={() => {
+                const element = document
+                  .getElementById("education-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               {userData?.profile?.educationalSection[0]?.field} -
               {userData?.profile?.educationalSection[0]?.universityName}
-            </>
+            </Button>
           ) : (
             <EmptyValue />
           )}

@@ -153,18 +153,34 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
             آخرین شرکت:
           </Typography>
           {userData?.profile?.resumeSection.length ? (
-            <Typography
-              variant="p"
-              fontWeight={600}
-              sx={{ paddingTop: 0.5 }}
-              component="div"
+            <Button
+              size="small"
+              variant="text"
+              sx={{ paddingTop: 0.5, fontWeight: 700 }}
               color="secondary"
+              onClick={() => {
+                document
+                  .getElementById("resume-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
             >
               {userData?.profile?.resumeSection[0]?.resumeTitle}-
               {userData?.profile?.resumeSection[0]?.companyName}
-            </Typography>
+            </Button>
           ) : (
-            <Button variant="outlined" startIcon={<Add />}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<Add />}
+              onClick={() => {
+                document
+                  .getElementById("resume-section")
+                  .scrollIntoView({ behavior: "smooth" });
+                setProfileStatus((last) => {
+                  return { ...last, newResume: true };
+                });
+              }}
+            >
               اضافه کردن سابقه کار
             </Button>
           )}
@@ -179,18 +195,35 @@ const SummaryProfileForm = ({ setProfileStatus }) => {
             آخرین مدرک تحصیلی:
           </Typography>
           {userData?.profile?.resumeSection.length ? (
-            <Typography
-              variant="p"
-              fontWeight={600}
-              sx={{ paddingTop: 0.5 }}
-              component="div"
+            <Button
+              size="small"
+              variant="text"
+              sx={{ paddingTop: 0.5, fontWeight: 700 }}
               color="secondary"
+              onClick={() => {
+                document
+                  .getElementById("education-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
             >
               {userData?.profile?.educationalSection[0]?.field} -
               {userData?.profile?.educationalSection[0]?.universityName}
-            </Typography>
+            </Button>
           ) : (
-            <Button variant="outlined" startIcon={<Add />}>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Add />}
+              onClick={() => {
+                document
+                  .getElementById("education-section")
+                  .scrollIntoView({ behavior: "smooth" });
+
+                setProfileStatus((last) => {
+                  return { ...last, newEducational: true };
+                });
+              }}
+            >
               اضافه‌کردن تحصیلات
             </Button>
           )}

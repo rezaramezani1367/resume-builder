@@ -1,7 +1,8 @@
-import { Box, Button, colors, Divider, Typography } from "@mui/material";
+import { Box, Button, colors, Divider, Fab, Typography } from "@mui/material";
 import {
   Add,
   HowToReg,
+  KeyboardArrowUp,
   Language,
   Person,
   Person2,
@@ -37,6 +38,14 @@ import PreferencesSection from "./dataProfile/PreferencesSection";
 import PreferencesForm from "./formsProfile/PreferencesForm";
 
 const Profile = () => {
+  const [showTopBtn, setShowTopBtn] = useState(false);
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -62,6 +71,9 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(getUserTest());
+    window.addEventListener("scroll", () =>
+      window.scrollY > 300 ? setShowTopBtn(true) : setShowTopBtn(false)
+    );
   }, []);
   // for edit or read resume items
   useEffect(() => {
@@ -244,9 +256,13 @@ const Profile = () => {
         )}
       </Box>
       {/* educational section */}
-      <Box border={1} borderColor="divider" marginTop={2} id="education-section">
+      <Box
+        border={1}
+        borderColor="divider"
+        marginTop={2}
+        id="education-section"
+      >
         <Box
-
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -383,7 +399,10 @@ const Profile = () => {
         </Box>
         <Divider />
         {profileStatus.preferencesEditStatus ? (
-          <PreferencesForm setProfileStatus={setProfileStatus}  profileStatus={profileStatus} />
+          <PreferencesForm
+            setProfileStatus={setProfileStatus}
+            profileStatus={profileStatus}
+          />
         ) : (
           <PreferencesSection
             setProfileStatus={setProfileStatus}
@@ -391,7 +410,20 @@ const Profile = () => {
           />
         )}
       </Box>
-      <Box padding={10}></Box>
+      {/* go to top */}
+      {showTopBtn && (
+        <Box position="fixed" bottom={20} left={15}>
+          <Fab
+            color="success"
+            size="small"
+            aria-label="add"
+            sx={{ opacity: 0.75 }}
+            onClick={goToTop}
+          >
+            <KeyboardArrowUp />
+          </Fab>
+        </Box>
+      )}
     </Box>
   );
 };

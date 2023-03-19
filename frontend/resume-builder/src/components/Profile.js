@@ -411,19 +411,27 @@ const Profile = () => {
         )}
       </Box>
       {/* go to top */}
-      {showTopBtn && (
-        <Box position="fixed" bottom={20} left={15}>
-          <Fab
-            color="success"
-            size="small"
-            aria-label="add"
-            sx={{ opacity: 0.75 }}
-            onClick={goToTop}
-          >
-            <KeyboardArrowUp />
-          </Fab>
-        </Box>
-      )}
+
+      <Box
+        position="fixed"
+        bottom={20}
+        left={15}
+        sx={{
+          opacity: showTopBtn ? 1 : 0,
+          transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+          visibility: showTopBtn ? "visible" : "hidden",
+        }}
+      >
+        <Fab
+          color="success"
+          size="small"
+          aria-label="add"
+          sx={{ opacity: 0.75 }}
+          onClick={goToTop}
+        >
+          <KeyboardArrowUp />
+        </Fab>
+      </Box>
     </Box>
   );
 };

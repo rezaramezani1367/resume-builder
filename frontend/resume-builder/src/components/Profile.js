@@ -1,4 +1,12 @@
-import { Box, Button, colors, Divider, Fab, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  colors,
+  Container,
+  Divider,
+  Fab,
+  Typography,
+} from "@mui/material";
 import {
   Add,
   HowToReg,
@@ -104,335 +112,340 @@ const Profile = () => {
   }, [userData.profile?.languageSection]);
 
   return (
-    <Box>
-      {/* section 1 include image && Summary  info */}
-      <LoadingDialog userLoading={userLoading} />
-      <Grid container sx={{ border: 1, borderColor: "divider" }}>
-        <Grid
-          xs={12}
-          md={3}
-          sx={{
-            borderRight: { xs: 0, md: 1 },
-            borderBottom: { xs: 1, md: 0 },
-            borderColor: { xs: "divider", md: "divider" },
-            padding: 2,
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          <ImageUploadForm userData={userData} />
+    <Container>
+      <Box paddingY={4}>
+        {/* section 1 include image && Summary  info */}
+        <LoadingDialog userLoading={userLoading} />
+        <Grid container sx={{ border: 1, borderColor: "divider" }}>
+          <Grid
+            xs={12}
+            md={3}
+            sx={{
+              borderRight: { xs: 0, md: 1 },
+              borderBottom: { xs: 1, md: 0 },
+              borderColor: { xs: "divider", md: "divider" },
+              padding: 2,
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <ImageUploadForm userData={userData} />
+          </Grid>
+          {profileStatus.summaryEditStatus ? (
+            <SummaryProfileForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <Summayprofile
+              setProfileStatus={setProfileStatus}
+              userData={userData}
+            />
+          )}
         </Grid>
-        {profileStatus.summaryEditStatus ? (
-          <SummaryProfileForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <Summayprofile
-            setProfileStatus={setProfileStatus}
-            userData={userData}
-          />
-        )}
-      </Grid>
 
-      {/* section 2 includes personal information */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1, alignItems: "center" }}
-          padding={1.5}
-        >
-          <Person />
-          <Typography variant="h6">اطلاعات فردی</Typography>
-        </Box>
-        <Divider />
-        {profileStatus.personInfoEditStatus ? (
-          <PersonalInfoForm
-            setProfileStatus={setProfileStatus}
-            userData={userData}
-          />
-        ) : (
-          <PersonInfoPrfile
-            setProfileStatus={setProfileStatus}
-            userData={userData}
-          />
-        )}
-      </Box>
-      {/* about section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1, alignItems: "center" }}
-          padding={1.5}
-        >
-          <Person2 />
-          <Typography variant="h6"> درباره‌ی من</Typography>
-        </Box>
-        <Divider />
-        {profileStatus.aboutMeEditStatus ? (
-          <AboutMeForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <AboutMe setProfileStatus={setProfileStatus} userData={userData} />
-        )}
-      </Box>
-      {/* skill section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          sx={{ display: "flex", gap: 1, alignItems: "center" }}
-          padding={1.5}
-        >
-          <HowToReg />
-          <Typography variant="h6"> مهارت های حرفه ای </Typography>
-        </Box>
-        <Divider />
-        {profileStatus.skillProEditStatus ? (
-          <SkillsProForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <SkillsPro setProfileStatus={setProfileStatus} userData={userData} />
-        )}
-      </Box>
-      {/* resume section */}
-      <Box border={1} borderColor="divider" marginTop={2} id="resume-section">
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          padding={1.5}
-        >
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Work />
-            <Typography variant="h6"> سوابق شغلی</Typography>
+        {/* section 2 includes personal information */}
+        <Box border={1} borderColor="divider" marginTop={2}>
+          <Box
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            sx={{ display: "flex", gap: 1, alignItems: "center" }}
+            padding={1.5}
+          >
+            <Person />
+            <Typography variant="h6">اطلاعات فردی</Typography>
           </Box>
-          {Boolean(userData?.profile?.resumeSection?.length > 1) && (
-            <ResumeSort
+          <Divider />
+          {profileStatus.personInfoEditStatus ? (
+            <PersonalInfoForm
               setProfileStatus={setProfileStatus}
-              profileStatus={profileStatus}
+              userData={userData}
+            />
+          ) : (
+            <PersonInfoPrfile
+              setProfileStatus={setProfileStatus}
+              userData={userData}
             />
           )}
         </Box>
-        <Divider />
-        {userData?.profile?.resumeSection.map((item, index) =>
-          profileStatus.editResume[index] ? (
-            <ResumeForm
-              key={index}
-              index={index}
-              setProfileStatus={setProfileStatus}
-            />
-          ) : (
-            <ResumeSection
-              setProfileStatus={setProfileStatus}
-              index={index}
-              item={item}
-              key={`${item.resumeTitle}-${index}`}
-            />
-          )
-        )}
-        {profileStatus.newResume ? (
-          <ResumeForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <Button
-            startIcon={<Add />}
-            variant="text"
-            color="inherit"
-            size="large"
-            fullWidth
-            sx={{ borderRadius: 0 }}
-            onClick={() =>
-              setProfileStatus((last) => {
-                return { ...last, newResume: true };
-              })
-            }
+        {/* about section */}
+        <Box border={1} borderColor="divider" marginTop={2}>
+          <Box
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            sx={{ display: "flex", gap: 1, alignItems: "center" }}
+            padding={1.5}
           >
-            ایجاد سابقه‌کاری
-          </Button>
-        )}
-      </Box>
-      {/* educational section */}
-      <Box
-        border={1}
-        borderColor="divider"
-        marginTop={2}
-        id="education-section"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          padding={1.5}
-        >
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <School />
-            <Typography variant="h6"> سوابق تحصیلی</Typography>
+            <Person2 />
+            <Typography variant="h6"> درباره‌ی من</Typography>
           </Box>
-          {Boolean(userData?.profile?.educationalSection?.length > 1) && (
-            <EducationalSort
+          <Divider />
+          {profileStatus.aboutMeEditStatus ? (
+            <AboutMeForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <AboutMe setProfileStatus={setProfileStatus} userData={userData} />
+          )}
+        </Box>
+        {/* skill section */}
+        <Box border={1} borderColor="divider" marginTop={2}>
+          <Box
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            sx={{ display: "flex", gap: 1, alignItems: "center" }}
+            padding={1.5}
+          >
+            <HowToReg />
+            <Typography variant="h6"> مهارت های حرفه ای </Typography>
+          </Box>
+          <Divider />
+          {profileStatus.skillProEditStatus ? (
+            <SkillsProForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <SkillsPro
               setProfileStatus={setProfileStatus}
-              profileStatus={profileStatus}
+              userData={userData}
             />
           )}
         </Box>
-        <Divider />
-        {userData?.profile?.educationalSection.map((item, index) =>
-          profileStatus.editEducational[index] ? (
-            <EducationalForm
-              key={index}
-              index={index}
-              setProfileStatus={setProfileStatus}
-            />
-          ) : (
-            <EducationalSection
-              setProfileStatus={setProfileStatus}
-              index={index}
-              item={item}
-              key={`${item.field}-${index}`}
-            />
-          )
-        )}
-        {profileStatus.newEducational ? (
-          <EducationalForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <Button
-            startIcon={<Add />}
-            variant="text"
-            color="inherit"
-            size="large"
-            fullWidth
-            sx={{ borderRadius: 0 }}
-            onClick={() =>
-              setProfileStatus((last) => {
-                return { ...last, newEducational: true };
-              })
-            }
+        {/* resume section */}
+        <Box border={1} borderColor="divider" marginTop={2} id="resume-section">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            padding={1.5}
           >
-            ایجاد سابقه تحصیلی
-          </Button>
-        )}
-      </Box>
-      {/* language section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          padding={1.5}
-        >
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Language />
-            <Typography variant="h6"> زبان ها</Typography>
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Work />
+              <Typography variant="h6"> سوابق شغلی</Typography>
+            </Box>
+            {Boolean(userData?.profile?.resumeSection?.length > 1) && (
+              <ResumeSort
+                setProfileStatus={setProfileStatus}
+                profileStatus={profileStatus}
+              />
+            )}
           </Box>
-          {Boolean(userData?.profile?.languageSection?.length > 1) && (
-            <LanguageSort
+          <Divider />
+          {userData?.profile?.resumeSection.map((item, index) =>
+            profileStatus.editResume[index] ? (
+              <ResumeForm
+                key={index}
+                index={index}
+                setProfileStatus={setProfileStatus}
+              />
+            ) : (
+              <ResumeSection
+                setProfileStatus={setProfileStatus}
+                index={index}
+                item={item}
+                key={`${item.resumeTitle}-${index}`}
+              />
+            )
+          )}
+          {profileStatus.newResume ? (
+            <ResumeForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <Button
+              startIcon={<Add />}
+              variant="text"
+              color="inherit"
+              size="large"
+              fullWidth
+              sx={{ borderRadius: 0 }}
+              onClick={() =>
+                setProfileStatus((last) => {
+                  return { ...last, newResume: true };
+                })
+              }
+            >
+              ایجاد سابقه‌کاری
+            </Button>
+          )}
+        </Box>
+        {/* educational section */}
+        <Box
+          border={1}
+          borderColor="divider"
+          marginTop={2}
+          id="education-section"
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            padding={1.5}
+          >
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <School />
+              <Typography variant="h6"> سوابق تحصیلی</Typography>
+            </Box>
+            {Boolean(userData?.profile?.educationalSection?.length > 1) && (
+              <EducationalSort
+                setProfileStatus={setProfileStatus}
+                profileStatus={profileStatus}
+              />
+            )}
+          </Box>
+          <Divider />
+          {userData?.profile?.educationalSection.map((item, index) =>
+            profileStatus.editEducational[index] ? (
+              <EducationalForm
+                key={index}
+                index={index}
+                setProfileStatus={setProfileStatus}
+              />
+            ) : (
+              <EducationalSection
+                setProfileStatus={setProfileStatus}
+                index={index}
+                item={item}
+                key={`${item.field}-${index}`}
+              />
+            )
+          )}
+          {profileStatus.newEducational ? (
+            <EducationalForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <Button
+              startIcon={<Add />}
+              variant="text"
+              color="inherit"
+              size="large"
+              fullWidth
+              sx={{ borderRadius: 0 }}
+              onClick={() =>
+                setProfileStatus((last) => {
+                  return { ...last, newEducational: true };
+                })
+              }
+            >
+              ایجاد سابقه تحصیلی
+            </Button>
+          )}
+        </Box>
+        {/* language section */}
+        <Box border={1} borderColor="divider" marginTop={2}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            padding={1.5}
+          >
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Language />
+              <Typography variant="h6"> زبان ها</Typography>
+            </Box>
+            {Boolean(userData?.profile?.languageSection?.length > 1) && (
+              <LanguageSort
+                setProfileStatus={setProfileStatus}
+                profileStatus={profileStatus}
+              />
+            )}
+          </Box>
+          <Divider />
+          {userData?.profile?.languageSection.map((item, index) =>
+            profileStatus.editLanguage[index] ? (
+              <LanguageForm
+                key={index}
+                index={index}
+                setProfileStatus={setProfileStatus}
+              />
+            ) : (
+              <LanguageSection
+                setProfileStatus={setProfileStatus}
+                index={index}
+                item={item}
+                key={`${item.field}-${index}`}
+              />
+            )
+          )}
+          {profileStatus.newLanguage ? (
+            <LanguageForm setProfileStatus={setProfileStatus} />
+          ) : (
+            <Button
+              startIcon={<Add />}
+              variant="text"
+              color="inherit"
+              size="large"
+              fullWidth
+              sx={{ borderRadius: 0 }}
+              onClick={() =>
+                setProfileStatus((last) => {
+                  return { ...last, newLanguage: true };
+                })
+              }
+            >
+              افزودن زبان
+            </Button>
+          )}
+        </Box>
+        {/* Preferences section */}
+        <Box border={1} borderColor="divider" marginTop={2}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            bgcolor={colors.grey[200]}
+            color={colors.grey[700]}
+            padding={1.5}
+          >
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Star />
+              <Typography variant="h6"> ترجیحات شغلی</Typography>
+            </Box>
+          </Box>
+          <Divider />
+          {profileStatus.preferencesEditStatus ? (
+            <PreferencesForm
               setProfileStatus={setProfileStatus}
               profileStatus={profileStatus}
             />
+          ) : (
+            <PreferencesSection
+              setProfileStatus={setProfileStatus}
+              userData={userData}
+            />
           )}
         </Box>
-        <Divider />
-        {userData?.profile?.languageSection.map((item, index) =>
-          profileStatus.editLanguage[index] ? (
-            <LanguageForm
-              key={index}
-              index={index}
-              setProfileStatus={setProfileStatus}
-            />
-          ) : (
-            <LanguageSection
-              setProfileStatus={setProfileStatus}
-              index={index}
-              item={item}
-              key={`${item.field}-${index}`}
-            />
-          )
-        )}
-        {profileStatus.newLanguage ? (
-          <LanguageForm setProfileStatus={setProfileStatus} />
-        ) : (
-          <Button
-            startIcon={<Add />}
-            variant="text"
-            color="inherit"
-            size="large"
-            fullWidth
-            sx={{ borderRadius: 0 }}
-            onClick={() =>
-              setProfileStatus((last) => {
-                return { ...last, newLanguage: true };
-              })
-            }
-          >
-            افزودن زبان
-          </Button>
-        )}
-      </Box>
-      {/* Preferences section */}
-      <Box border={1} borderColor="divider" marginTop={2}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-          bgcolor={colors.grey[200]}
-          color={colors.grey[700]}
-          padding={1.5}
-        >
-          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Star />
-            <Typography variant="h6"> ترجیحات شغلی</Typography>
-          </Box>
-        </Box>
-        <Divider />
-        {profileStatus.preferencesEditStatus ? (
-          <PreferencesForm
-            setProfileStatus={setProfileStatus}
-            profileStatus={profileStatus}
-          />
-        ) : (
-          <PreferencesSection
-            setProfileStatus={setProfileStatus}
-            userData={userData}
-          />
-        )}
-      </Box>
-      {/* go to top */}
+        {/* go to top */}
 
-      <Box
-        position="fixed"
-        bottom={20}
-        left={15}
-        sx={{
-          opacity: showTopBtn ? 1 : 0,
-          transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-          visibility: showTopBtn ? "visible" : "hidden",
-        }}
-      >
-        <Fab
-          color="success"
-          size="small"
-          aria-label="add"
-          sx={{ opacity: 0.75 }}
-          onClick={goToTop}
+        <Box
+          position="fixed"
+          bottom={20}
+          left={15}
+          sx={{
+            opacity: showTopBtn ? 1 : 0,
+            transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+            visibility: showTopBtn ? "visible" : "hidden",
+          }}
         >
-          <KeyboardArrowUp />
-        </Fab>
+          <Fab
+            color="success"
+            size="small"
+            aria-label="add"
+            sx={{ opacity: 0.75 }}
+            onClick={goToTop}
+          >
+            <KeyboardArrowUp />
+          </Fab>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   );
 };
 

@@ -164,20 +164,20 @@ const Summayprofile = ({ setProfileStatus, userData }) => {
       <Stack direction="row" gap={2}>
         <NavLink
           style={{ color: "inherit", textDecoration: "inherit" }}
-          to="/login"
+          to="/user/resume"
         >
           <Button variant="outlined" startIcon={<Visibility />}>
             مشاهده رزومه
           </Button>
         </NavLink>
-        <NavLink
+        {/* <NavLink
           style={{ color: "inherit", textDecoration: "inherit" }}
           to="/login"
         >
           <Button variant="outlined" startIcon={<Grading />}>
             دریافت فایل رزومه
           </Button>
-        </NavLink>
+        </NavLink> */}
       </Stack>
     </Grid>
   );

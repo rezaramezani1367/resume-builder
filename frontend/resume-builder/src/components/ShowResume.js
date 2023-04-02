@@ -3,9 +3,8 @@ import {
   CalendarMonth,
   DoubleArrowRounded,
   Download,
-  Fastfood,
   Info,
-  LaptopMac,
+  Language,
   NavigateNext,
   Print,
   Share,
@@ -23,10 +22,10 @@ import {
   Container,
   Stack,
 } from "@mui/material";
-
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import "./ShowResume.css";
 import {
   Timeline,
   TimelineConnector,
@@ -36,10 +35,29 @@ import {
   timelineItemClasses,
   TimelineSeparator,
 } from "@mui/lab";
+import { getUserTest } from "../redux/actionUser";
+import LoadingDialog from "./LoadingDialog";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import { DateObject } from "react-multi-date-picker";
+import { baseUrl } from "../redux/constants";
 
 const ShowResume = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    user: {
+      userLoading,
+      userData: { isSuccess, userData },
+      userError,
+    },
+  } = useSelector((last) => last);
+  useEffect(() => {
+    dispatch(getUserTest());
+  }, []);
   return (
     <Box sx={{ bgcolor: "#333333", minHeight: "100vh" }}>
+      <LoadingDialog userLoading={userLoading} />
       {/* header */}
       <Box
         bgcolor="#000"
@@ -140,7 +158,7 @@ const ShowResume = () => {
                   display: "flex",
                   flexDirection: "column",
                   gap: 4,
-                  backgroundColor: "#eee",
+                  bgcolor: { xs: "", md: "#eee" },
                 }}
               >
                 {/* section1 */}
@@ -153,13 +171,17 @@ const ShowResume = () => {
                     gap: 1,
                   }}
                 >
-                  <Avatar alt="" src="" sx={{ width: 80, height: 80 }} />
+                  <Avatar
+                    alt=""
+                    src={userData?.image ? `${baseUrl}/${userData?.image}` : ""}
+                    sx={{ width: 80, height: 80 }}
+                  />
                   <Typography
                     color={colors.grey[700]}
                     fontWeight={600}
                     fontSize={18}
                   >
-                    رضا رمضانی
+                    {userData?.profile?.fullname}
                   </Typography>
                 </Box>
                 <Box>
@@ -189,7 +211,7 @@ const ShowResume = () => {
                         تخصص :
                       </Typography>
                       <Typography fontSize={14}>
-                        کارشناس IT-برنامه نویس
+                        {userData?.profile?.jobTitle}
                       </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
@@ -200,7 +222,7 @@ const ShowResume = () => {
                       >
                         آدرس ایمیل :
                       </Typography>
-                      <Typography fontSize={14}>reza30361@yahoo.com</Typography>
+                      <Typography fontSize={14}>{userData?.email}</Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -210,7 +232,9 @@ const ShowResume = () => {
                       >
                         شماره موبایل :
                       </Typography>
-                      <Typography fontSize={14}>۰۹۳۹۶۱۶۰۰۸۹</Typography>
+                      <Typography fontSize={14}>
+                        {userData.profile?.mobile}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -220,7 +244,13 @@ const ShowResume = () => {
                       >
                         سال تولد :
                       </Typography>
-                      <Typography fontSize={14}>1367</Typography>
+                      <Typography fontSize={14}>
+                        {new DateObject({
+                          date: `${userData.profile?.birthday}`,
+                          locale: persian_fa,
+                          calendar: persian,
+                        }).format("D MMMM YYYY")}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -230,7 +260,9 @@ const ShowResume = () => {
                       >
                         جنسیت :
                       </Typography>
-                      <Typography fontSize={14}>مرد</Typography>
+                      <Typography fontSize={14}>
+                        {userData.profile?.gender}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -240,7 +272,9 @@ const ShowResume = () => {
                       >
                         وضعیت سربازی :
                       </Typography>
-                      <Typography fontSize={14}>انجام شده</Typography>
+                      <Typography fontSize={14}>
+                        {userData.profile?.militarySituation.name}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -250,7 +284,9 @@ const ShowResume = () => {
                       >
                         وضعیت تأهل :
                       </Typography>
-                      <Typography fontSize={14}>مجرد</Typography>
+                      <Typography fontSize={14}>
+                        {userData.profile?.maritalStatus}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -260,7 +296,9 @@ const ShowResume = () => {
                       >
                         استان سکونت :
                       </Typography>
-                      <Typography fontSize={14}>تهران</Typography>
+                      <Typography fontSize={14}>
+                        {userData.profile?.province?.name}
+                      </Typography>
                     </Stack>
                     <Stack direction="row" gap={0.75}>
                       <Typography
@@ -270,7 +308,9 @@ const ShowResume = () => {
                       >
                         آدرس :
                       </Typography>
-                      <Typography fontSize={14}>شهرستان ورامین</Typography>
+                      <Typography fontSize={14}>
+                        شهرستان {userData.profile?.city?.name}
+                      </Typography>
                     </Stack>
                   </Box>
                 </Box>
@@ -297,14 +337,7 @@ const ShowResume = () => {
                     درباره‌ی من
                   </Divider>
                   <Typography variant="body2" lineHeight={2} paddingTop={1}>
-                    از سال 97 به برنامه نویسی علاقه مند شدم و دوست دارم در این
-                    حوزه فعالیت کنم و دانشم را در این حوزه ارتقاء دهم. نمونه
-                    کارهای بنده در گیت هاپ به آدرس
-                    https://github.com/rezaramezani1367 موجود است که شامل یک
-                    فروشگاه اینترنتی به آدرس
-                    https://github.com/rezaramezani1367/ecommerce-fullstack-mern
-                    و رزومه ساز(در حال تکمیل کردن) به آدرس
-                    https://github.com/rezaramezani1367/resume-builder می باشد.
+                    {userData.profile?.aboutMe}
                   </Typography>
                 </Box>
                 {/* resume section */}
@@ -326,58 +359,70 @@ const ShowResume = () => {
                       paddingY: 3,
                     }}
                   >
-                    {/* item 1 */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 1,
-                      }}
-                    >
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
+                    {userData.profile?.resumeSection.map((item, index) => (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 1,
+                        }}
+                        key={`${item.resumeTitle}${index}`}
                       >
-                        <DoubleArrowRounded fontSize="small" />
-                        <Typography
-                          fontSize={15}
-                          color={colors.grey[800]}
-                          fontWeight={600}
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
                         >
-                          کارشناس IT-برنامه نویس تحت ویندوز
+                          <DoubleArrowRounded fontSize="small" />
+                          <Typography
+                            fontSize={15}
+                            color={colors.grey[800]}
+                            fontWeight={600}
+                          >
+                            {item.resumeTitle}
+                          </Typography>
+                        </Stack>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
+                        >
+                          <Apartment fontSize="small" />
+                          <Typography fontSize={14} fontWeight={600}>
+                            {item.companyName}
+                          </Typography>
+                        </Stack>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
+                        >
+                          <CalendarMonth fontSize="small" />
+                          <Typography fontSize={12} fontWeight={600}>
+                            از{" "}
+                            {new DateObject({
+                              date: `${item.dateJob[0]}`,
+                              locale: persian_fa,
+                              calendar: persian,
+                            }).format("DD MMMM YYYY")}{" "}
+                            الی {"  "}
+                            {item.dateJob[1]
+                              ? new DateObject({
+                                  date: `${item.dateJob[1]}`,
+                                  locale: persian_fa,
+                                  calendar: persian,
+                                }).format("DD MMMM YYYY")
+                              : "..."}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="body2" lineHeight={2}>
+                          {item.description}
                         </Typography>
-                      </Stack>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
-                      >
-                        <Apartment fontSize="small" />
-                        <Typography fontSize={14} fontWeight={600}>
-                          اریس سازه پارسیان(سناتور)
-                        </Typography>
-                      </Stack>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
-                      >
-                        <CalendarMonth fontSize="small" />
-                        <Typography fontSize={12} fontWeight={600}>
-                          از خرداد ۱۳۹۶ تا اسفند ۱۳۹۹
-                        </Typography>
-                      </Stack>
-                      <Typography variant="body2" lineHeight={2}>
-                        از سال 97 علاوه بر فعالیت در قسمت IT ، بعنوان برنامه
-                        نویس شرکت برنامه هایی برای محصولات شرکت ،کارگزینی ،آموزش
-                        و... با زبان برنامه نویسی C# و دیتابیس MS SQL SERVER
-                        بمدت سه سال پیاده سازی کردم.
-                      </Typography>
-                    </Box>
+                      </Box>
+                    ))}
                   </Box>
                 </Box>
                 {/* skill section */}
@@ -393,103 +438,58 @@ const ShowResume = () => {
                   </Divider>
                   <Box
                     sx={{
-                      // display: "flex",
-                      // flexDirection: "column",
-                      // gap: 3,
                       paddingY: 3,
                     }}
                   >
                     <Timeline
                       sx={{
+                        padding: 0,
                         [`& .${timelineItemClasses.root}:before`]: {
                           flex: 0,
                           padding: 0,
                         },
                       }}
                     >
-                      <TimelineItem sx={{ minHeight: 45 }}>
-                        <TimelineSeparator>
-                          <TimelineDot
-                            color="info"
-                            sx={{
-                              margin: 0,
-                              minWidth: 17,
-                              justifyContent: "center",
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}
-                          >
-                            1
-                          </TimelineDot>
-                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
-                        </TimelineSeparator>
-                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
-                          <Typography
-                            // variant="h6"
-                            fontSize={14}
-                            fontWeight={600}
-                            component="span"
-                            color={colors.grey[700]}
-                          >
-                            آشنا به redux
-                          </Typography>
-                        </TimelineContent>
-                      </TimelineItem>
-                      <TimelineItem sx={{ minHeight: 45 }}>
-                        <TimelineSeparator>
-                          <TimelineDot
-                            color="info"
-                            sx={{
-                              margin: 0,
-                              minWidth: 17,
-                              justifyContent: "center",
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}
-                          >
-                            2
-                          </TimelineDot>
-                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
-                        </TimelineSeparator>
-                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
-                          <Typography
-                            // variant="h6"
-                            fontSize={14}
-                            fontWeight={600}
-                            component="span"
-                            color={colors.grey[700]}
-                          >
-                            javascript
-                          </Typography>
-                        </TimelineContent>
-                      </TimelineItem>
-                      <TimelineItem sx={{ minHeight: 45 }}>
-                        <TimelineSeparator>
-                          <TimelineDot
-                            color="info"
-                            sx={{
-                              margin: 0,
-                              minWidth: 17,
-                              justifyContent: "center",
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}
-                          >
-                            3
-                          </TimelineDot>
-                        </TimelineSeparator>
-                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
-                          <Typography
-                            // variant="h6"
-                            fontSize={14}
-                            fontWeight={600}
-                            component="span"
-                            color={colors.grey[700]}
-                          >
-                            آشنا به bootstrap
-                          </Typography>
-                        </TimelineContent>
-                      </TimelineItem>
+                      {userData.profile?.skills.map((item, index) => (
+                        <TimelineItem
+                          sx={{ minHeight: 40 }}
+                          key={`${item}${index}`}
+                        >
+                          <TimelineSeparator>
+                            <TimelineDot
+                              sx={{
+                                margin: 0.1,
+                                minWidth: 16,
+                                justifyContent: "center",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                bgcolor: colors.blueGrey[500],
+                                height: 14,
+                                alignItems: "center",
+                                boxShadow: 2,
+                              }}
+                            >
+                              {++index}
+                            </TimelineDot>
+                            {index !== userData.profile?.skills?.length && (
+                              <TimelineConnector
+                                sx={{ bgcolor: colors.blueGrey[200] }}
+                              />
+                            )}
+                          </TimelineSeparator>
+                          <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                            <Typography
+                              // variant="h6"
+                              fontSize={14}
+                              fontWeight={600}
+                              component="span"
+                              color={colors.grey[700]}
+                            >
+                              {item}
+                            </Typography>
+                          </TimelineContent>
+                        </TimelineItem>
+                      ))}
                     </Timeline>
                   </Box>
                 </Box>
@@ -512,58 +512,71 @@ const ShowResume = () => {
                       paddingY: 3,
                     }}
                   >
-                    {/* item 1 */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 1,
-                      }}
-                    >
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
+                    {userData.profile?.educationalSection.map((item, index) => (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 1,
+                        }}
+                        key={`${item.field}${index}`}
                       >
-                        <DoubleArrowRounded fontSize="small" />
-                        <Typography
-                          fontSize={15}
-                          color={colors.grey[800]}
-                          fontWeight={600}
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
                         >
-                          ریاضی فیزیک
+                          <DoubleArrowRounded fontSize="small" />
+                          <Typography
+                            fontSize={15}
+                            color={colors.grey[800]}
+                            fontWeight={600}
+                          >
+                            {item.field} {" - "}
+                            {item.grade.name}
+                          </Typography>
+                        </Stack>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
+                        >
+                          <Apartment fontSize="small" />
+                          <Typography fontSize={14} fontWeight={600}>
+                            {item.universityName}
+                          </Typography>
+                        </Stack>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          gap={1}
+                          color={colors.grey[700]}
+                        >
+                          <CalendarMonth fontSize="small" />
+                          <Typography fontSize={12} fontWeight={600}>
+                            از{" "}
+                            {new DateObject({
+                              date: `${item.date[0]}`,
+                              locale: persian_fa,
+                              calendar: persian,
+                            }).format("DD MMMM YYYY")}{" "}
+                            الی {"  "}
+                            {item.date[1]
+                              ? new DateObject({
+                                  date: `${item.date[1]}`,
+                                  locale: persian_fa,
+                                  calendar: persian,
+                                }).format("DD MMMM YYYY")
+                              : "..."}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="body2" lineHeight={2}>
+                          {item.description}
                         </Typography>
-                      </Stack>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
-                      >
-                        <Apartment fontSize="small" />
-                        <Typography fontSize={14} fontWeight={600}>
-                          مدرسه نمونه دکتر حسابی ورامین
-                        </Typography>
-                      </Stack>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        gap={1}
-                        color={colors.grey[700]}
-                      >
-                        <CalendarMonth fontSize="small" />
-                        <Typography fontSize={12} fontWeight={600}>
-                          از ۱۳۸۲ تا ۱۳۸۶
-                        </Typography>
-                      </Stack>
-                      <Typography variant="body2" lineHeight={2}>
-                        {/* از سال 97 علاوه بر فعالیت در قسمت IT ، بعنوان برنامه
-                        نویس شرکت برنامه هایی برای محصولات شرکت ،کارگزینی ،آموزش
-                        و... با زبان برنامه نویسی C# و دیتابیس MS SQL SERVER
-                        بمدت سه سال پیاده سازی کردم. */}
-                      </Typography>
-                    </Box>
+                      </Box>
+                    ))}
                   </Box>
                 </Box>
                 {/* language section */}
@@ -579,76 +592,62 @@ const ShowResume = () => {
                   </Divider>
                   <Box
                     sx={{
-                      // display: "flex",
-                      // flexDirection: "column",
-                      // gap: 3,
                       paddingY: 3,
                     }}
                   >
                     <Timeline
                       sx={{
+                        padding: 0,
                         [`& .${timelineItemClasses.root}:before`]: {
                           flex: 0,
                           padding: 0,
                         },
                       }}
                     >
-                      <TimelineItem sx={{ minHeight: 45 }}>
-                        <TimelineSeparator>
-                          <TimelineDot
-                            color="info"
-                            sx={{
-                              margin: 0,
-                              minWidth: 17,
-                              justifyContent: "center",
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}
-                          >
-                            1
-                          </TimelineDot>
-                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
-                        </TimelineSeparator>
-                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
-                          <Typography
-                            // variant="h6"
-                            fontSize={14}
-                            fontWeight={600}
-                            component="span"
+                      {userData.profile?.languageSection.map((item, index) => (
+                        <TimelineItem
+                          sx={{ minHeight: 40 }}
+                          key={`${item.languageName.name}${index}`}
+                        >
+                          <TimelineSeparator>
+                            <TimelineDot
+                              sx={{
+                                margin: 0.1,
+                                minWidth: 16,
+                                justifyContent: "center",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                bgcolor: colors.blueGrey[500],
+                                height: 14,
+                                alignItems: "center",
+                                boxShadow: 2,
+                              }}
+                            >
+                              {++index}
+                            </TimelineDot>
+                            {index !==
+                              userData.profile?.languageSection?.length && (
+                              <TimelineConnector
+                                sx={{ bgcolor: colors.blueGrey[200] }}
+                              />
+                            )}
+                          </TimelineSeparator>
+                          <TimelineContent
                             color={colors.grey[700]}
+                            sx={{ paddingY: "0px", px: 2 }}
                           >
-                            انگلیسی (متوسط)
-                          </Typography>
-                        </TimelineContent>
-                      </TimelineItem>
-                      <TimelineItem sx={{ minHeight: 45 }}>
-                        <TimelineSeparator>
-                          <TimelineDot
-                            color="info"
-                            sx={{
-                              margin: 0,
-                              minWidth: 17,
-                              justifyContent: "center",
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}
-                          >
-                            2
-                          </TimelineDot>
-                          {/* <TimelineConnector sx={{ bgcolor: "info.light" }} /> */}
-                        </TimelineSeparator>
-                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
-                          <Typography
-                            // variant="h6"
-                            fontSize={14}
-                            fontWeight={600}
-                            component="span"
-                            color={colors.grey[700]}
-                          >
-                            اسپانیا (متوسط)
-                          </Typography>
-                        </TimelineContent>
-                      </TimelineItem>
+                            <Typography
+                              // variant="h6"
+                              fontSize={14}
+                              fontWeight={600}
+                              component="span"
+                            >
+                              {item.languageName.name}({item.languageLevel.name}
+                              )
+                            </Typography>
+                          </TimelineContent>
+                        </TimelineItem>
+                      ))}
                     </Timeline>
                   </Box>
                 </Box>

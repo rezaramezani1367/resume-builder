@@ -57,7 +57,7 @@ const ImageUploadForm = () => {
   return (
     <>
       <Avatar
-        src={`${baseUrl}/${userData?.image}`}
+        src={userData?.image ? `${baseUrl}/${userData?.image}` : ""}
         sx={{ width: 75, height: 75 }}
       />
       <Button

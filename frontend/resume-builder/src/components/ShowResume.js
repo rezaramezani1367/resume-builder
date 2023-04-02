@@ -3,7 +3,9 @@ import {
   CalendarMonth,
   DoubleArrowRounded,
   Download,
+  Fastfood,
   Info,
+  LaptopMac,
   NavigateNext,
   Print,
   Share,
@@ -24,6 +26,16 @@ import {
 
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
+import "./ShowResume.css";
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  timelineItemClasses,
+  TimelineSeparator,
+} from "@mui/lab";
 
 const ShowResume = () => {
   return (
@@ -381,6 +393,119 @@ const ShowResume = () => {
                   </Divider>
                   <Box
                     sx={{
+                      // display: "flex",
+                      // flexDirection: "column",
+                      // gap: 3,
+                      paddingY: 3,
+                    }}
+                  >
+                    <Timeline
+                      sx={{
+                        [`& .${timelineItemClasses.root}:before`]: {
+                          flex: 0,
+                          padding: 0,
+                        },
+                      }}
+                    >
+                      <TimelineItem sx={{ minHeight: 45 }}>
+                        <TimelineSeparator>
+                          <TimelineDot
+                            color="info"
+                            sx={{
+                              margin: 0,
+                              minWidth: 17,
+                              justifyContent: "center",
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
+                          >
+                            1
+                          </TimelineDot>
+                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
+                        </TimelineSeparator>
+                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                          <Typography
+                            // variant="h6"
+                            fontSize={14}
+                            fontWeight={600}
+                            component="span"
+                            color={colors.grey[700]}
+                          >
+                            آشنا به redux
+                          </Typography>
+                        </TimelineContent>
+                      </TimelineItem>
+                      <TimelineItem sx={{ minHeight: 45 }}>
+                        <TimelineSeparator>
+                          <TimelineDot
+                            color="info"
+                            sx={{
+                              margin: 0,
+                              minWidth: 17,
+                              justifyContent: "center",
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
+                          >
+                            2
+                          </TimelineDot>
+                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
+                        </TimelineSeparator>
+                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                          <Typography
+                            // variant="h6"
+                            fontSize={14}
+                            fontWeight={600}
+                            component="span"
+                            color={colors.grey[700]}
+                          >
+                            javascript
+                          </Typography>
+                        </TimelineContent>
+                      </TimelineItem>
+                      <TimelineItem sx={{ minHeight: 45 }}>
+                        <TimelineSeparator>
+                          <TimelineDot
+                            color="info"
+                            sx={{
+                              margin: 0,
+                              minWidth: 17,
+                              justifyContent: "center",
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
+                          >
+                            3
+                          </TimelineDot>
+                        </TimelineSeparator>
+                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                          <Typography
+                            // variant="h6"
+                            fontSize={14}
+                            fontWeight={600}
+                            component="span"
+                            color={colors.grey[700]}
+                          >
+                            آشنا به bootstrap
+                          </Typography>
+                        </TimelineContent>
+                      </TimelineItem>
+                    </Timeline>
+                  </Box>
+                </Box>
+                {/* education section */}
+                <Box>
+                  <Divider
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: 16,
+                      color: "primary.dark",
+                    }}
+                  >
+                    سوابق تحصیلی
+                  </Divider>
+                  <Box
+                    sx={{
                       display: "flex",
                       flexDirection: "column",
                       gap: 3,
@@ -388,7 +513,143 @@ const ShowResume = () => {
                     }}
                   >
                     {/* item 1 */}
-                    <Box>Item 1</Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        color={colors.grey[700]}
+                      >
+                        <DoubleArrowRounded fontSize="small" />
+                        <Typography
+                          fontSize={15}
+                          color={colors.grey[800]}
+                          fontWeight={600}
+                        >
+                          ریاضی فیزیک
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        color={colors.grey[700]}
+                      >
+                        <Apartment fontSize="small" />
+                        <Typography fontSize={14} fontWeight={600}>
+                          مدرسه نمونه دکتر حسابی ورامین
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        color={colors.grey[700]}
+                      >
+                        <CalendarMonth fontSize="small" />
+                        <Typography fontSize={12} fontWeight={600}>
+                          از ۱۳۸۲ تا ۱۳۸۶
+                        </Typography>
+                      </Stack>
+                      <Typography variant="body2" lineHeight={2}>
+                        {/* از سال 97 علاوه بر فعالیت در قسمت IT ، بعنوان برنامه
+                        نویس شرکت برنامه هایی برای محصولات شرکت ،کارگزینی ،آموزش
+                        و... با زبان برنامه نویسی C# و دیتابیس MS SQL SERVER
+                        بمدت سه سال پیاده سازی کردم. */}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+                {/* language section */}
+                <Box>
+                  <Divider
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: 16,
+                      color: "primary.dark",
+                    }}
+                  >
+                    زبان‌های مسلط
+                  </Divider>
+                  <Box
+                    sx={{
+                      // display: "flex",
+                      // flexDirection: "column",
+                      // gap: 3,
+                      paddingY: 3,
+                    }}
+                  >
+                    <Timeline
+                      sx={{
+                        [`& .${timelineItemClasses.root}:before`]: {
+                          flex: 0,
+                          padding: 0,
+                        },
+                      }}
+                    >
+                      <TimelineItem sx={{ minHeight: 45 }}>
+                        <TimelineSeparator>
+                          <TimelineDot
+                            color="info"
+                            sx={{
+                              margin: 0,
+                              minWidth: 17,
+                              justifyContent: "center",
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
+                          >
+                            1
+                          </TimelineDot>
+                          <TimelineConnector sx={{ bgcolor: "info.light" }} />
+                        </TimelineSeparator>
+                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                          <Typography
+                            // variant="h6"
+                            fontSize={14}
+                            fontWeight={600}
+                            component="span"
+                            color={colors.grey[700]}
+                          >
+                            انگلیسی (متوسط)
+                          </Typography>
+                        </TimelineContent>
+                      </TimelineItem>
+                      <TimelineItem sx={{ minHeight: 45 }}>
+                        <TimelineSeparator>
+                          <TimelineDot
+                            color="info"
+                            sx={{
+                              margin: 0,
+                              minWidth: 17,
+                              justifyContent: "center",
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
+                          >
+                            2
+                          </TimelineDot>
+                          {/* <TimelineConnector sx={{ bgcolor: "info.light" }} /> */}
+                        </TimelineSeparator>
+                        <TimelineContent sx={{ paddingY: "0px", px: 2 }}>
+                          <Typography
+                            // variant="h6"
+                            fontSize={14}
+                            fontWeight={600}
+                            component="span"
+                            color={colors.grey[700]}
+                          >
+                            اسپانیا (متوسط)
+                          </Typography>
+                        </TimelineContent>
+                      </TimelineItem>
+                    </Timeline>
                   </Box>
                 </Box>
               </Grid>

@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
   Timeline,
@@ -43,6 +43,7 @@ import { DateObject } from "react-multi-date-picker";
 import { baseUrl } from "../redux/constants";
 
 const ShowResume = () => {
+  const printSection = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -55,6 +56,10 @@ const ShowResume = () => {
   useEffect(() => {
     dispatch(getUserTest());
   }, []);
+  useEffect(() => {
+    document.title = `رزومه ${userData?.profile?.fullname}`;
+  }, [userData?.profile?.fullname]);
+
   return (
     <Box sx={{ bgcolor: "#333333", minHeight: "100vh" }}>
       <LoadingDialog userLoading={userLoading} />
@@ -69,6 +74,9 @@ const ShowResume = () => {
           alignItems: { xs: "center", sm: "start" },
           flexDirection: { xs: "column", sm: "row" },
           gap: { xs: 3, sm: 0 },
+          "@media print": {
+            display: "none",
+          },
         }}
       >
         <Box>
@@ -103,9 +111,13 @@ const ShowResume = () => {
             color="inherit"
             startIcon={<Print />}
             sx={{ display: { xs: "none", sm: "flex" } }}
+            onClick={() => {
+              window.print();
+            }}
           >
             پرینت
           </Button>
+
           <Button
             size="small"
             variant="outlined"
@@ -135,6 +147,9 @@ const ShowResume = () => {
           display: "flex",
           justifyContent: "center",
           gap: 0.5,
+          "@media print": {
+            display: "none",
+          },
         }}
       >
         <Info fontSize="small" />
@@ -147,7 +162,12 @@ const ShowResume = () => {
         </Typography>
       </Box>
       {/* resume section */}
-      <Box sx={{ padding: 3 }}>
+      <Box
+        sx={{
+          padding: 3,
+        }}
+        ref={printSection}
+      >
         <Container>
           <Paper sx={{ borderRadius: 0 }}>
             <Grid container>
@@ -157,162 +177,188 @@ const ShowResume = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: 4,
+                  justifyContent: "space-between",
                   bgcolor: { xs: "", md: "#eee" },
                 }}
               >
                 {/* section1 */}
-                <Box
-                  sx={{
-                    paddingTop: 5,
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    gap: 1,
-                  }}
-                >
-                  <Avatar
-                    alt=""
-                    src={userData?.image ? `${baseUrl}/${userData?.image}` : ""}
-                    sx={{ width: 80, height: 80 }}
-                  />
-                  <Typography
-                    color={colors.grey[700]}
-                    fontWeight={600}
-                    fontSize={18}
-                  >
-                    {userData?.profile?.fullname}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Divider
-                    sx={{
-                      fontWeight: 600,
-                      fontSize: 16,
-                      color: "primary.dark",
-                    }}
-                  >
-                    اطلاعات شخصی
-                  </Divider>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
                   <Box
                     sx={{
-                      padding: 2,
+                      paddingTop: 5,
                       display: "flex",
-                      gap: 1.5,
+                      alignItems: "center",
                       flexDirection: "column",
+                      gap: 1,
                     }}
                   >
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        تخصص :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData?.profile?.jobTitle}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        آدرس ایمیل :
-                      </Typography>
-                      <Typography fontSize={14}>{userData?.email}</Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        شماره موبایل :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData.profile?.mobile}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        سال تولد :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {new DateObject({
-                          date: `${userData.profile?.birthday}`,
-                          locale: persian_fa,
-                          calendar: persian,
-                        }).format("D MMMM YYYY")}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        جنسیت :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData.profile?.gender}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        وضعیت سربازی :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData.profile?.militarySituation.name}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        وضعیت تأهل :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData.profile?.maritalStatus}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        استان سکونت :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        {userData.profile?.province?.name}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" gap={0.75}>
-                      <Typography
-                        fontSize={14}
-                        color={colors.grey[700]}
-                        fontWeight={600}
-                      >
-                        آدرس :
-                      </Typography>
-                      <Typography fontSize={14}>
-                        شهرستان {userData.profile?.city?.name}
-                      </Typography>
-                    </Stack>
+                    <Avatar
+                      alt=""
+                      src={
+                        userData?.image ? `${baseUrl}/${userData?.image}` : ""
+                      }
+                      sx={{ width: 80, height: 80 }}
+                    />
+                    <Typography
+                      color={colors.grey[700]}
+                      fontWeight={600}
+                      fontSize={18}
+                    >
+                      {userData?.profile?.fullname}
+                    </Typography>
                   </Box>
+                  <Box>
+                    <Divider
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: 16,
+                        color: "primary.dark",
+                      }}
+                    >
+                      اطلاعات شخصی
+                    </Divider>
+                    <Box
+                      sx={{
+                        padding: 2,
+                        display: "flex",
+                        gap: 1.5,
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          تخصص :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData?.profile?.jobTitle}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          آدرس ایمیل :
+                        </Typography>
+                        <Typography fontSize={14}>{userData?.email}</Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          شماره موبایل :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData.profile?.mobile}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          سال تولد :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {new DateObject({
+                            date: `${userData.profile?.birthday}`,
+                            locale: persian_fa,
+                            calendar: persian,
+                          }).format("D MMMM YYYY")}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          جنسیت :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData.profile?.gender}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          وضعیت سربازی :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData.profile?.militarySituation.name}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          وضعیت تأهل :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData.profile?.maritalStatus}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          استان سکونت :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          {userData.profile?.province?.name}
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" gap={0.75}>
+                        <Typography
+                          fontSize={14}
+                          color={colors.grey[700]}
+                          fontWeight={600}
+                        >
+                          آدرس :
+                        </Typography>
+                        <Typography fontSize={14}>
+                          شهرستان {userData.profile?.city?.name}
+                        </Typography>
+                      </Stack>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    paddingX: 2,
+                    paddingY: 4,
+                    textAlign: "center",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    display: { xs: "none", md: "block" },
+                  }}
+                >
+                  به روز شده در{" "}
+                  <Typography variant="span" color="error">
+                    {new DateObject({
+                      date:
+                        userData?.updatedAt > userData?.profile?.updatedAt
+                          ? userData?.updatedAt
+                          : userData?.profile?.updatedAt,
+                      locale: persian_fa,
+                      calendar: persian,
+                    }).format("D MMMM YYYY")}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid
@@ -650,6 +696,26 @@ const ShowResume = () => {
                       ))}
                     </Timeline>
                   </Box>
+                </Box>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    display: { xs: "block", md: "none" },
+                  }}
+                >
+                  به روز شده در{" "}
+                  <Typography variant="span" color="error">
+                    {new DateObject({
+                      date:
+                        userData?.updatedAt > userData?.profile?.updatedAt
+                          ? userData?.updatedAt
+                          : userData?.profile?.updatedAt,
+                      locale: persian_fa,
+                      calendar: persian,
+                    }).format("D MMMM YYYY")}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
